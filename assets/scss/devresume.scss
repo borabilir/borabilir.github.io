@@ -9,7 +9,7 @@
 
 /*************************** Theme Colours****************************/
 // Define theme colour scheme
-$theme-color-primary: #54B689;
+$theme-color-primary: #e03e3f;
 $theme-text-color-primary: #292929;
 $theme-text-color-secondary: lighten($theme-text-color-primary, 15%);
 $theme-text-color-light: lighten($theme-text-color-primary, 40%);
@@ -108,16 +108,13 @@ a.theme-link {
 }
 
 .resume-name {
-	font-size: 2.75rem;
-	font-weight: 900;
-	letter-spacing: 0.4rem;
-	color: $theme-color-primary;
-	
+	font-size: 3rem;
+	font-weight: 700;
 }
 
 .resume-tagline {
 	font-size: 1.25rem;
-	font-weight: 300;
+	font-weight: 400;
 }
 
 .resume-contact {
@@ -140,8 +137,13 @@ a.resume-link {
 	font-size: 0.875rem;
 }
 .resume-main {
+	.item-header {
+		font-size: 1.25rem;
+	}
+
 	.item-title {
-		font-size: 1rem;
+		font-size: 1.1rem;
+		font-weight: 400;
 	}
 	
    .item-meta {
@@ -201,10 +203,3 @@ a.resume-link {
 	    border-left: 0;
     }
 }
-    
-
-
-
-
-
-
