@@ -1,0 +1,73 @@
+@mixin relative($top: null, $right: null, $bottom: null, $left: null) {
+    position: relative;
+    top     : $top;
+    left    : $left;
+    right   : $right;
+    bottom  : $bottom;
+}
+
+@mixin fixed($top: null, $right: null, $bottom: null, $left: null) {
+    position: fixed;
+    top     : $top;
+    left    : $left;
+    right   : $right;
+    bottom  : $bottom;
+}
+
+@mixin bgColor($color) {
+    background-color: $color;
+}
+
+@mixin absolute($top: null, $right: null, $bottom: null, $left: null) {
+    top     : $top;
+    left    : $left;
+    right   : $right;
+    bottom  : $bottom;
+    position: absolute;
+}
+
+@mixin absoluteCenter {
+    top      : 50%;
+    left     : 50%;
+    position : absolute;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin flex($alignItems: null,
+    $justifyContent: null,
+    $direction: null,
+    $gap: null) {
+    display        : flex;
+    align-items    : $alignItems;
+    justify-content: $justifyContent;
+    flex-direction : $direction;
+    gap            : $gap;
+}
+
+@mixin inlineFlex($alignItems: null, $justifyContent: null, $direction: null, $gap: null) {
+    flex-direction : $direction;
+    display        : inline-flex;
+    align-items    : $alignItems;
+    justify-content: $justifyContent;
+    gap            : $gap;
+}
+
+@mixin size($width, $height) {
+    width : $width;
+    height: $height;
+}
+
+@mixin hideScrollbar {
+    scrollbar-width   : none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@mixin global {
+    :global {
+        @content;
+    }
+}

@@ -1,0 +1,82 @@
+.container {
+    @include flex(center, flex-start, column);
+    position: relative;
+
+    .timelineDot {
+        width        : 16px;
+        height       : 16px;
+        background   : $color-primary;
+        border-radius: 50%;
+        font-size    : 20px;
+        @include flex(center, flex-start);
+        position: relative;
+
+        >span {
+            z-index : 10;
+            position: absolute;
+
+            &.left {
+                right: 30px;
+            }
+
+            &.right {
+                left: 30px;
+            }
+        }
+    }
+
+    .line {
+        position        : relative;
+        width           : 3px;
+        height          : 150px;
+        background-color: $color-primary;
+    }
+
+    .details {
+        position: absolute;
+        @include flex(center, flex-start, row, 10px);
+        gap   : 10px;
+        top   : 8px;
+        bottom: 0px;
+        width : 600px;
+
+        &.left {
+            right         : 80px;
+            flex-direction: row-reverse;
+
+            >div {
+                @include flex(flex-end, flex-start, column, 2px);
+                text-align: right;
+            }
+        }
+
+        &.right {
+            text-align    : left;
+            left          : 80px;
+            flex-direction: row;
+
+
+            >div {
+                @include flex(flex-start, flex-start, column, 2px);
+            }
+        }
+
+        >div {
+            >h3 {
+                font-size  : 20px;
+                font-weight: 700;
+            }
+
+            >h4 {
+                font-size  : 18px;
+                font-weight: 600;
+                color      : $color-primary;
+            }
+
+            >h5 {
+                font-size  : 14px;
+                font-weight: 400;
+            }
+        }
+    }
+}

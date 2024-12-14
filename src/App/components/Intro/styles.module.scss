@@ -1,0 +1,51 @@
+.container {
+    @include flex(center, flex-start, column);
+    height  : 600px;
+    position: relative;
+
+    >h1 {
+        margin-top             : 40px;
+        font-size              : 88px;
+        font-weight            : 700;
+        color                  : transparent;
+        background-clip        : text;
+        background             : $gradient-primary;
+        -webkit-background-clip: text;
+    }
+
+    >h2 {
+        color      : $color-dark;
+        font-size  : 48px;
+        font-weight: 700
+    }
+
+    .info {
+        margin-top: 40px;
+        @include content(1000px);
+        @include flex(flex-start, space-between, row);
+
+        >div {
+            @include flex(flex-end, flex-start, column, 20px);
+
+            >div {
+                text-align: right;
+
+                >h5 {
+                    font-weight   : 600;
+                    text-transform: uppercase;
+                    font-size     : 18px;
+                }
+
+                >h4 {
+                    font-size : 54px;
+                    margin-top: -6px;
+                }
+            }
+        }
+    }
+
+    >img {
+        position: absolute;
+        bottom  : 0;
+    }
+}

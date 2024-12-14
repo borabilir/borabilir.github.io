@@ -1,0 +1,49 @@
+.container {
+    @include content(1000px);
+    padding: 40px 0;
+    @include flex(center, flex-start, column);
+
+    >h3 {
+        font-size  : 48px;
+        font-weight: 600;
+
+        >span {
+            color                  : transparent;
+            background-clip        : text;
+            background             : $gradient-primary;
+            -webkit-background-clip: text;
+        }
+    }
+
+    >h4 {
+        margin-top : 4px;
+        font-size  : 20px;
+        font-weight: 400;
+    }
+
+    .timeline {
+        @include flex(center, flex-start, column);
+        position        : relative;
+        margin-left     : auto;
+        margin-right    : auto;
+        width           : 100%;
+        background-color: red;
+
+        .node {
+            margin-left  : auto;
+            margin-right : auto;
+            margin-bottom: 100px;
+            font-size    : 20px;
+            text-align   : right;
+
+            &::before {
+                position        : absolute;
+                content         : "";
+                width           : 20px;
+                height          : 20px;
+                background-color: $color-primary;
+                border-radius   : 50%;
+            }
+        }
+    }
+}
