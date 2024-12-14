@@ -1,4 +1,5 @@
 {
+    "homepage": "http://borabilir.github.io",
     "name": "bora-portfolio",
     "version": "0.1.0",
     "private": true,
@@ -24,7 +25,9 @@
     "scripts": {
         "start": "craco start",
         "build": "craco build",
-        "test": "craco test"
+        "test": "craco test",
+        "predeploy": "craco build",
+        "deploy": "gh-pages -d build"
     },
     "eslintConfig": {
         "extends": [
@@ -45,6 +48,7 @@
         ]
     },
     "devDependencies": {
-        "craco-sass-resources-loader": "^1.1.0"
+        "craco-sass-resources-loader": "^1.1.0",
+        "gh-pages": "^6.2.0"
     }
 }
