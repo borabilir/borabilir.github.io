@@ -1,19 +1,21 @@
 import React from "react";
 import { motion, MotionProps } from "framer-motion";
 
-type AnimatedTextProps = MotionProps & {
+type AnimatorProps = MotionProps & {
   children: React.ReactNode;
   className?: string;
   duration?: number;
+  delay?: number;
   type?: "fadeIn" | "fadeDrop" | "fadeRise";
 };
 
-const AnimatedText: React.FC<AnimatedTextProps & { as?: React.ElementType }> = ({
+const Animator: React.FC<AnimatorProps & { as?: React.ElementType }> = ({
   children,
   className,
   as = "div",
   type = "fadeIn",
   duration = 0.6,
+  delay,
   ...rest
 }) => {
   const MotionComponent = motion[as as keyof typeof motion] as React.ElementType;
@@ -38,7 +40,7 @@ const AnimatedText: React.FC<AnimatedTextProps & { as?: React.ElementType }> = (
       initial={initial}
       whileInView={whileInView}
       viewport={{ once: true }}
-      transition={{ duration }}
+      transition={{ duration, delay }}
       {...rest}
     >
       {children}
@@ -48,14 +50,14 @@ const AnimatedText: React.FC<AnimatedTextProps & { as?: React.ElementType }> = (
 
 const tagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"] as const;
 
-type AnimatedTextComponent = typeof AnimatedText & {
-  [key in (typeof tagNames)[number]]: React.FC<Omit<AnimatedTextProps, "as">>;
+type AnimatedTextComponent = typeof Animator & {
+  [key in (typeof tagNames)[number]]: React.FC<Omit<AnimatorProps, "as">>;
 };
 
 tagNames.forEach((tag) => {
-  (AnimatedText as AnimatedTextComponent)[tag] = (props: Omit<AnimatedTextProps, "as">) => (
-    <AnimatedText as={tag} {...props} />
+  (Animator as AnimatedTextComponent)[tag] = (props: Omit<AnimatorProps, "as">) => (
+    <Animator as={tag} {...props} />
   );
 });
 
-export default AnimatedText as AnimatedTextComponent;
+export default Animator as AnimatedTextComponent;

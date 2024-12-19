@@ -4,38 +4,68 @@ import { motion } from 'framer-motion';
 type Props = {
     children: string;
     duration: number;
+    delay?: number; // Saniye cinsinden alacak
     className?: string;
 };
 
-const TypewriterText: React.FC<Props> = ({ children, duration, className }) => {
-    const [visibleText, setVisibleText] = useState(children.slice(0, 1));
+const TypewriterText: React.FC<Props & { as?: React.ElementType }> = ({
+    children,
+    duration,
+    className,
+    delay = 0,
+    as = 'div',
+}) => {
+    const [visibleText, setVisibleText] = useState('');
     const totalCharacters = children.length;
-    const interval = duration / totalCharacters - 1;
+
+    const interval = (duration * 1000) / totalCharacters;
+
+    const MotionComponent = motion[
+        as as keyof typeof motion
+    ] as React.ElementType;
 
     useEffect(() => {
-        let index = 1;
+        const startTyping = () => {
+            let index = 1;
 
-        const timer = setInterval(() => {
-            index++;
-            setVisibleText(children.slice(0, index));
-            if (index === totalCharacters) {
-                clearInterval(timer);
-            }
-        }, interval);
+            const timer = setInterval(() => {
+                index++;
+                setVisibleText(children.slice(0, index));
+                if (index === totalCharacters) {
+                    clearInterval(timer);
+                }
+            }, interval);
 
-        return () => clearInterval(timer);
-    }, [children, interval, totalCharacters]);
+            return () => clearInterval(timer);
+        };
+
+        const delayTimer = setTimeout(startTyping, delay * 1000);
+
+        return () => clearTimeout(delayTimer);
+    }, [children, interval, totalCharacters, delay]);
 
     return (
-        <motion.span
+        <MotionComponent
             className={className}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration, delay }}
         >
             {visibleText}
-        </motion.span>
+        </MotionComponent>
     );
 };
 
-export default TypewriterText;
+const tagNames = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span'] as const;
+
+type TypewriterTextComponent = typeof TypewriterText & {
+    [key in (typeof tagNames)[number]]: React.FC<Omit<Props, 'as'>>;
+};
+
+tagNames.forEach((tag) => {
+    (TypewriterText as TypewriterTextComponent)[tag] = (
+        props: Omit<Props, 'as'>
+    ) => <TypewriterText as={tag} {...props} />;
+});
+
+export default TypewriterText as TypewriterTextComponent;

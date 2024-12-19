@@ -2,18 +2,18 @@ import React from 'react';
 import styles from './styles.module.scss';
 import Timeline from '../Timeline';
 import { useTranslation } from 'react-i18next';
-import AnimatedText from 'Core/components/AnimatedText';
+import Animator from 'Core/components/Animator';
 
 const CareerJourney: React.FC = () => {
     const { t } = useTranslation();
 
     return (
         <section id="career" className={styles.container}>
-            <AnimatedText.h3 type="fadeDrop">
+            <Animator.h3 type="fadeDrop">
                 {t('career.title').split(' ')[0]}{' '}
                 <span>{t('career.title').split(' ')[1]}</span>
-            </AnimatedText.h3>
-            <AnimatedText.h4>{t('career.description')}</AnimatedText.h4>
+            </Animator.h3>
+            <Animator.h4>{t('career.description')}</Animator.h4>
             <Timeline />
         </section>
     );

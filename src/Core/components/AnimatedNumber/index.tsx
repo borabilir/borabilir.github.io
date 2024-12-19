@@ -4,12 +4,14 @@ import { useInView, motion, useSpring } from 'framer-motion';
 type AnimatedNumberProps = {
     start?: number;
     end: number;
+    delay?: number;
     className?: string;
 };
 
 const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
     start = 0,
     end,
+    delay = 0,
     className,
 }) => {
     const ref = useRef<HTMLSpanElement>(null);
@@ -29,10 +31,21 @@ const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
     }, [springValue]);
 
     useEffect(() => {
-        if (isInView) springValue.set(end);
-    }, [end, springValue, isInView]);
+        if (isInView) {
+            const timeout = setTimeout(() => {
+                springValue.set(end);
+            }, delay * 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [end, springValue, isInView, delay]);
 
-    return <motion.span ref={ref} className={className} />;
+    return (
+        <motion.span
+            transition={{ delay: delay }}
+            ref={ref}
+            className={className}
+        />
+    );
 };
 
 export default AnimatedNumber;

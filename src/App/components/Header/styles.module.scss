@@ -1,0 +1,77 @@
+.container {
+  z-index         : 10;
+  height          : 60px;
+  background-color: rgba($color-white, 0.98);
+  @include fixed(0, 0, null, 0);
+
+  .content {
+    height: 100%;
+    @include flex(center);
+
+    &.md {
+      @include content(100%, 100%);
+    }
+
+    &.lg {
+      @include content(100%, 100%);
+    }
+
+    >section {
+      flex: 1;
+
+      &.left {
+        text-align: left;
+        @include flex(center);
+
+        .title {
+          font-weight: 800;
+          font-size  : 14px;
+          @include responsive(margin-left, 30px, 10px);
+          @include responsive(display, none, flex);
+        }
+      }
+
+      &.center {
+        text-align: center;
+      }
+
+      &.right {
+        @include flex(center, flex-end);
+        text-align : right;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &.bg {
+    background: $color-primary;
+
+    .content {
+
+      >section {
+
+        &.left {
+
+          .title {
+            color: $color-white;
+          }
+        }
+      }
+    }
+
+    @include mobile {
+      .content {
+        >section {
+          &.center {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+
+  &.transparent {
+    backdrop-filter: blur(36px);
+    background     : rgba(#111218, 0.2);
+  }
+}

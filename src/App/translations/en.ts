@@ -5,6 +5,7 @@ const enTranslations = {
         contact: 'Contact',
         years: 'Years of Experience',
         projects: 'Projects Done',
+        skills: 'Skills Used',
     },
     about: {
         title: 'About Me',

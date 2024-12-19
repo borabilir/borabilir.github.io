@@ -2,6 +2,7 @@ $font-family: "Raleway";
 
 //Colors
 $color-primary  : #5704ff;
+$color-primarylight  : #e9deff;
 $color-secondary: #f506c0;
 $color-dark     : #0d2b3f;
 $color-light    : #ffffff;
@@ -11,7 +12,7 @@ $color-skyblue  : #41baed;
 
 
 //Gradient
-$gradient-primary: linear-gradient(340deg, rgba(207, 0, 245, 1) 0%, rgba(114, 0, 211, 1) 100%);
+$gradient-primary: linear-gradient(80deg, rgba(207, 0, 245, 1) 0%, rgba(114, 0, 211, 1) 100%);
 $gradient-ocean  : linear-gradient(180deg, rgba(33, 141, 251, 1) 35%, rgba(87, 4, 255, 1) 65%, rgba(63, 0, 190, 1) 100%);
 
 //Shadow

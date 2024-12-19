@@ -1,67 +1,101 @@
 .container {
-  @include flex(center, flex-start, column);
-  height: 600px;
-  position: relative;
-
-  > h1 {
-    margin-top: 40px;
-    font-size: 88px;
-    font-weight: 700;
-    color: transparent;
-    background-clip: text;
-    background: $gradient-primary;
-    -webkit-background-clip: text;
-  }
-
-  > h2 {
-    color: $color-dark;
-    font-size: 48px;
-    font-weight: 700;
-  }
+  @include flex(flex-start, flex-start, column);
+  height    : 100vh;
+  min-height: 700px;
+  position  : relative;
+  overflow  : hidden;
 
   .info {
-    margin-top: 40px;
+    @include flex(center, space-between, row);
     @include content(1000px);
-    @include flex(flex-start, space-between, row);
+    position: relative;
+    top     : 30%;
 
-    .left{
-        text-align: left;
-        @include flex(flex-start, flex-start, column, 10px);
+    .left {
+      text-align: left;
+      @include flex(flex-start, flex-start, column);
+
+      >h1 {
+        font-size              : 88px;
+        font-weight            : 700;
+        color                  : transparent;
+        background-clip        : text;
+        margin-left            : -5px;
+        background             : $gradient-primary;
+        -webkit-background-clip: text;
+      }
+
+      >h2 {
+        color      : $color-dark;
+        font-size  : 32px;
+        line-height: 24px;
+        font-weight: 700;
+      }
+
+      >h3 {
+        font-size  : 28px;
+        font-weight: 500;
+        line-height: 10px;
+      }
+
+      .contact {
+        @include flex(center, flex-start, row, 18px);
+        margin-top: 40px;
+      }
+    }
+
+    .right {
+      text-align: right;
+      @include flex(flex-end, flex-start, column, 20px);
 
     }
-    .right{
-        text-align: right;
-        @include flex(flex-end, flex-start, column, 20px);
 
+    .contactIcons {
+      @include flex(flex-start, flex-start, row, 10px);
     }
+  }
 
-    > div {
-      > div {
-        > h5 {
-          font-weight: 600;
-          text-transform: uppercase;
-          font-size: 18px;
-          margin-bottom: 8px;
-        }
+  .stats {
+    @include content(1000px);
+    @include flex(center, flex-start, row, 28px);
+    margin-top: 80px;
+    position  : relative;
+    top       : 30%;
 
-        > h4 {
-          font-size: 54px;
-          line-height: 37px;
-        }
+    >div {
+      @include flex(center, flex-start, row, 12px);
 
-        .contactIcons{
-            @include flex(flex-start, flex-start, row, 10px);
-        }
+      >h5 {
+        font-weight   : 600;
+        text-transform: uppercase;
+        font-size     : 18px;
+        margin-bottom : 8px;
+      }
+
+      >h4 {
+        font-size  : 54px;
+        line-height: 37px;
       }
     }
   }
 
-  > img {
-    position: absolute;
-    bottom: 0;
+  .scrollDown {
+    position  : absolute;
+    bottom    : 20px;
+    left      : 50%;
+    transform : translateX(-50%);
+    text-align: center;
+
+    >h4 {
+      font-size     : 24px;
+      text-transform: uppercase;
+      font-weight   : 400;
+    }
+
+    >h5 {
+      font-size     : 16px;
+      letter-spacing: 6px;
+      margin-bottom: 4px;
+    }
   }
-}
-
-.socialIcon {
-
 }
