@@ -5,7 +5,7 @@
     background-color: $color-primary;
     padding         : 30px 0;
     overflow        : hidden;
-
+    
     >div {
         position: relative;
         @include content(1000px);
@@ -23,19 +23,5 @@
         }
     }
 
-    >img {
-        position: absolute;
-        z-index : 0;
 
-        top: 0;
-
-        &:first-of-type {
-            left: 0;
-        }
-
-        &:last-of-type {
-            right    : 0;
-            transform: rotateY(180deg);
-        }
-    }
 }

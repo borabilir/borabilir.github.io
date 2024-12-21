@@ -1,8 +1,9 @@
 import { shuffleArray } from 'Core/utils/shuffleArray';
-import { Tag } from '../types/Tag';
+import { Tag } from '../../types/Tag';
 import RotatingCircle from './Circle';
 import styles from './styles.module.scss';
 import Animator from 'Core/components/Animator';
+import { memo } from 'react';
 
 const skills1: Tag[] = [
     { label: 'Typescript' },
@@ -39,4 +40,6 @@ const BackgroundCircles = () => {
     );
 };
 
-export default BackgroundCircles;
+export const MemoizedBackgroundCircles = memo(BackgroundCircles);
+
+export default MemoizedBackgroundCircles;

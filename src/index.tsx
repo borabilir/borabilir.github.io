@@ -7,4 +7,9 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-root.render(<Root />);
+root.render(
+    <>
+        <Root />
+        <div id="modalContainer" />
+    </>
+);

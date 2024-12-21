@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './styles.module.scss';
 import { motion } from 'framer-motion';
-import { Tag } from 'App/components/types/Tag';
+import { Tag } from 'App/types/Tag';
 
 type RotatingCircleProps = {
     r: number;

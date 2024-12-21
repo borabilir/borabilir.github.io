@@ -39,6 +39,7 @@
         top   : 8px;
         bottom: 0px;
         width : 600px;
+        cursor: pointer;
 
         &.left {
             right         : 80px;
@@ -79,4 +80,50 @@
             }
         }
     }
+}
+
+
+
+.title {
+    font-size  : 20px;
+    font-weight: 700;
+}
+
+.interval {
+    font-size  : 16px;
+    text-align : center;
+    font-weight: 600;
+}
+
+.time {
+    font-size  : 28px;
+    font-weight: 600;
+    text-align : center;
+}
+
+.location {
+    margin-top : 3px;
+    font-size  : 14px;
+    font-weight: 400;
+}
+
+
+
+ul {
+    li {
+        margin-bottom: 10px;
+        line-height  : 20px;
+    }
+}
+
+.skills {
+    >h1{
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+}
+
+.tags {
+    @include flex(flex-start, flex-start, row, 4px);
+    flex-wrap: wrap;
 }

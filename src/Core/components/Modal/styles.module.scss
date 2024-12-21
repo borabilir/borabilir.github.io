@@ -1,0 +1,96 @@
+.container {
+    z-index         : 100;
+    overflow        : auto;
+    text-align      : center;
+    background-color: rgba($color-dark, 0.6);
+    backdrop-filter : blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    @include fixed(0, 0, 0, 0);
+    @include hideScrollbar();
+
+    &::before {
+        width         : 0;
+        content       : "";
+        height        : 100%;
+        vertical-align: middle;
+        display       : inline-block;
+    }
+
+    .card {
+        top             : 0;
+        z-index         : 2;
+        text-align      : left;
+        border-radius   : 24px;
+        width           : 830px;
+        margin          : 20px 0;
+        vertical-align  : middle;
+        position        : relative;
+        display         : inline-block;
+        max-width       : calc(100% - 40px);
+        transition      : none;
+        background-color: rgba($color-light, 0.98);
+        box-shadow      : $shadow-card;
+        transition      : all .2s;
+        overflow        : hidden;
+
+        header {
+            overflow        : hidden;
+            background-color: $color-primary;
+            @include flex(center, space-between, row);
+            padding : 20px;
+            position: relative;
+            color   : $color-white;
+
+            h2 {
+                font-size  : 34px;
+                font-weight: 700;
+            }
+
+
+            .title {
+                z-index: 10;
+                @include flex(flex-start, center, row, 20px);
+
+                >img {
+                    width        : 80px;
+                    border-radius: 10px;
+                    z-index      : 10;
+                }
+            }
+
+            .right {
+                z-index: 10;
+            }
+
+        }
+
+        main {
+            padding: 30px 60px 30px 60px;
+            // @include responsive(padding, 30px, 0 20px 20px 20px);
+        }
+
+        footer {
+            @include responsive(padding, 20px, 15px);
+
+            &.bordered {
+                &::before {
+                    content   : "";
+                    position  : absolute;
+                    left      : 30px;
+                    right     : 30px;
+                    transform : translateY(-20px);
+                    height    : 1px;
+                    width     : calc(100% - 60px);
+                    border-top: 1px solid rgba($color-gray, 0.3);
+                }
+            }
+        }
+
+        .close {
+            z-index  : 2;
+            padding  : 10px;
+            font-size: 16px;
+            @include absolute(25px, 20px);
+        }
+    }
+}

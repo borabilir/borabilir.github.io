@@ -4,6 +4,7 @@ import CareerJourney from './components/CareerJourney';
 import Skills from './components/Skills';
 import styles from './styles.module.scss';
 import Header from './components/Header';
+import RecentWorks from './components/RecentWorks';
 
 const Root: React.FC = () => {
     return (
@@ -13,6 +14,7 @@ const Root: React.FC = () => {
             <AboutMe />
             <CareerJourney />
             <Skills />
+            <RecentWorks />
         </div>
     );
 };

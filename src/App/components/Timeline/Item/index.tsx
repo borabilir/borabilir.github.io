@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './styles.module.scss';
-import { timelineData } from '../constants/timelineData';
 import cx from 'Core/utils/cx';
 import { motion } from 'motion/react';
+import { Experiences } from 'App/constants/Experiences';
+import Modal from 'Core/components/Modal';
+import { Experience } from 'App/types/Experience';
+import SkillTag from 'App/components/SkillTag';
+import { SkillSet } from 'App/constants/SkillSet';
 
 type TimelineItemProps = {
     year: number | 'Present';
@@ -15,9 +19,67 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
     align,
     isLast = false,
 }) => {
-    const entries = timelineData
-        .filter((x) => x.endYear == year)
-        .sort((x) => x.startYear);
+    const [selectedExperience, setSelectedExperience] = useState<
+        Experience | undefined
+    >();
+
+    const entries = Experiences.filter((x) => x.endYear == year).sort(
+        (x) => x.startYear
+    );
+
+    const renderModal = (experience?: Experience) =>
+        experience ? (
+            <Modal
+                visible={!!selectedExperience}
+                onClose={() => setSelectedExperience(undefined)}
+                title={experience.organisation}
+                subtitle={
+                    <>
+                        <div className={styles.title}>{experience.title}</div>
+                        <div className={styles.location}>
+                            {`${experience.location}${
+                                experience.details
+                                    ? `, ${experience.details}`
+                                    : ''
+                            }`}
+                        </div>
+                    </>
+                }
+                logoSrc={experience.imgSrc}
+                right={
+                    <>
+                        <div
+                            className={styles.interval}
+                        >{`${experience.startYear} - ${experience.endYear}`}</div>
+                        <div className={styles.time}>2 yrs 2 mos</div>
+                    </>
+                }
+                footer={
+                    <div className={styles.skills}>
+                        <h1>Skills Used</h1>
+                        <div className={styles.tags}>
+                            {experience.skills.map((x, i) => (
+                                <SkillTag
+                                    key={i}
+                                    size="sm"
+                                    skill={SkillSet[x]}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                }
+            >
+                {!!experience.descriptions && (
+                    <ul>
+                        {experience.descriptions.map((x, i) => (
+                            <li key={i}>{x}</li>
+                        ))}
+                    </ul>
+                )}
+            </Modal>
+        ) : (
+            <></>
+        );
 
     return (
         <div className={styles.container}>
@@ -57,6 +119,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                             [styles.left, isLeft],
                             [styles.right, !isLeft]
                         )}
+                        onClick={() => setSelectedExperience(x)}
                     >
                         <motion.img
                             initial={{ opacity: 0, scale: 0.6 }}
@@ -107,6 +170,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                     </motion.div>
                 );
             })}
+            {renderModal(selectedExperience)}
         </div>
     );
 };

@@ -1,7 +1,11 @@
 .container {
-    width: 100%;
+    width   : 100%;
+    position: relative;
+    overflow: hidden;
 
     .content {
+        position: relative;
+
         @include content(1000px);
 
         >h1 {
@@ -9,45 +13,162 @@
             @include flex(flex-start, center);
             font-size    : 48px;
             margin-bottom: 40px;
+            font-weight  : 600;
         }
     }
 
     .frontend {
-        padding         : 30px 0;
-        background-color: $color-skyblue;
+        overflow  : hidden;
+        position  : relative;
+        padding   : 30px 0;
+        background: $gradient-skynight;
+        z-index   : -2;
+
+        .stars {
+            position        : absolute;
+            width           : 100%;
+            height          : 180px;
+            background-image: url("../../../../public/stars.png");
+            z-index         : -2;
+        }
+
+        >img {
+            width   : 200px;
+            position: absolute;
+            z-index : 1;
+
+            &:first-of-type {
+                bottom   : 0;
+                right    : -50px;
+                transform: rotate(-10deg);
+            }
+
+            &:last-of-type {
+                bottom   : -10px;
+                left     : -70px;
+                transform: rotateY(180deg) rotateZ(-10deg)
+            }
+        }
+
+        .sun {
+            @include fixed(40%, 0, 0, 60%);
+            width             : 200px;
+            height            : 200px;
+            border-radius     : 50%;
+            background        : $gradient-sun;
+            -webkit-box-shadow: 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
+            -moz-box-shadow   : 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
+            box-shadow        : 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
+            z-index           : -1;
+        }
+
+        .mountain {
+            position: absolute;
+            bottom  : 0;
+
+
+            &.left {
+                left: 0;
+            }
+
+            &.right {
+                right    : 0;
+                transform: translateX(-782px);
+            }
+
+            &.front {
+                scale: 0.6;
+            }
+
+            >svg {
+                position: absolute;
+                bottom  : 0;
+                left    : 0;
+            }
+        }
+
+
     }
 
     .backend {
-        background: $gradient-ocean;
+        background: $gradient-skynightsea;
         padding   : 30px 0;
+        position  : relative;
+        overflow  : hidden;
+
+        >span {
+            >img {
+                position: absolute;
+                bottom  : 0;
+                width   : 100%;
+                height  : 250px;
+            }
+        }
+
+        .mountain {
+            position: absolute;
+            top     : -4px;
+            opacity : 0.1;
+
+            &.left {
+                transform: rotateX(-180deg);
+                left     : 0;
+            }
+
+            &.right {
+                transform: rotateX(-180deg);
+                right    : 0;
+            }
+
+        }
+
+        >img {
+            width   : 200px;
+            position: absolute;
+            z-index : 1;
+
+            &:first-of-type {
+                bottom   : 0;
+                right    : -50px;
+                scale    : 1.4;
+                transform: rotateY(180deg) rotateZ(-10deg)
+            }
+
+            &:last-of-type {
+                bottom   : 0px;
+                left     : -70px;
+                transform: rotate(-10deg);
+            }
+        }
     }
 }
 
 
 .skillSet {
-    @include flex(flex-start, flex-start, row);
+    position: relative;
+    z-index : 2;
+    @include flex(flex-start, flex-start, column);
 
     .title {
-        background-color: $color-secondary;
-        color           : $color-light;
-        width           : 300px;
-        font-size       : 32px;
-        font-weight     : 600;
-        padding         : 10px;
-        word-break      : break-word;
+        color      : $color-light;
+        font-size  : 32px;
+        font-weight: 600;
+        padding    : 10px;
     }
 
     .skills {
-        background-color: $color-light;
+        background-color: rgba($color-light, 0.5);
         width           : 100%;
+        border-radius   : 20px;
         padding         : 12px;
         @include flex(flex-start, flex-start, column, 10px);
 
         .area {
             >h4 {
                 font-size    : 24px;
-                font-weight  : 600;
+                font-weight  : 400;
                 margin-bottom: 10px;
+                color        : $color-white;
             }
 
             .tags {

@@ -20,6 +20,10 @@ const enTranslations = {
     skills: {
         title: 'Skills',
     },
+    works: {
+        title: 'Recent Works',
+        description: 'Below, you can find a summary of the most recent projects I have been involved in, accompanied by relevant screenshots.',
+    },
 };
 
 export default enTranslations;

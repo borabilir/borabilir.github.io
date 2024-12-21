@@ -1,101 +1,113 @@
 .container {
   @include flex(flex-start, flex-start, column);
-  height    : 100vh;
-  min-height: 700px;
-  position  : relative;
-  overflow  : hidden;
+  height              : 100vh;
+  overflow            : hidden;
+  position            : relative;
+  z-index             : 0;
+  background-color    : $color-white;
 
-  .info {
-    @include flex(center, space-between, row);
+  .content {
     @include content(1000px);
+    position: relative;
+    z-index : 0;
+    @include flex(space-between, flex-start, column);
+    padding : 20px;
+    margin  : 0 auto;
+    height  : 70%;
     position: relative;
     top     : 30%;
 
-    .left {
-      text-align: left;
-      @include flex(flex-start, flex-start, column);
+    .info {
+      @include flex(center, space-between, row);
+      position: relative;
+      z-index : 0;
 
-      >h1 {
-        font-size              : 88px;
-        font-weight            : 700;
-        color                  : transparent;
-        background-clip        : text;
-        margin-left            : -5px;
-        background             : $gradient-primary;
-        -webkit-background-clip: text;
+      .left {
+        text-align: left;
+        @include flex(flex-start, flex-start, column);
+
+        >h1 {
+          font-size              : 88px;
+          font-weight            : 700;
+          color                  : transparent;
+          background-clip        : text;
+          margin-left            : -5px;
+          background             : $gradient-primary;
+          -webkit-background-clip: text;
+        }
+
+        >h2 {
+          color      : $color-dark;
+          font-size  : 32px;
+          line-height: 24px;
+          font-weight: 700;
+        }
+
+        >h3 {
+          font-size  : 28px;
+          font-weight: 500;
+          line-height: 10px;
+        }
+
+        .contact {
+          @include flex(center, flex-start, row, 18px);
+          margin-top: 40px;
+        }
       }
 
-      >h2 {
-        color      : $color-dark;
-        font-size  : 32px;
-        line-height: 24px;
-        font-weight: 700;
+      .right {
+        text-align: right;
+        @include flex(flex-end, flex-start, column, 20px);
+
       }
 
-      >h3 {
-        font-size  : 28px;
-        font-weight: 500;
-        line-height: 10px;
-      }
-
-      .contact {
-        @include flex(center, flex-start, row, 18px);
-        margin-top: 40px;
+      .contactIcons {
+        @include flex(flex-start, flex-start, row, 10px);
       }
     }
 
-    .right {
-      text-align: right;
-      @include flex(flex-end, flex-start, column, 20px);
+    .stats {
+      @include flex(center, flex-start, row, 28px);
+      margin-top: 40px;
+      position  : relative;
 
-    }
+      >div {
+        @include flex(center, flex-start, row, 12px);
 
-    .contactIcons {
-      @include flex(flex-start, flex-start, row, 10px);
-    }
-  }
+        >h5 {
+          font-weight   : 600;
+          text-transform: uppercase;
+          font-size     : 18px;
+          margin-bottom : 8px;
+        }
 
-  .stats {
-    @include content(1000px);
-    @include flex(center, flex-start, row, 28px);
-    margin-top: 80px;
-    position  : relative;
-    top       : 30%;
-
-    >div {
-      @include flex(center, flex-start, row, 12px);
-
-      >h5 {
-        font-weight   : 600;
-        text-transform: uppercase;
-        font-size     : 18px;
-        margin-bottom : 8px;
+        >h4 {
+          font-size  : 54px;
+          line-height: 37px;
+        }
       }
+    }
+
+    .scrollDown {
+      padding-top: 30px;
+      margin-top : auto;
+      text-align : center;
 
       >h4 {
-        font-size  : 54px;
-        line-height: 37px;
+        font-size     : 24px;
+        text-transform: uppercase;
+        font-weight   : 400;
+      }
+
+      >h5 {
+        font-size     : 16px;
+        letter-spacing: 6px;
+        margin-bottom : 4px;
       }
     }
   }
 
-  .scrollDown {
-    position  : absolute;
-    bottom    : 20px;
-    left      : 50%;
-    transform : translateX(-50%);
-    text-align: center;
 
-    >h4 {
-      font-size     : 24px;
-      text-transform: uppercase;
-      font-weight   : 400;
-    }
 
-    >h5 {
-      font-size     : 16px;
-      letter-spacing: 6px;
-      margin-bottom: 4px;
-    }
-  }
+
 }
