@@ -9,8 +9,8 @@ const MountainRight: React.FC = () => (
     >
         <defs>
             <linearGradient id="gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#9815c2" />
-                <stop offset="80%" stopColor="#540c83" />
+                <stop offset="0%" stopColor="#6f138e" />
+                <stop offset="80%" stopColor="#360854" />
             </linearGradient>
         </defs>
         <g

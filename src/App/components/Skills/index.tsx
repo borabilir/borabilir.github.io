@@ -19,7 +19,7 @@ const Skills: React.FC = () => {
                     ? skill.area === area && skill.category === category
                     : skill.area === area
             )
-            .map((x, i) => <SkillTag key={i} skill={x} />);
+            .map((x, i) => <SkillTag key={i} size='sm' skill={x} />);
 
     return (
         <div className={styles.container}>
@@ -82,9 +82,6 @@ const Skills: React.FC = () => {
                 <div className={cx(styles.mountain, styles.right)}>
                     <MountainRight />
                 </div>
-
-                <img src="leaves.png" alt="" />
-                <img src="leaves.png" alt="" />
                 <div className={styles.content}>
                     <div className={styles.skillSet}>
                         <div className={styles.title}>Back-end Development</div>
