@@ -2,161 +2,37 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+  padding: 30px 0;
+  background: $gradient-skynight;
 
   .content {
     position: relative;
     @include content(1000px);
+    @include flex(flex-start, flex-start, column);
+    z-index: 1;
 
     > h1 {
       color: $color-light;
-      @include flex(flex-start, center);
+      width: 100%;
+      text-align: center;
+      margin: 0 auto;
       font-size: 48px;
-      margin-bottom: 40px;
       font-weight: 600;
     }
-  }
 
-  .frontend {
-    overflow: hidden;
-    position: relative;
-    padding: 30px 0;
-    background: $gradient-skynight;
-    z-index: -2;
-
-    .stars {
-      position: absolute;
-      width: 100%;
-      height: 800px;
-      top:10px;
-      background-size: 744px 200px;
-      background-image: url("../../../../public/stars.png");
-      z-index: -2;
-    }
-
-    > img {
-      width: 200px;
-      position: absolute;
-      z-index: 1;
-
-      &:first-of-type {
-        bottom: 0;
-        right: -50px;
-        transform: rotate(-10deg);
-      }
-
-      &:last-of-type {
-        bottom: -10px;
-        left: -70px;
-        transform: rotateY(180deg) rotateZ(-10deg);
-      }
-    }
-
-    .sun {
-      @include fixed(40%, 0, 0, 60%);
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: $gradient-sun;
-      -webkit-box-shadow: 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
-      -moz-box-shadow: 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
-      box-shadow: 0px 0px 34px 29px rgba(255, 238, 186, 0.6);
-      z-index: -1;
-    }
-
-    .mountain {
-      position: absolute;
-      bottom: 0;
-
-      &.left {
-        left: 0;
-      }
-
-      &.right {
-        right: 0;
-        transform: translateX(-782px);
-      }
-
-      &.front {
-        scale: 0.6;
-      }
-
-      > svg {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-      }
+    > h2 {
+      color: $color-light;
+      margin-top: 4px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 20px;
+      font-weight: 400;
     }
   }
 
-  .backend {
-    background: $gradient-skynightsea;
-    padding: 30px 0;
-    position: relative;
-    overflow: hidden;
-
-    > span {
-      > img {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 250px;
-      }
-    }
-
-    .mountain {
-      position: absolute;
-      top: -4px;
-      opacity: 0.1;
-
-      &.left {
-        transform: rotateX(-180deg);
-        left: 0;
-      }
-
-      &.right {
-        transform: rotateX(-180deg);
-        right: 0;
-      }
-    }
-  }
-}
-
-.skillSet {
-  position: relative;
-  z-index: 2;
-  @include flex(flex-start, flex-start, column);
-
-  .title {
-    color: $color-light;
-    font-size: 24px;
-    font-weight: 600;
-    padding: 0 0 10px 0;
-    text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.6);
-  }
-
-  .skills {
-    -webkit-box-shadow: 0px 0px 37px -3px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0px 0px 37px -3px rgba(0, 0, 0, 0.2);
-    box-shadow: 0px 0px 37px -3px rgba(0, 0, 0, 0.2);
-    background-color: rgba(#000000, 0.3);
-    margin: 0 auto;
-    width: 100%;
-    border-radius: 20px;
-    padding: 12px;
-    @include flex(flex-start, flex-start, column, 10px);
-
-    .area {
-      > h4 {
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 10px;
-        color: $color-white;
-      }
-
-      .tags {
-        @include flex(flex-start, flex-start, row, 4px);
-        flex-wrap: wrap;
-      }
-    }
+  .skillCards {
+    margin-top: 40px;
+    @include flex(stretch, center, row, 10px);
+    flex-wrap: wrap;
   }
 }

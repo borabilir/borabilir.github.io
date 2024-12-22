@@ -4,4 +4,5 @@ export type SkillCategory =
     | 'library'
     | 'orm'
     | 'database'
-    | 'other';
+    | 'other'
+    | 'default';

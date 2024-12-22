@@ -10,11 +10,11 @@ const CareerJourney: React.FC = () => {
     return (
         <section id="career" className={styles.container}>
             <div className={styles.content}>
-                <Animator.h3 type="fadeDrop">
+                <Animator.h1 type="fadeDrop">
                     {t('career.title').split(' ')[0]}{' '}
                     <span>{t('career.title').split(' ')[1]}</span>
-                </Animator.h3>
-                <Animator.h4>{t('career.description')}</Animator.h4>
+                </Animator.h1>
+                <Animator.h2>{t('career.description')}</Animator.h2>
                 <Timeline />
             </div>
         </section>

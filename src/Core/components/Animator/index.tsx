@@ -48,7 +48,7 @@ const Animator: React.FC<AnimatorProps & { as?: React.ElementType }> = ({
   );
 };
 
-const tagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"] as const;
+const tagNames = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "div"] as const;
 
 type AnimatedTextComponent = typeof Animator & {
   [key in (typeof tagNames)[number]]: React.FC<Omit<AnimatorProps, "as">>;

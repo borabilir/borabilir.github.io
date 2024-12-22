@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  flex: 1;
+  @include flex(flex-start, flex-start, column, 6px);
+
+  .title {
+    color: $color-light;
+    font-size: 24px;
+    font-weight: 600;
+    padding-left: 10px;
+    position: relative;
+  }
+
+  .skills {
+    position: relative;
+    height: 100%;
+    z-index: 2;
+    background-color: rgba(#000000, 0.3);
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 20px;
+    padding: 12px;
+    @include flex(flex-start, flex-start, column, 20px);
+
+    .area {
+      > h4 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: $color-white;
+        text-transform: capitalize;
+      }
+
+      .tags {
+        @include flex(flex-start, flex-start, row, 4px);
+        flex-wrap: wrap;
+      }
+    }
+  }
+}

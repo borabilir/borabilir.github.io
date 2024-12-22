@@ -6,7 +6,7 @@ import { SkillName } from './SkillName';
 export type Skill = {
     name: SkillName;
     area: SkillArea;
-    category?: SkillCategory;
+    category: SkillCategory;
     color: string;
     icon?: ReactNode;
 };

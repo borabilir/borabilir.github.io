@@ -9,7 +9,7 @@
         margin: 0 auto;
         @include flex(center, flex-start, column);
 
-        >h3 {
+        >h1 {
             font-size  : 48px;
             font-weight: 600;
 
@@ -21,7 +21,7 @@
             }
         }
 
-        >h4 {
+        >h2 {
             margin-top : 4px;
             font-size  : 20px;
             font-weight: 400;
