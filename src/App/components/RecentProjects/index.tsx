@@ -66,38 +66,43 @@ const RecentProjects: React.FC = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
-                <Animator.h3 type="fadeDrop">
-                    {t('projects.title').split(' ')[0]}{' '}
-                    <span>{t('projects.title').split(' ')[1]}</span>
-                </Animator.h3>
-                <Animator.h4>{t('projects.description')}</Animator.h4>
-                <Animator.h5>{t('projects.note')}</Animator.h5>
-                <div className={styles.arrows}>
-                    <span onClick={() => onClickArrow('left')}>
-                        <ChevronLeftIcon />
-                    </span>
-                    <span onClick={() => onClickArrow('right')}>
-                        <ChevronRightIcon />
-                    </span>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <div className={styles.content}>
+                    <Animator.h3 type="fadeDrop">
+                        {t('projects.title').split(' ')[0]}{' '}
+                        <span>{t('projects.title').split(' ')[1]}</span>
+                    </Animator.h3>
+                    <Animator.h4>{t('projects.description')}</Animator.h4>
+                    <Animator.h5>{t('projects.note')}</Animator.h5>
+                    <div className={styles.arrows}>
+                        <span onClick={() => onClickArrow('left')}>
+                            <ChevronLeftIcon />
+                        </span>
+                        <span onClick={() => onClickArrow('right')}>
+                            <ChevronRightIcon />
+                        </span>
+                    </div>
                 </div>
+                <Animator.div
+                    type="fadeDrop"
+                    className={styles.projectsContainer}
+                >
+                    <div ref={ref} className={styles.projects}>
+                        {Projects.map((x, i) => (
+                            <Card
+                                key={i}
+                                title={x.title}
+                                description={x.description}
+                                areas={x.areas}
+                                imgSrc={x.images}
+                                onClick={() => setSelectedProject(x)}
+                            />
+                        ))}
+                    </div>
+                </Animator.div>
+                {renderModal()}
             </div>
-            <Animator.div type="fadeDrop" className={styles.projectsContainer}>
-                <div ref={ref} className={styles.projects}>
-                    {Projects.map((x, i) => (
-                        <Card
-                            key={i}
-                            title={x.title}
-                            description={x.description}
-                            areas={x.areas}
-                            imgSrc={x.images}
-                            onClick={() => setSelectedProject(x)}
-                        />
-                    ))}
-                </div>
-            </Animator.div>
-            {renderModal()}
         </div>
     );
 };

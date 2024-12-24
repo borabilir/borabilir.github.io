@@ -1,93 +1,95 @@
-.container {
-    width           : calc(100% - 60px);
-    margin          : 30px auto;
-    height          : 400px;
-    margin-bottom   : 240px;
-    background-color: #f7f0ff;
-    border-radius   : 20px;
-    position        : relative;
+.wrapper {
+    width : calc(100% - 60px);
+    margin: 30px auto;
+    overflow: hidden;
 
-    .content {
-        @include content(1000px);
-        padding: 30px 4px;
+    .container {
+        background-color: #f7f0ff;
+        border-radius   : 20px;
+        height          : 392px;
+        margin-bottom   : 200px;
+        position        : relative;
+        padding         : 30px 0px;
 
+        .content {
+            @include content(1000px);
 
-        >h3 {
-            font-size  : 48px;
-            font-weight: 600;
+            >h3 {
+                font-size  : 48px;
+                font-weight: 600;
 
-            >span {
-                color                  : transparent;
-                background-clip        : text;
-                background             : $gradient-primary;
-                -webkit-background-clip: text;
-            }
-        }
-
-        >h4 {
-            margin-top : 4px;
-            font-size  : 20px;
-            font-weight: 400;
-        }
-
-        >h5 {
-            margin-top : 4px;
-            font-size  : 14px;
-            font-weight: 400;
-        }
-
-        .arrows {
-            margin   : 20px 0;
-            width    : 100%;
-            font-size: 22px;
-            @include flex(flex-start, flex-start, row, 10px);
-
-            >span {
-                @include flex(center, center);
-                width           : 44px;
-                height          : 44px;
-                border-radius   : 50%;
-                color           : $color-light;
-                background-color: rgba(#985edb, 0.8);
-                cursor          : pointer;
-
-                &:hover {
-                    background-color: #985edb;
-                    transition      : .2s ease-in;
+                >span {
+                    color                  : transparent;
+                    background-clip        : text;
+                    background             : $gradient-primary;
+                    -webkit-background-clip: text;
                 }
             }
+
+            >h4 {
+                margin-top : 4px;
+                font-size  : 20px;
+                font-weight: 400;
+            }
+
+            >h5 {
+                margin-top : 4px;
+                font-size  : 14px;
+                font-weight: 400;
+            }
+
+            .arrows {
+                margin   : 20px 0;
+                width    : 100%;
+                font-size: 22px;
+                @include flex(flex-start, flex-start, row, 10px);
+
+                >span {
+                    @include flex(center, center);
+                    width           : 44px;
+                    height          : 44px;
+                    border-radius   : 50%;
+                    color           : $color-light;
+                    background-color: rgba(#985edb, 0.8);
+                    cursor          : pointer;
+
+                    &:hover {
+                        background-color: #985edb;
+                        transition      : .2s ease-in;
+                    }
+                }
+            }
+
+        }
+
+        .projectsContainer {
+            position: relative;
+            left    : calc((100% - 1000px)/2);
+            width   : calc((100% - 1000px) / 2 + 1000px);
+            overflow: hidden;
+
+            .projects {
+                transition: .2s ease-in;
+                width     : max-content;
+                @include flex(flex-start, flex-start, row, 20px);
+                overflow-x    : hidden;
+                padding-bottom: 20px;
+                padding-left  : 16px;
+            }
         }
 
 
-
     }
 
-    .projectsContainer {
-        position  : absolute;
-        width     : calc((100% - 1000px) / 2 + 1000px);
-        bottom    : -180px;
-        overflow-x: hidden;
-        left      : calc((100% - 1000px)/2);
-
-        .projects {
-            transition: .2s ease-in;
-            width     : max-content;
-            @include flex(flex-start, flex-start, row, 20px);
-            overflow-x    : hidden;
-            padding-bottom: 20px;
-            padding-left  : 16px;
+    .skills {
+        >h1 {
+            font-size    : 18px;
+            margin-bottom: 8px;
         }
     }
-}
 
-.skills {
-    >h1{
-        font-size: 18px;
-        margin-bottom: 8px;
+    .tags {
+        @include flex(flex-start, flex-start, row, 4px);
+        flex-wrap: wrap;
     }
-}
-
-.tags {
-    @include flex(flex-start, flex-start, row, 4px);
-    flex-wrap: wrap;
 }
