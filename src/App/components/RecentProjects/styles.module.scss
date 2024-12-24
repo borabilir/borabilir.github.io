@@ -1,6 +1,6 @@
 .wrapper {
-    width : calc(100% - 60px);
-    margin: 30px auto;
+    width   : calc(100% - 60px);
+    margin  : 30px auto;
     overflow: hidden;
 
     .container {
@@ -81,15 +81,17 @@
 
     }
 
-    .skills {
-        >h1 {
-            font-size    : 18px;
-            margin-bottom: 8px;
-        }
-    }
 
-    .tags {
-        @include flex(flex-start, flex-start, row, 4px);
-        flex-wrap: wrap;
+}
+
+.skills {
+    >h1 {
+        font-size    : 18px;
+        margin-bottom: 8px;
     }
+}
+
+.tags {
+    @include flex(flex-start, flex-start, row, 4px);
+    flex-wrap: wrap;
 }
