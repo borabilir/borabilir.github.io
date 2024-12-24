@@ -19,7 +19,7 @@ export const ContactIcons = {
     instagram: {
         icon: <InstagramIcon />,
         tooltip: 'instagram.com/bilirbora',
-        url: 'https://instagram.com/borabilir',
+        url: 'https://instagram.com/bilirbora',
     },
     github: {
         icon: <GithubIcon />,
