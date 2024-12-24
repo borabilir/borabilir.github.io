@@ -44,9 +44,11 @@ const Intro: React.FC = () => {
                             {t('intro.title')}
                         </TypewriterText.h2>
                         <Animator delay={1.7} className={styles.contact}>
-                            <Button after={<DownloadIcon />}>
-                                Download CV
-                            </Button>
+                            <a href="Bora_Bilir_Resume.pdf" download>
+                                <Button after={<DownloadIcon />}>
+                                    Download CV
+                                </Button>
+                            </a>
                             <div className={styles.contactIcons}>
                                 <ContactIcon type="linkedin" />
                                 <ContactIcon type="mail" />

@@ -3,8 +3,10 @@ $font-family: "Raleway";
 //Colors
 $color-primary      : #5704ff;
 $color-primarylight : #e9deff;
+$color-primarybright: #eeeeee;
 $color-secondary    : #f506c0;
 $color-gray         : #6d6d6d;
+$color-lightgray    : #d0d0d0;
 $color-dark         : #0d2b3f;
 $color-light        : #ffffff;
 $color-black        : #000000;
@@ -24,3 +26,4 @@ $gradient-sun               : linear-gradient(180deg, #f0d78b 31%, #f48d8b 58%, 
 
 //Shadow
 $shadow-card : 0px 34px 74px 0px rgba($color-dark, 0.07);
+$shadow-card2 : 0px 8px 8px 0px rgba($color-dark, 0.07);

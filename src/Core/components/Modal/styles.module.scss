@@ -1,9 +1,9 @@
 .container {
-    z-index         : 100;
-    overflow        : auto;
-    text-align      : center;
-    background-color: rgba($color-dark, 0.6);
-    backdrop-filter : blur(10px);
+    z-index                : 100;
+    overflow               : auto;
+    text-align             : center;
+    background-color       : rgba($color-dark, 0.6);
+    backdrop-filter        : blur(10px);
     -webkit-backdrop-filter: blur(10px);
     @include fixed(0, 0, 0, 0);
     @include hideScrollbar();
@@ -34,20 +34,39 @@
         overflow        : hidden;
 
         header {
-            overflow        : hidden;
-            background-color: $color-primary;
-            @include flex(center, space-between, row);
-            padding : 20px;
+            overflow: hidden;
             position: relative;
             color   : $color-white;
 
-            h2 {
-                font-size  : 34px;
-                font-weight: 700;
+            &.default {
+                padding         : 20px;
+                background-color: $color-primary;
+                @include flex(center, space-between, row);
+
+                h2 {
+                    font-size  : 34px;
+                    font-weight: 700;
+                }
+            }
+
+            &.gallery {
+                @include flex(flex-start, flex-start, column);
+
+                h2 {
+                    width       : 100%;
+                    text-align  : left;
+                    margin-top  : 20px;
+                    color       : $color-dark;
+                    font-size   : 28px;
+                    font-weight : 700;
+                    padding-left: 20px;
+                }
             }
 
 
+
             .title {
+                max-width: 500px;
                 z-index: 10;
                 @include flex(flex-start, center, row, 20px);
 
@@ -59,13 +78,76 @@
             }
 
             .right {
-                z-index: 10;
+                position        : absolute;
+                right           : 100px;
+                z-index         : 10;
+            }
+
+            .galleryContainer {
+                width           : 100%;
+                height          : 400px;
+                position        : relative;
+                overflow        : hidden;
+                transition      : .2s ease-in;
+                background-color: $color-primarybright;
+
+                >span {
+                    position : absolute;
+                    width    : 100%;
+                    color    : $color-dark;
+                    top      : 50%;
+                    transform: translateY(-50%);
+                    z-index  : 101;
+
+                    >div {
+                        position        : absolute;
+                        border-radius   : 50%;
+                        background-color: rgba($color-primary, 0.8);
+                        color           : $color-light;
+                        font-size       : 24px;
+                        width           : 40px;
+                        height          : 40px;
+                        @include flex(center, center);
+                        cursor    : pointer;
+                        transition: .2s ease-in;
+
+                        &:hover {
+                            background-color: $color-primary;
+                        }
+
+                        &.left {
+                            left: 20px;
+                        }
+
+                        &.right {
+                            right: 20px;
+                        }
+                    }
+                }
+
+                .gallery {
+                    @include flex(flex-start, flex-start, row);
+                    width: 100%;
+
+                    >img {
+                        min-width : 830px;
+                        height    : 400px;
+                        object-fit: contain;
+                    }
+                }
             }
 
         }
 
         main {
-            padding: 30px 60px 30px 60px;
+            &.default {
+                padding: 30px 60px 30px 60px;
+            }
+
+            &.gallery {
+                padding: 10px 20px 30px 20px;
+            }
+
             // @include responsive(padding, 30px, 0 20px 20px 20px);
         }
 
@@ -87,10 +169,22 @@
         }
 
         .close {
+            width : 50px;
+            height: 50px;
+            @include flex(center, center);
             z-index  : 2;
             padding  : 10px;
-            font-size: 16px;
-            @include absolute(25px, 20px);
+            font-size: 24px;
+            cursor   : pointer;
+            @include absolute(10px, 10px);
+
+            &.default {
+                color: $color-white;
+            }
+
+            &.gallery {
+                color: $color-primary;
+            }
         }
     }
 }

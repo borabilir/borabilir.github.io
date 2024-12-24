@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import { SkillType } from './SkillType';
 
 export type Experience = {
-    endYear: number | 'Present';
-    startYear: number;
+    endDate: string | 'Present';
+    startDate: string;
     organisation: string;
     title: string;
     location: string;

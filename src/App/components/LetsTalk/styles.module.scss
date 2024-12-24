@@ -1,0 +1,101 @@
+.container {
+    width  : 100%;
+    padding: 60px 20px;
+
+    .content {
+        @include content(1000px);
+        @include flex(flex-start, flex-start, row);
+
+        >div {
+            &:first-of-type {
+                width      : 100%;
+                padding-top: 20px;
+            }
+
+            &:last-of-type {
+                width: 100%;
+            }
+
+            >h1 {
+                font-size: 48px;
+
+                >span {
+                    color                  : transparent;
+                    background-clip        : text;
+                    background             : $gradient-primary;
+                    -webkit-background-clip: text;
+                }
+            }
+
+            >h2 {
+                font-size: 28px;
+            }
+
+            >h3 {
+                font-size     : 18px;
+                text-transform: uppercase;
+            }
+
+            >form {
+                max-width : 600px;
+                margin-top: 30px;
+                @include flex(flex-start, flex-start, column, 10px);
+
+                >div {
+                    width: 100%;
+                    @include flex(flex-start, flex-start, row, 10px);
+                }
+
+                input {
+                    display         : block;
+                    width           : 100%;
+                    background-color: $color-primarybright;
+                    font-weight     : 600;
+                    font-size       : 14px;
+                    padding         : 14px;
+                    color           : $color-dark;
+                    outline         : none;
+                    border          : 0px solid;
+                    border-radius   : 4px;
+                    caret-color     : $color-primary;
+
+                    &::placeholder {
+                        color: rgba($color-dark, 0.6);
+                    }
+
+                    &:focus {
+                        outline: 0 none;
+                    }
+                }
+
+                textarea {
+                    display         : block;
+                    width           : 100%;
+                    background-color: $color-primarybright;
+                    font-weight     : 600;
+                    font-size       : 14px;
+                    padding         : 14px;
+                    color           : $color-dark;
+                    outline         : none;
+                    border          : 0px solid;
+                    border-radius   : 4px;
+                    caret-color     : $color-primary;
+                    height          : 150px;
+
+                    &::placeholder {
+                        color: rgba($color-dark, 0.6);
+                    }
+
+                    &:focus {
+                        outline: 0 none;
+                    }
+                }
+
+                >button {
+                    margin-left: auto;
+                    font-size  : 14px;
+                }
+            }
+        }
+    }
+}

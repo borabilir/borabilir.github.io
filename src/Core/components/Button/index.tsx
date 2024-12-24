@@ -7,6 +7,7 @@ type ButtonProps = {
     before?: ReactNode;
     after?: ReactNode;
     className?: string;
+    type?: 'button' | 'submit' | 'reset';
     onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -15,10 +16,15 @@ const Button: React.FC<ButtonProps> = ({
     className,
     before,
     after,
+    type,
     onClick,
 }) => {
     return (
-        <button className={cx(styles.button, className)} onClick={onClick}>
+        <button
+            type={type}
+            className={cx(styles.button, className)}
+            onClick={onClick}
+        >
             {before && <span className={styles.before}>{before}</span>}
             {children}
             {after && <span className={styles.after}>{after}</span>}

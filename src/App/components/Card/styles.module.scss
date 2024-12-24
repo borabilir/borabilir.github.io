@@ -1,0 +1,81 @@
+.container {
+    max-width       : 350px;
+    min-width       : 350px;
+    width           : 100%;
+    aspect-ratio    : 600 / 540;
+    background-color: $color-white;
+    padding-bottom  : 20px;
+    border-radius   : 10px;
+    overflow        : hidden;
+    box-shadow      : $shadow-card2;
+    @include flex(flex-start, flex-start, column);
+    cursor: pointer;
+
+    >img {
+        width     : 100%;
+        min-height: 150px;
+        height    : 150px;
+        object-fit: cover;
+    }
+
+    >.emptyImg {
+        width           : 100%;
+        min-height      : 150px;
+        height          : 150px;
+        background-color: $color-lightgray;
+        color           : $color-white;
+        font-size       : 24px;
+        @include flex(center, center, column, 10px);
+
+        >span {
+            font-size  : 14px;
+            font-weight: 600;
+        }
+    }
+
+    .content {
+        width  : 100%;
+        padding: 20px 20px 0 20px;
+        @include flex(flex-start, flex-start, column, 2px);
+
+        >h1 {
+            font-size    : 24px;
+            max-height   : 30px;
+            max-width    : 100%;
+            overflow     : hidden;
+            text-overflow: ellipsis;
+            white-space  : nowrap;
+        }
+
+        >h2 {
+            font-size: 18px;
+        }
+
+        >p {
+            margin-top: 10px;
+            font-size : 14px;
+            max-height: 50px;
+            overflow  : hidden;
+            max-width : 100%;
+        }
+
+        .tag {
+            color           : $color-light;
+            background-color: $color-primary;
+            display         : inline-block;
+            border-radius   : 18px;
+            padding         : 4px 14px;
+            font-size       : 12px;
+            font-weight     : 500;
+        }
+    }
+
+    >button {
+        position    : relative;
+        margin-top  : auto;
+        margin-left : auto;
+        margin-right: auto;
+        font-size   : 14px;
+    }
+
+}

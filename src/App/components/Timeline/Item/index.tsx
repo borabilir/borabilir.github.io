@@ -7,6 +7,7 @@ import Modal from 'Core/components/Modal';
 import { Experience } from 'App/types/Experience';
 import SkillTag from 'App/components/SkillTag';
 import { SkillSet } from 'App/constants/SkillSet';
+import { formatDateDifference } from 'Core/utils/getFormattedDate';
 
 type TimelineItemProps = {
     year: number | 'Present';
@@ -23,55 +24,75 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
         Experience | undefined
     >();
 
-    const entries = Experiences.filter((x) => x.endYear == year).sort(
-        (x) => x.startYear
+    const getYear = (date: string): number => {
+        if (date.toLowerCase() === 'present') {
+            return new Date().getFullYear();
+        }
+        const year = date.split('-')[1];
+        if (!year || isNaN(Number(year))) {
+            throw new Error("Invalid date format. Use 'MM-YYYY'.");
+        }
+        return Number(year);
+    };
+
+    const entries = Experiences.filter((x) => getYear(x.endDate) == year).sort(
+        (x) => getYear(x.startDate)
     );
 
-    const renderModal = (experience?: Experience) =>
-        experience ? (
+    const renderModal = () =>
+        selectedExperience ? (
             <Modal
                 visible={!!selectedExperience}
                 onClose={() => setSelectedExperience(undefined)}
-                title={experience.organisation}
+                title={selectedExperience.organisation}
                 subtitle={
                     <>
-                        <div className={styles.title}>{experience.title}</div>
+                        <div className={styles.title}>
+                            {selectedExperience.title}
+                        </div>
                         <div className={styles.location}>
-                            {`${experience.location}${
-                                experience.details
-                                    ? `, ${experience.details}`
+                            {`${selectedExperience.location}${
+                                selectedExperience.details
+                                    ? `, ${selectedExperience.details}`
                                     : ''
                             }`}
                         </div>
                     </>
                 }
-                logoSrc={experience.imgSrc}
+                logoSrc={selectedExperience.imgSrc}
                 right={
                     <>
                         <div
                             className={styles.interval}
-                        >{`${experience.startYear} - ${experience.endYear}`}</div>
-                        <div className={styles.time}>2 yrs 2 mos</div>
+                        >{`${selectedExperience.startDate} - ${selectedExperience.endDate}`}</div>
+                        <div className={styles.time}>
+                            {formatDateDifference(
+                                selectedExperience.startDate,
+                                selectedExperience.endDate
+                            )}
+                        </div>
                     </>
                 }
                 footer={
-                    <div className={styles.skills}>
-                        <h1>Skills Used</h1>
-                        <div className={styles.tags}>
-                            {experience.skills.map((x, i) => (
-                                <SkillTag
-                                    key={i}
-                                    size="sm"
-                                    skill={SkillSet[x]}
-                                />
-                            ))}
+                    selectedExperience.skills.length > 0 && (
+                        <div className={styles.skills}>
+                            <h1>Skills Used</h1>
+                            <div className={styles.tags}>
+                                {selectedExperience.skills.map((x, i) => (
+                                    <SkillTag
+                                        key={i}
+                                        size="sm"
+                                        skill={SkillSet[x]}
+                                    />
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )
                 }
             >
-                {!!experience.descriptions && (
+                {!!selectedExperience.descriptions && (
                     <ul>
-                        {experience.descriptions.map((x, i) => (
+                        {selectedExperience.descriptions.map((x, i) => (
                             <li key={i}>{x}</li>
                         ))}
                     </ul>
@@ -170,7 +191,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                     </motion.div>
                 );
             })}
-            {renderModal(selectedExperience)}
+            {renderModal()}
         </div>
     );
 };

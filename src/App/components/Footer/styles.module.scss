@@ -1,0 +1,16 @@
+.container {
+    background-color: $color-primary;
+    color           : $color-light;
+    width           : 100%;
+    padding         : 60px 0 45px 0;
+
+    .content {
+        @include content(1000px);
+        @include flex(center, center, column, 30px);
+
+        .buttons {
+            @include flex(flex-start, flex-start, row, 10px);
+        }
+
+    }
+}

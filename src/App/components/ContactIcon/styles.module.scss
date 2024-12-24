@@ -1,3 +1,67 @@
 .icon {
-    cursor: pointer;
+    cursor       : pointer;
+    width        : 40px;
+    height       : 40px;
+    border-radius: 50%;
+
+    overflow: hidden;
+    position: relative;
+
+    &.primary {
+        background-color: $color-white;
+        border          : 1px solid $color-white;
+        color           : $color-primary;
+        font-size       : 22px;
+    }
+
+    &.default {
+        color: $color-white;
+    }
+
+    &.instagram {
+
+        &.default {
+            font-size : 28px;
+            background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+    }
+
+    &.mail {
+        &.default {
+            font-size       : 24px;
+            background-color: #e2123d;
+        }
+    }
+
+    &.github {
+        &.default {
+            font-size       : 40px;
+            background-color: $color-white;
+
+            >svg {
+                color: #000;
+            }
+        }
+    }
+
+    &.linkedin {
+        &.default {
+            font-size       : 24px;
+            background-color: #0066c8;
+        }
+    }
+
+    >svg {
+        &.default {
+            color: $color-white;
+        }
+
+        &.primary {
+            color: $color-primary;
+        }
+
+        @include absoluteCenter();
+    }
 }

@@ -8,7 +8,7 @@ const CssIcon: IconComponent = (props) => (
         width="1em"
         height="1em"
         viewBox="0 0 512 512"
-        enable-background="new 0 0 512 512"
+        enableBackground="new 0 0 512 512"
         {...props}
     >
         <g id="c133de6af664cd4f011a55de6b001b19">
