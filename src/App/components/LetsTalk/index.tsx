@@ -7,7 +7,6 @@ import Animator from 'Core/components/Animator';
 const LetsTalk: React.FC = () => {
     const { t } = useTranslation();
     const [formData, setFormData] = useState({
-        to: '',
         name: '',
         email: '',
         subject: '',
@@ -59,7 +58,7 @@ const LetsTalk: React.FC = () => {
                             <input
                                 type="email"
                                 name="email"
-                                value={formData.to}
+                                value={formData.email}
                                 onChange={handleChange}
                                 placeholder="E-Mail"
                             />

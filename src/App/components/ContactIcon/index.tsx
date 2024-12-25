@@ -16,7 +16,7 @@ const ContactIcon: React.FC<ContactIconProps> = ({
     variant = 'default',
 }) => {
     const handleClick = () => {
-        window.location.href = ContactIcons[type].url;
+        window.open(ContactIcons[type].url, '_blank');
     };
 
     return (
