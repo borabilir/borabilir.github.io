@@ -44,7 +44,7 @@ const Intro: React.FC = () => {
                             {t('intro.title')}
                         </TypewriterText.h2>
                         <Animator delay={1.7} className={styles.contact}>
-                            <a href="Bora_Bilir_Resume.pdf" download>
+                            <a href="Bora_Bilir_resume.pdf" download>
                                 <Button after={<DownloadIcon />}>
                                     Download CV
                                 </Button>
