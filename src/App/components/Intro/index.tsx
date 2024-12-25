@@ -86,7 +86,7 @@ const Intro: React.FC = () => {
                     </div>
                     <div>
                         <h4>
-                            <AnimatedNumber delay={2.1} end={50} />+
+                            <AnimatedNumber delay={2.1} end={20} />+
                         </h4>
                         <h5>{t('intro.projects')}</h5>
                     </div>
