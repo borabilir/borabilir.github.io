@@ -3,11 +3,11 @@
     position: relative;
 
     .timelineDot {
-        width        : 16px;
-        height       : 16px;
+        @include responsive(width, 16px, 12px);
+        @include responsive(height, 16px, 12px);
         background   : $color-primary;
         border-radius: 50%;
-        font-size    : 20px;
+        @include responsive(font-size, 20px, 18px);
         @include flex(center, flex-start);
         position: relative;
 
@@ -16,19 +16,19 @@
             position: absolute;
 
             &.left {
-                right: 30px;
+                @include responsive(right, 30px, 20px);
             }
 
             &.right {
-                left: 30px;
+                @include responsive(left, 30px, 20px);
             }
         }
     }
 
     .line {
-        position        : relative;
-        width           : 3px;
-        height          : 150px;
+        position: relative;
+        width   : 3px;
+        @include responsive(height, 150px, 120px);
         background-color: $color-primary;
     }
 
@@ -38,12 +38,21 @@
         gap   : 10px;
         top   : 8px;
         bottom: 0px;
-        width : 600px;
+        @include responsive(width, calc(50vw - 100px), calc(50vw - 30px));
+        white-space: wrap;
+        @include responsive(gap, 10px, 4px);
+
         cursor: pointer;
 
+        >img {
+            @include responsive(display, block, none);
+        }
+
         &.left {
-            right         : 80px;
+            @include responsive(right, 80px, 20px);
+            @include responsive(justify-content, unset, center);
             flex-direction: row-reverse;
+            @include responsive(flex-direction, row-reverse, column);
 
             >div {
                 @include flex(flex-end, flex-start, column, 2px);
@@ -52,8 +61,8 @@
         }
 
         &.right {
-            text-align    : left;
-            left          : 80px;
+            text-align: left;
+            @include responsive(left, 80px, 20px);
             flex-direction: row;
 
 
@@ -64,66 +73,68 @@
 
         >div {
             >h3 {
-                font-size  : 20px;
+                @include responsive(font-size, 20px, 14px);
+                width      : 100%;
                 font-weight: 700;
             }
 
             >h4 {
-                font-size  : 18px;
+                @include responsive(font-size, 18px, 13px);
+                width      : 100%;
                 font-weight: 600;
                 color      : $color-primary;
             }
 
             >h5 {
-                font-size  : 14px;
+                @include responsive(font-size, 14px, 12px);
+                width      : 100%;
                 font-weight: 400;
             }
         }
     }
 }
 
-
-
 .title {
-    font-size  : 20px;
+    @include responsive(font-size, 20px, 16px);
     font-weight: 700;
 }
 
 .interval {
+    @include responsive(display, block, none);
     font-size  : 16px;
     text-align : center;
     font-weight: 600;
 }
 
 .time {
+    @include responsive(display, block, none);
     font-size  : 28px;
     font-weight: 600;
     text-align : center;
 }
 
 .location {
-    margin-top : 3px;
-    font-size  : 14px;
+    margin-top: 3px;
+    @include responsive(font-size, 14px, 12px);
     font-weight: 400;
 }
-
-
 
 ul {
     li {
         margin-bottom: 10px;
-        line-height  : 20px;
+        margin-left  : 10px;
     }
 }
 
 .skills {
-    >h1{
-        font-size: 18px;
-        margin-bottom: 8px;
+    >h1 {
+        @include responsive(font-size, 18px, 16px);
+        @include responsive(margin-bottom, 8px, 6px);
     }
 }
 
 .tags {
     @include flex(flex-start, flex-start, row, 4px);
+    @include responsive(gap, 4px, 2px);
     flex-wrap: wrap;
 }

@@ -1,33 +1,36 @@
 .container {
   position: relative;
-  flex: 1;
+  flex    : 1;
   @include flex(flex-start, flex-start, column, 6px);
 
   .title {
     color: $color-light;
-    font-size: 24px;
-    font-weight: 600;
-    padding-left: 10px;
-    position: relative;
+    @include responsive(font-size, 24px, 18px);
+    @include responsive(text-align, left, center);
+    width: 100%;
+    font-weight : 600;
+    @include responsive(padding-left, 10px, 0);
+    position    : relative;
   }
 
   .skills {
-    position: relative;
-    height: 100%;
-    z-index: 2;
+    position        : relative;
+    height          : 100%;
+    z-index         : 2;
     background-color: rgba($color-black, 0.3);
-    margin: 0 auto;
-    width: 100%;
-    border-radius: 20px;
-    padding: 12px;
+    margin          : 0 auto;
+    width           : 100%;
+    border-radius   : 20px;
+    padding         : 12px;
     @include flex(flex-start, flex-start, column, 20px);
+    @include responsive(gap, 20px, 12px);
 
     .area {
-      > h4 {
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 10px;
-        color: $color-white;
+      >h4 {
+        @include responsive(font-size, 18px, 14px);
+        @include responsive(margin-bottom, 10px, 8px);
+        font-weight   : 500;
+        color         : $color-white;
         text-transform: capitalize;
       }
 

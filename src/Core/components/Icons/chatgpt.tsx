@@ -6,7 +6,7 @@ const ChatgptIcon: IconComponent = (props) => (
         width="1em"
         height="1em"
         fill="none"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         viewBox="-0.17090198558635983 0.482230148717937 41.14235318283891 40.0339509076386"
         {...props}
     >

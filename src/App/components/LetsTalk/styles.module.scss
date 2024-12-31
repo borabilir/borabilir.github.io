@@ -1,10 +1,11 @@
 .container {
-    width  : 100%;
-    padding: 60px 20px;
+    width: 100%;
+    @include responsive(padding, 60px 20px, 0px 18px 36px 18px);
 
     .content {
-        @include content(1000px);
-        @include flex(flex-start, flex-start, row);
+        @include content(1000px, 100%);
+        @include flex(flex-start, flex-start, row, 20px);
+        @include responsive(flex-direction, row, column);
 
         >div {
             &:first-of-type {
@@ -17,7 +18,7 @@
             }
 
             >h1 {
-                font-size: 48px;
+                @include responsive(font-size, 48px, 32px);
 
                 >span {
                     color                  : transparent;
@@ -28,11 +29,11 @@
             }
 
             >h2 {
-                font-size: 28px;
+                @include responsive(font-size, 28px, 20px);
             }
 
             >h3 {
-                font-size     : 18px;
+                @include responsive(font-size, 18px, 14px);
                 text-transform: uppercase;
             }
 
@@ -51,13 +52,13 @@
                     width           : 100%;
                     background-color: $color-primarybright;
                     font-weight     : 600;
-                    font-size       : 14px;
-                    padding         : 14px;
-                    color           : $color-dark;
-                    outline         : none;
-                    border          : 0px solid;
-                    border-radius   : 4px;
-                    caret-color     : $color-primary;
+                    @include responsive(font-size, 14px, 12px);
+                    @include responsive(padding, 14px, 12px);
+                    color        : $color-dark;
+                    outline      : none;
+                    border       : 0px solid;
+                    border-radius: 4px;
+                    caret-color  : $color-primary;
 
                     &::placeholder {
                         color: rgba($color-dark, 0.6);
@@ -73,14 +74,14 @@
                     width           : 100%;
                     background-color: $color-primarybright;
                     font-weight     : 600;
-                    font-size       : 14px;
-                    padding         : 14px;
-                    color           : $color-dark;
-                    outline         : none;
-                    border          : 0px solid;
-                    border-radius   : 4px;
-                    caret-color     : $color-primary;
-                    height          : 150px;
+                    @include responsive(font-size, 14px, 12px);
+                    @include responsive(padding, 14px, 12px);
+                    color        : $color-dark;
+                    outline      : none;
+                    border       : 0px solid;
+                    border-radius: 4px;
+                    caret-color  : $color-primary;
+                    @include responsive(height, 150px, 120px);
 
                     &::placeholder {
                         color: rgba($color-dark, 0.6);
@@ -92,8 +93,11 @@
                 }
 
                 >button {
+                    margin-top : 6px;
                     margin-left: auto;
                     font-size  : 14px;
+                    @include responsive(width, unset, 100%);
+                    text-align: center;
                 }
             }
         }

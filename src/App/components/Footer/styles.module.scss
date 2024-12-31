@@ -3,9 +3,11 @@
     color           : $color-light;
     width           : 100%;
     padding         : 60px 0 45px 0;
+    @include responsive(font-size, 14px, 12px);
+    text-align: center;
 
     .content {
-        @include content(1000px);
+        @include content(1000px, 100%);
         @include flex(center, center, column, 30px);
 
         .buttons {

@@ -5,7 +5,7 @@ import SkillTag from '../SkillTag';
 import { SkillCategory } from 'App/types/SkillCategory';
 import Animator from 'Core/components/Animator';
 
-type SkillCardProps = {
+type SkillSectionProps = {
     area: SkillArea;
 };
 
@@ -20,7 +20,7 @@ const skillCategories: SkillCategory[] = [
     'default',
 ];
 
-const SkillCard: React.FC<SkillCardProps> = ({ area }) => {
+const SkillSection: React.FC<SkillSectionProps> = ({ area }) => {
     const renderSkillTags = (area: SkillArea, category?: SkillCategory) =>
         Object.values(SkillSet)
             .filter((skill) =>
@@ -59,4 +59,4 @@ const SkillCard: React.FC<SkillCardProps> = ({ area }) => {
     );
 };
 
-export default SkillCard;
+export default SkillSection;

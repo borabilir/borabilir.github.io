@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 
 const Root: React.FC = () => {
     return (
-        <>
+        <div style={{width:"100%", overflow:"hidden"}}>
             <Intro />
             <AboutMe />
             <CareerJourney />
@@ -16,7 +16,7 @@ const Root: React.FC = () => {
             <RecentProjects />
             <LetsTalk />
             <Footer />
-        </>
+        </div>
     );
 };
 

@@ -1,21 +1,21 @@
 .wrapper {
-    width   : calc(100% - 60px);
-    margin  : 30px auto;
+    @include responsive(width, calc(100% - 60px), calc(100% - 32px));
+    @include responsive(margin, 30px auto, 16px auto);
     overflow: hidden;
 
     .container {
         background-color: #f7f0ff;
         border-radius   : 20px;
         height          : 392px;
-        margin-bottom   : 200px;
-        position        : relative;
-        padding         : 30px 0px;
+        @include responsive(margin-bottom, 200px, 100px);
+        position: relative;
+        @include responsive(padding, 30px 0, 22px 0);
 
         .content {
-            @include content(1000px);
+            @include content(1000px, 100%);
 
             >h3 {
-                font-size  : 48px;
+                @include responsive(font-size, 48px, 32px);
                 font-weight: 600;
 
                 >span {
@@ -27,14 +27,14 @@
             }
 
             >h4 {
-                margin-top : 4px;
-                font-size  : 20px;
+                margin-top: 4px;
+                @include responsive(font-size, 20px, 14px);
                 font-weight: 400;
             }
 
             >h5 {
-                margin-top : 4px;
-                font-size  : 14px;
+                margin-top: 4px;
+                @include responsive(font-size, 14px, 12px);
                 font-weight: 400;
             }
 
@@ -64,8 +64,8 @@
 
         .projectsContainer {
             position: relative;
-            left    : calc((100% - 1000px)/2);
-            width   : calc((100% - 1000px) / 2 + 1000px);
+            @include responsive(left, calc((100% - 1000px)/2), 0);
+            @include responsive(width, calc((100% - 1000px) / 2 + 1000px), 100%);
             overflow: hidden;
 
             .projects {
@@ -77,21 +77,18 @@
                 padding-left  : 16px;
             }
         }
-
-
     }
-
-
 }
 
 .skills {
     >h1 {
-        font-size    : 18px;
-        margin-bottom: 8px;
+        @include responsive(font-size, 18px, 16px);
+        @include responsive(margin-bottom, 8px, 6px);
     }
 }
 
 .tags {
     @include flex(flex-start, flex-start, row, 4px);
+    @include responsive(gap, 4px, 2px);
     flex-wrap: wrap;
 }

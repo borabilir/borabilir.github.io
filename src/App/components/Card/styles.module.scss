@@ -1,6 +1,6 @@
 .container {
-    max-width       : 350px;
-    min-width       : 350px;
+    @include responsive(max-width, 350px, 250px);
+    @include responsive(min-width, 350px, 250px);
     width           : 100%;
     aspect-ratio    : 600 / 540;
     background-color: $color-white;
@@ -12,35 +12,37 @@
     cursor: pointer;
 
     >img {
-        width     : 100%;
-        min-height: 150px;
-        height    : 150px;
+        width: 100%;
+        @include responsive(min-height, 150px, 100px);
+        @include responsive(height, 150px, 100px);
         object-fit: cover;
     }
 
     >.emptyImg {
-        width           : 100%;
-        min-height      : 150px;
-        height          : 150px;
+        width: 100%;
+        @include responsive(min-height, 150px, 100px);
+        @include responsive(height, 150px, 100px);
         background-color: $color-lightgray;
         color           : $color-white;
-        font-size       : 24px;
+        @include responsive(font-size, 24px, 18px);
         @include flex(center, center, column, 10px);
+        @include responsive(gap, 10px, 6px);
+
 
         >span {
-            font-size  : 14px;
+            @include responsive(font-size, 14px, 12px);
             font-weight: 600;
         }
     }
 
     .content {
-        width  : 100%;
-        padding: 20px 20px 0 20px;
+        width: 100%;
+        @include responsive(padding, 20px 20px 0 20px, 12px 12px 0 12px);
         @include flex(flex-start, flex-start, column, 2px);
 
         >h1 {
-            font-size    : 24px;
-            max-height   : 30px;
+            @include responsive(font-size, 24px, 16px);
+            @include responsive(max-height, 30px, 20px);
             max-width    : 100%;
             overflow     : hidden;
             text-overflow: ellipsis;
@@ -48,15 +50,15 @@
         }
 
         >h2 {
-            font-size: 18px;
+            @include responsive(font-size, 18px, 12px);
         }
 
         >p {
-            margin-top: 10px;
-            font-size : 14px;
-            max-height: 50px;
-            overflow  : hidden;
-            max-width : 100%;
+            @include responsive(margin-top, 10px, 6px);
+            @include responsive(font-size, 14px, 12px);
+            @include responsive(max-height, 50px, 44px);
+            overflow : hidden;
+            max-width: 100%;
         }
 
         .tag {
@@ -65,8 +67,8 @@
             display         : inline-block;
             border-radius   : 18px;
             padding         : 4px 14px;
-            font-size       : 12px;
-            font-weight     : 500;
+            @include responsive(font-size, 12px, 10px);
+            font-weight: 500;
         }
     }
 

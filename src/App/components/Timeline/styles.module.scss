@@ -1,7 +1,5 @@
 .timeline {
-    display       : flex;
-    flex-direction: column;
-    align-items   : center;
-    position      : relative;
-    margin-top    : 40px;
+    @include flex(center, flex-start, column);
+    position  : relative;
+    margin-top: 40px;
 }

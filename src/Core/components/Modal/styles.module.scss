@@ -1,8 +1,8 @@
 .container {
-    z-index                : 100;
-    overflow               : auto;
-    text-align             : center;
-    background-color       : rgba($color-dark, 0.8);
+    z-index                   : 100;
+    overflow                  : auto;
+    text-align                : center;
+    background-color          : rgba($color-dark, 0.8);
     // backdrop-filter        : blur(10px);
     // -webkit-backdrop-filter: blur(10px);
     @include fixed(0, 0, 0, 0);
@@ -17,16 +17,15 @@
     }
 
     .card {
-        top             : 0;
-        z-index         : 2;
-        text-align      : left;
-        border-radius   : 24px;
-        width           : 830px;
+        top          : 0;
+        z-index      : 2;
+        text-align   : left;
+        border-radius: 24px;
+        @include responsive(width, 830px, calc(100vw - 40px));
         margin          : 20px 0;
         vertical-align  : middle;
         position        : relative;
         display         : inline-block;
-        max-width       : calc(100% - 40px);
         transition      : none;
         background-color: rgba($color-light, 0.98);
         box-shadow      : $shadow-card;
@@ -39,12 +38,13 @@
             color   : $color-white;
 
             &.default {
-                padding         : 20px;
+                @include responsive(padding, 20px, 12px);
                 background-color: $color-primary;
                 @include flex(center, space-between, row);
 
                 h2 {
-                    font-size  : 34px;
+                    width: calc(100% - 40px);
+                    @include responsive(font-size, 30px, 22px);
                     font-weight: 700;
                 }
             }
@@ -53,39 +53,38 @@
                 @include flex(flex-start, flex-start, column);
 
                 h2 {
-                    width       : 100%;
-                    text-align  : left;
-                    margin-top  : 20px;
-                    color       : $color-dark;
-                    font-size   : 28px;
-                    font-weight : 700;
-                    padding-left: 20px;
+                    width     : 100%;
+                    text-align: left;
+                    color: $color-dark;
+                    @include responsive(font-size, 28px, 20px);
+                    font-weight: 700;
+                    @include responsive(margin-top, 20px, 10px);
+                    @include responsive(padding-left, 20px, 12px);
                 }
             }
 
-
-
             .title {
                 max-width: 500px;
-                z-index: 10;
-                @include flex(flex-start, center, row, 20px);
+                z-index  : 10;
+                @include flex(center, center, row, 20px);
+                @include responsive(gap, 16px, 12px);
 
                 >img {
-                    width        : 80px;
+                    @include responsive(width, 80px, 60px);
                     border-radius: 10px;
                     z-index      : 10;
                 }
             }
 
             .right {
-                position        : absolute;
-                right           : 100px;
-                z-index         : 10;
+                position: absolute;
+                @include responsive(right, 100px, 40px);
+                z-index: 10;
             }
 
             .galleryContainer {
-                width           : 100%;
-                height          : 400px;
+                width: 100%;
+                @include responsive(height, 400px, 240px);
                 position        : relative;
                 overflow        : hidden;
                 transition      : .2s ease-in;
@@ -104,9 +103,9 @@
                         border-radius   : 50%;
                         background-color: rgba($color-primary, 0.8);
                         color           : $color-light;
-                        font-size       : 24px;
-                        width           : 40px;
-                        height          : 40px;
+                        @include responsive(font-size, 24px, 16px);
+                        @include responsive(width, 40px, 28px);
+                        @include responsive(height, 40px, 28px);
                         @include flex(center, center);
                         cursor    : pointer;
                         transition: .2s ease-in;
@@ -116,11 +115,11 @@
                         }
 
                         &.left {
-                            left: 20px;
+                            @include responsive(left, 20px, 10px);
                         }
 
                         &.right {
-                            right: 20px;
+                            @include responsive(right, 20px, 10px);
                         }
                     }
                 }
@@ -130,8 +129,8 @@
                     width: 100%;
 
                     >img {
-                        min-width : 830px;
-                        height    : 400px;
+                        @include responsive(min-width, 830px, 100%);
+                        @include responsive(height, 400px, 240px);
                         object-fit: contain;
                     }
                 }
@@ -140,26 +139,29 @@
         }
 
         main {
+            @include responsive(font-size, 16px, 12px);
+            @include responsive(line-height, 22px, 16px);
+
             &.default {
-                padding: 30px 60px 30px 60px;
+                @include responsive(padding, 30px 30px 30px 36px, 12px);
             }
 
             &.gallery {
-                padding: 10px 20px 30px 20px;
+                @include responsive(padding, 10px 20px 18px 20px, 4px 12px 18px 12px);
             }
 
             // @include responsive(padding, 30px, 0 20px 20px 20px);
         }
 
         footer {
-            @include responsive(padding, 20px, 15px);
+            @include responsive(padding, 20px, 12px 12px 18px 12px);
 
             &.bordered {
                 &::before {
-                    content   : "";
-                    position  : absolute;
-                    left      : 30px;
-                    right     : 30px;
+                    content : "";
+                    position: absolute;
+                    @include responsive(left, 30px, 18px);
+                    @include responsive(right, 30px, 18px);
                     transform : translateY(-20px);
                     height    : 1px;
                     width     : calc(100% - 60px);
@@ -169,13 +171,13 @@
         }
 
         .close {
-            width : 50px;
-            height: 50px;
+            @include responsive(width, 50px, 40px);
+            @include responsive(height, 50px, 40px);
+            @include responsive(font-size, 24px, 22px);
             @include flex(center, center);
-            z-index  : 2;
-            padding  : 10px;
-            font-size: 24px;
-            cursor   : pointer;
+            z-index: 10;
+            padding: 10px;
+            cursor : pointer;
             @include absolute(10px, 10px);
 
             &.default {
