@@ -62,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({
     <Portal container={document.getElementById("modalContainer")}>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 0.8 }}
         transition={{ duration: 0.2 }}
         viewport={{ once: true }}
         className={styles.container}
