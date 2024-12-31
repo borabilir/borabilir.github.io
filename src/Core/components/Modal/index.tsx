@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import BlurryBackground from "App/components/BlurryBackground";
 import cx from "Core/utils/cx";
 import { motion } from "framer-motion";
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../Icons";
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, EmptyImageIcon } from "../Icons";
 
 type ModalProps = {
   visible?: boolean;
@@ -116,7 +116,14 @@ const Modal: React.FC<ModalProps> = ({
                   )}
                 </span>
                 <div ref={ref} className={styles.gallery}>
-                  {!!imgSrcs && imgSrcs.map((x, i) => <img key={i} src={x} />)}
+                  {!!imgSrcs ? (
+                    imgSrcs.map((x, i) => <img key={i} src={x} />)
+                  ) : (
+                    <div className={styles.emptyImg}>
+                      <EmptyImageIcon />
+                      <span>No Project Image</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={styles.title}>

@@ -55,7 +55,7 @@
                 h2 {
                     width     : 100%;
                     text-align: left;
-                    color: $color-dark;
+                    color     : $color-dark;
                     @include responsive(font-size, 28px, 20px);
                     font-weight: 700;
                     @include responsive(margin-top, 20px, 10px);
@@ -127,6 +127,23 @@
                 .gallery {
                     @include flex(flex-start, flex-start, row);
                     width: 100%;
+
+
+                    >.emptyImg {
+                        width           : 100%;
+                        @include responsive(height, 400px, 240px);
+                        background-color: $color-lightgray;
+                        color           : $color-white;
+                        @include responsive(font-size, 24px, 18px);
+                        @include flex(center, center, column, 10px);
+                        @include responsive(gap, 10px, 6px);
+
+
+                        >span {
+                            @include responsive(font-size, 14px, 12px);
+                            font-weight: 600;
+                        }
+                    }
 
                     >img {
                         @include responsive(min-width, 830px, 100%);
