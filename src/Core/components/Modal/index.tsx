@@ -60,11 +60,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return visible ? (
     <Portal container={document.getElementById("modalContainer")}>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.8 }}
-        transition={{ duration: 0.2 }}
-        viewport={{ once: true }}
+      <div
         className={styles.container}
         role="dialog"
       >
@@ -145,7 +141,7 @@ const Modal: React.FC<ModalProps> = ({
             </footer>
           )}
         </motion.div>
-      </motion.div>
+      </div>
     </Portal>
   ) : (
     <></>
