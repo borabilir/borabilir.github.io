@@ -121,7 +121,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
                         [styles.right, align == 'right']
                     )}
                 >
-                    {year}
+                    {year === new Date().getFullYear() ? "Present" : year}
                 </motion.span>
             </motion.div>
             {!isLast && <div className={styles.line} />}
