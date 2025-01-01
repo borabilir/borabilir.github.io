@@ -3,7 +3,7 @@
     width           : 100%;
     color           : $color-light;
     background-color: $color-primary;
-    @include responsive(padding, 30px 0, 18px 0);
+    @include responsive(padding, 30px 0 38px 0, 18px 0);
     overflow: hidden;
 
     >div {
@@ -18,8 +18,8 @@
         }
 
         >p {
-            @include responsive(font-size, 20px, 14px);
-            @include responsive(line-height, 30px, 20px);
+            @include responsive(font-size, 18px, 14px);
+            @include responsive(line-height, 26px, 20px);
             @include responsive(margin-top, 20px, 14px);
         }
     }
