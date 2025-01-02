@@ -24,7 +24,7 @@
       @include responsive(flex-direction, row, column-reverse);
       position: relative;
       z-index : 0;
-      margin: auto 0;
+      @include responsive(margin, unset, auto 0);
 
       .left {
         width: 100%;
@@ -61,7 +61,7 @@
           @include responsive(flex-direction, row, column);
           @include responsive(margin-top, 40px, 20px);
           @include responsive(gap, 18px, 30px);
-          
+
         }
       }
 
@@ -103,8 +103,8 @@
     }
 
     .scrollDown {
-      margin-top : auto;
-      text-align : center;
+      margin-top: auto;
+      text-align: center;
 
       >h3 {
         @include responsive(display, block, none);
