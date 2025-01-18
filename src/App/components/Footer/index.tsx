@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
                     <ContactIcon variant="primary" type="instagram" />
                     <ContactIcon variant="primary" type="github" />
                 </div>
-                <span>© 2024 Handcrafted by me, All Rights Reserved.</span>
+                <span>© 2024 Handcrafted by me. All Rights Reserved.</span>
             </div>
         </div>
     );
