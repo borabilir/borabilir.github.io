@@ -14,7 +14,7 @@ const Intro: React.FC = () => {
   const { t } = useTranslation();
   const yearsOfExperience = () => {
     const now = new Date();
-    const pastDate = new Date(2018, 10);
+    const pastDate = new Date(2017, 8);
 
     let yearsDifference = now.getFullYear() - pastDate.getFullYear();
 
