@@ -11,13 +11,12 @@ export const Experiences: Experience[] = [
         remote: true,
         imgSrc: 'modaramo.png',
         descriptions: [
-            `Contribute to the development of a social media
-            application as part of the frontend team and participate
-            in mobile development processes using React Native.`,
-            `Independently develop a fully functional advertising placement application for the company, focusing on frontend development.`,
-            `Support various internal projects, offering both frontend and backend solutions.`,
-            `Take full responsibility for the backend development of the "Chatbot" project, utilizing C#.NET and MSSQL to create scalable and robust architectures.`,
-            ` Work with technologies such as React, TypeScript, React Native, C#.NET, and MSSQL to deliver high-quality software solutions.`,
+            `Led the backend development of an enterprise grade chatbot platform, architected with C#.NET and MS SQL Server, integrating OpenAI’s ChatGPT API to enable AI powered conversations for 50K+ users.`,
+            `Built both the backend (.NET Core) and frontend components (React dashboard & widget) for the chatbot application, resulting in a 40% faster socket response and an optimized, scalable architecture.`,
+            `Contributed to a social media platform, implementing key frontend features and collaborating with designers and backend teams to ship 3 major feature releases per quarter.`,
+            `Designed and built a full ad placement platform, taking full ownership of all frontend processes and delivering a tool that managed 200+ ad campaigns per month.`,
+            `Provided full stack solutions for multiple internal products, ensuring seamless communication between frontend components and backend services.`,
+            `Leveraged a diverse technology stack (React, TypeScript, C#.NET, MS SQL Server, MySQL) to deliver scalable, maintainable, and high performance applications.`,
         ],
         skills: [
             'react',
@@ -60,11 +59,12 @@ export const Experiences: Experience[] = [
         remote: true,
         imgSrc: 'bilgeadam.png',
         descriptions: [
-            `Contributed to the development and maintenance of a web application used by a large customer base.`,
-            `Designed and implemented new modules and algorithms to address complex business logic.`,
-            `Worked on a full-stack web application built with ASP.NET Core and React JS, collaborating with an agile team of 7 members.`,
-            `Led and managed a team of 2 junior engineers to develop an admin panel for managing on-premise applications, employing Agile methodologies.`,
-            `Conducted research on Microservice Architecture to transition monolithic projects and prepare for future company initiatives.`,
+            `Contributed to the development of a Human Resources platform, streamlining performance tracking, leave management, and employee data processing for internal HR teams serving 1,000+ employees.`,
+            `Implemented CV parsing features that extracted structured data from LinkedIn and Kariyer.net profiles, creating a centralized talent pool that accelerated candidate screening.`,
+            `Transformed frontend modules for a major bank’s applicant portal, increasing online submissions by ~30% and improving user experience.`,
+            `Designed and implemented new modules and algorithms to support complex HR workflows, reducing manual processing efforts by ~25%.`,
+            `Led and mentored 2 junior engineers to develop a custom admin panel for managing on premise deployments, ensuring compliance with Agile best practices.`,
+            `Conducted research and provided recommendations for migrating legacy monolith systems to microservices architecture, laying the foundation for a scalable and modular ecosystem.`,
         ],
         skills: [
             'dotnetcore',
@@ -98,8 +98,7 @@ export const Experiences: Experience[] = [
         remote: true,
         imgSrc: 'ericsson.png',
         descriptions: [
-            `Developed features for a Dynamics 365 application supporting CRM processes for telecommunications products.`,
-            `Designed and implemented REST APIs using .NET, ensuring seamless integration with the Dynamics 365 platform.`,
+            `Contributed to Dynamics 365 CRM customization and .NET integrations for telecom-related processes.`,
         ],
         skills: [
             'dotnetcore',
@@ -122,10 +121,12 @@ export const Experiences: Experience[] = [
         remote: false,
         imgSrc: 'caretta.png',
         descriptions: [
-            `Participated in the development and maintenance of 5 web applications built using ASP.NET, working within an agile team comprising a project manager and 5 software developers.`,
-            `Created and optimized stored procedures in Microsoft SQL Server to manage and implement business logic efficiently.`,
-            `Maintained ETL processes for web applications, executed via a Windows Service, ensuring smooth data integration and processing.`,
-            `Contributed to the entire software development life cycle of a web application designed for a client, including attending customer meetings to gather and document project requirements.`,
+            `Contributed to the development and maintenance of 5+ enterprise web applications for global pharmaceutical clients (Bayer, Pfizer, Sanofi and others), enhancing user engagement and streamlining operations for thousands of end users.`,
+            `Coordinated efforts within an agile team of 5 developers and 1 PM, contributing to the delivery of 4 major end to end systems that streamlined production, sales, and logistics management for multiple pharmaceutical clients.`,
+            `Engineered and optimized complex stored procedures in MS SQL Server, improving query performance by 35% and ensuring consistent, reliable business logic for mission critical systems.`,
+            `Oversaw and optimized ETL processes running on Windows Services, ensuring accurate transfer of millions of data records per day between internal and external systems and reducing processing errors by 15%.`,
+            `Collaborated with stakeholders to analyze and synthesize requirements, ensuring 100% compliance with pharmaceutical regulations and streamlining approval workflows for critical systems.
+`,
         ],
         skills: [
             'dotnet',
@@ -167,10 +168,7 @@ export const Experiences: Experience[] = [
         details: 'On-site',
         remote: false,
         imgSrc: 'caretta.png',
-        descriptions: [
-            `Worked alongside by a developer to develop some modules on a web application build on ASP.NET.`,
-            `Some modules are developed for an in-house web application from scratch and these modules were used by employees.`,
-        ],
+        descriptions: [],
         skills: ['crm', 'csharp'],
     },
     {

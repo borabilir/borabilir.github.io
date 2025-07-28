@@ -1,7 +1,8 @@
 const enTranslations = {
     intro: {
         name: 'Bora Bilir',
-        title: 'Full-stack Developer | C#.NET, React.js, Typescript, MS SQL Server',
+        title: 'Senior Back-end / Full-Stack Developer',
+        title2: '.NET & React Specialist',
         contact: 'Contact',
         years: 'Years of Experience',
         projects: 'Projects Done',
@@ -9,7 +10,7 @@ const enTranslations = {
     },
     about: {
         title: 'About Me',
-        p1: 'Experienced Full-Stack Developer with 7+ years of hands-on expertise in designing, developing, and maintaining scalable web applications. Proficient in ReactJS, TypeScript, Next.js, C#, ASP.NET, and MS SQL Server, with a strong focus on building clean, maintainable, and high-performance solutions.',
+        p1: 'Senior Backend / Full Stack Developer with 7+ years of experience designing and building scalable applications using .NET, C#, and React. Specialized in backend architecture, microservices, and database design, while also delivering user friendly frontends. Currently expanding cloud expertise with Microsoft Azure fundamentals to enhance full stack solutions and modern deployment strategies.',
         p2: 'Skilled in both frontend and backend development, I bring a comprehensive approach to software engineering—delivering seamless user experiences, robust system architectures, and reliable integrations. I collaborate effectively with cross-functional teams and contribute to every stage of the development lifecycle.',
         p3: 'Driven by a passion for problem-solving and code quality, I continuously adopt modern technologies and engineering best practices to ensure business value and user satisfaction.',
     },
