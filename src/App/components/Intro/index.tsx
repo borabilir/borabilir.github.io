@@ -3,7 +3,6 @@ import styles from "./styles.module.scss";
 import { useTranslation } from "react-i18next";
 import TypewriterText from "Core/components/TypewriterText";
 import ContactIcon from "../ContactIcon";
-import Photo from "../Photo";
 import Button from "Core/components/Button";
 import { ChevronDownIcon, DownloadIcon } from "Core/components/Icons";
 import MemoizedBackgroundCircles from "../BackgroundCircles";
@@ -38,10 +37,10 @@ const Intro: React.FC = () => {
             <Animator.h1 type="fadeDrop" delay={0.5}>
               {t("intro.name")}
             </Animator.h1>
-            <TypewriterText.h2 duration={1} delay={0.7}>
+            <TypewriterText.h2 duration={0.5} delay={0.7}>
               {t("intro.title")}
             </TypewriterText.h2>
-            <TypewriterText.h2 duration={0.5} delay={1.7}>
+            <TypewriterText.h2 duration={0.5} delay={1.2}>
               {t("intro.title2")}
             </TypewriterText.h2>
             <Animator delay={1.7} className={styles.contact}>
@@ -56,7 +55,7 @@ const Intro: React.FC = () => {
               </div>
             </Animator>
           </div>
-          <Animator delay={1.2} className={styles.right}>
+          <Animator delay={1.7} className={styles.right}>
             <img src="photo.png" alt="" />
           </Animator>
         </div>
