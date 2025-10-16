@@ -1,17 +1,18 @@
 .container {
-    background      : $gradient-primary;
-    background-color: $color-white;
-    border-radius   : 4px;
-    overflow        : hidden;
-    color           : $color-light;
+    background   : $gradient-modern;
+    border-radius: 12px;
+    overflow     : hidden;
+    color        : $color-light;
+    box-shadow   : $shadow-soft;
+    transition   : all 0.2s ease;
 
     .tag {
-        font-weight: 500;
+        font-weight: 600;
         @include inlineFlex(center, flex-start, row, 6px);
 
         &.md {
             @include responsive(font-size, 18px, 14px);
-            @include responsive(padding, 8px 12px, 6px 10px);
+            @include responsive(padding, 10px 16px, 8px 12px);
 
             >span {
                 >svg {

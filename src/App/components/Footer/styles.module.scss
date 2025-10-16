@@ -1,8 +1,8 @@
 .container {
-    background-color: $color-primary;
-    color           : $color-light;
-    width           : 100%;
-    padding         : 60px 0 45px 0;
+    background: $gradient-modern;
+    color     : $color-light;
+    width     : 100%;
+    padding   : 60px 0 45px 0;
     @include responsive(font-size, 14px, 12px);
     text-align: center;
 

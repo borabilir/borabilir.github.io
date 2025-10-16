@@ -4,34 +4,39 @@
   @include flex(flex-start, flex-start, column, 6px);
 
   .title {
-    color: $color-light;
-    @include responsive(font-size, 24px, 18px);
+    color         : $color-light;
+    @include responsive(font-size, 26px, 20px);
     @include responsive(text-align, left, center);
-    width: 100%;
-    font-weight : 600;
+    width         : 100%;
+    font-weight   : 700;
     @include responsive(padding-left, 10px, 0);
-    position    : relative;
+    position      : relative;
+    letter-spacing: -0.01em;
   }
 
   .skills {
-    position        : relative;
-    height          : 100%;
-    z-index         : 2;
-    background-color: rgba($color-black, 0.3);
-    margin          : 0 auto;
-    width           : 100%;
-    border-radius   : 20px;
-    padding         : 12px;
+    position       : relative;
+    height         : 100%;
+    z-index        : 2;
+    background     : rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    margin         : 0 auto;
+    width          : 100%;
+    border-radius  : 24px;
+    padding        : 20px;
     @include flex(flex-start, flex-start, column, 20px);
     @include responsive(gap, 20px, 12px);
+    border         : 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow     : $shadow-soft;
 
     .area {
       >h4 {
-        @include responsive(font-size, 18px, 14px);
-        @include responsive(margin-bottom, 10px, 8px);
-        font-weight   : 500;
+        @include responsive(font-size, 19px, 15px);
+        @include responsive(margin-bottom, 12px, 10px);
+        font-weight   : 600;
         color         : $color-white;
         text-transform: capitalize;
+        letter-spacing: 0.3px;
       }
 
       .tags {

@@ -5,17 +5,25 @@
     aspect-ratio    : 600 / 540;
     background-color: $color-white;
     padding-bottom  : 20px;
-    border-radius   : 10px;
+    border-radius   : 20px;
     overflow        : hidden;
-    box-shadow      : $shadow-card2;
+    box-shadow      : $shadow-soft;
     @include flex(flex-start, flex-start, column);
-    cursor: pointer;
+    cursor          : pointer;
+    transition      : all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border          : 1px solid rgba($color-gray, 0.1);
+    
+    &:hover {
+      transform : translateY(-8px);
+      box-shadow: $shadow-card;
+    }
 
     >img {
-        width: 100%;
+        width     : 100%;
         @include responsive(min-height, 150px, 100px);
         @include responsive(height, 150px, 100px);
         object-fit: cover;
+        transition: all 0.3s ease;
     }
 
     >.emptyImg {
@@ -41,34 +49,41 @@
         @include flex(flex-start, flex-start, column, 2px);
 
         >h1 {
-            @include responsive(font-size, 24px, 16px);
+            @include responsive(font-size, 26px, 18px);
             @include responsive(max-height, 30px, 20px);
-            max-width    : 100%;
-            overflow     : hidden;
-            text-overflow: ellipsis;
-            white-space  : nowrap;
+            max-width     : 100%;
+            overflow      : hidden;
+            text-overflow : ellipsis;
+            white-space   : nowrap;
+            font-weight   : 700;
+            letter-spacing: -0.01em;
         }
 
         >h2 {
             @include responsive(font-size, 18px, 12px);
+            color      : $color-gray;
+            font-weight: 500;
         }
 
         >p {
             @include responsive(margin-top, 10px, 6px);
-            @include responsive(font-size, 14px, 12px);
-            @include responsive(max-height, 50px, 44px);
+            @include responsive(font-size, 15px, 13px);
+            @include responsive(max-height, 48px, 44px);
+            @include responsive(line-height, 22px, 20px);
             overflow : hidden;
             max-width: 100%;
+            color    : $color-gray;
         }
 
         .tag {
             color           : $color-light;
-            background-color: $color-primary;
+            background      : $gradient-modern;
             display         : inline-block;
-            border-radius   : 18px;
-            padding         : 4px 14px;
+            border-radius   : 20px;
+            padding         : 6px 16px;
             @include responsive(font-size, 12px, 10px);
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow : $shadow-soft;
         }
     }
 

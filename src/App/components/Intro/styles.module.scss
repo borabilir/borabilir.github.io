@@ -5,7 +5,7 @@
   overflow        : hidden;
   position        : relative;
   z-index         : 0;
-  background-color: $color-white;
+  background      : linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 
   .content {
     @include content(1000px, 100%);
@@ -33,27 +33,32 @@
         @include responsive(text-align, left, center);
 
         >h1 {
-          @include responsive(font-size, 88px, 58px);
-          font-weight            : 700;
+          @include responsive(font-size, 72px, 52px);
+          font-weight            : 800;
           color                  : transparent;
           background-clip        : text;
           margin-left            : -5px;
-          background             : $gradient-primary;
+          background             : $gradient-modern;
           -webkit-background-clip: text;
+          letter-spacing         : -0.02em;
+          line-height            : 1.1;
         }
 
         >h2 {
-          display  : block;
-          max-width: 100%;
-          color    : $color-dark;
-          @include responsive(font-size, 32px, 24px);
-          font-weight: 700;
+          display       : block;
+          max-width     : 100%;
+          color         : $color-dark;
+          @include responsive(font-size, 30px, 22px);
+          font-weight   : 700;
+          letter-spacing: -0.01em;
+          line-height   : 1.3;
         }
 
         >h3 {
-          @include responsive(font-size, 28px, 22px);
-          font-weight: 500;
+          @include responsive(font-size, 24px, 20px);
+          font-weight: 600;
           @include responsive(line-height, 10px, 14px);
+          color      : $color-gray;
         }
 
         .contact {
@@ -69,7 +74,16 @@
         @include flex(flex-end, flex-start, column, 20px);
 
         >img {
-          @include responsive(width, 267px, 180px);
+          @include responsive(width, 300px, 200px);
+          border-radius: 50%;
+          box-shadow   : $shadow-card;
+          border       : 6px solid $color-white;
+          transition   : all 0.3s ease;
+          
+          &:hover {
+            transform : scale(1.05);
+            box-shadow: $shadow-card-hover;
+          }
         }
       }
 
