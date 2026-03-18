@@ -1,6 +1,6 @@
 .button {
     @include flex(flex-start, center, row, 8px);
-    color           : $color-white;
+    color           : $color-dark;
     background      : $gradient-modern;
     border          : none;
     border-radius   : 30px;
@@ -13,9 +13,38 @@
     cursor          : pointer;
     transition      : all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing  : 0.5px;
+    position        : relative;
+    overflow        : hidden;
+
+    &::before {
+        content   : '';
+        position  : absolute;
+        top       : 50%;
+        left      : 50%;
+        width     : 0;
+        height    : 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform : translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
 
     &:hover {
         transform : translateY(-2px);
         box-shadow: $shadow-card;
+        
+        &::before {
+            width : 300px;
+            height: 300px;
+        }
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+    
+    &:focus-visible {
+        outline: 2px solid $color-primary;
+        outline-offset: 3px;
     }
 }

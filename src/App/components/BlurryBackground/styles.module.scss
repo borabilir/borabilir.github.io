@@ -1,3 +1,5 @@
+@import 'Core/styles/variables.scss';
+
 .container {
     position: absolute;
     z-index : 1;
@@ -6,34 +8,52 @@
         top : 0;
         left: 0;
 
-        .img1 {
-            position: absolute;
-            top     : -300px;
-            left    : 0px;
-            z-index : -2;
-
+        .circle1 {
+            position  : absolute;
+            top       : -300px;
+            left      : 0px;
+            z-index   : -2;
+            width     : 500px;
+            height    : 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 70%);
+            filter    : blur(60px);
         }
 
-        .img2 {
-            position: absolute;
-            top     : -300px;
-            left    : -250px;
-            z-index : -1;
+        .circle2 {
+            position  : absolute;
+            top       : -300px;
+            left      : -250px;
+            z-index   : -1;
+            width     : 400px;
+            height    : 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.5) 0%, rgba(30, 64, 175, 0.25) 40%, transparent 70%);
+            filter    : blur(50px);
         }
 
-        .img3 {
-            position: absolute;
-            top     : -200px;
-            left    : -300px;
-            z-index : -3;
-
+        .circle3 {
+            position  : absolute;
+            top       : -200px;
+            left      : -300px;
+            z-index   : -3;
+            width     : 450px;
+            height    : 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%);
+            filter    : blur(55px);
         }
 
-        .img4 {
-            position: absolute;
-            top     : 0;
-            left    : -300px;
-            z-index : -4;
+        .circle4 {
+            position  : absolute;
+            top       : 0;
+            left      : -300px;
+            z-index   : -4;
+            width     : 350px;
+            height    : 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 64, 175, 0.45) 0%, rgba(37, 99, 235, 0.2) 40%, transparent 70%);
+            filter    : blur(45px);
         }
 
     }
@@ -42,34 +62,52 @@
         top  : 0;
         right: 0;
 
-        .img1 {
-            position: absolute;
-            top     : -300px;
-            right   : 0px;
-            z-index : -2;
-
+        .circle1 {
+            position  : absolute;
+            top       : -300px;
+            right     : 0px;
+            z-index   : -2;
+            width     : 500px;
+            height    : 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 70%);
+            filter    : blur(60px);
         }
 
-        .img2 {
-            position: absolute;
-            top     : -300px;
-            right   : -250px;
-            z-index : -1;
+        .circle2 {
+            position  : absolute;
+            top       : -300px;
+            right     : -250px;
+            z-index   : -1;
+            width     : 400px;
+            height    : 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.5) 0%, rgba(30, 64, 175, 0.25) 40%, transparent 70%);
+            filter    : blur(50px);
         }
 
-        .img3 {
-            position: absolute;
-            top     : -200px;
-            right   : -300px;
-            z-index : -3;
-
+        .circle3 {
+            position  : absolute;
+            top       : -200px;
+            right     : -300px;
+            z-index   : -3;
+            width     : 450px;
+            height    : 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%);
+            filter    : blur(55px);
         }
 
-        .img4 {
-            position: absolute;
-            top     : 0;
-            right   : -300px;
-            z-index : -4;
+        .circle4 {
+            position  : absolute;
+            top       : 0;
+            right     : -300px;
+            z-index   : -4;
+            width     : 350px;
+            height    : 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 64, 175, 0.45) 0%, rgba(37, 99, 235, 0.2) 40%, transparent 70%);
+            filter    : blur(45px);
         }
     }
 

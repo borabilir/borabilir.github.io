@@ -2,9 +2,10 @@
     z-index                : 100;
     overflow               : auto;
     text-align             : center;
-    background-color       : rgba($color-dark, 0.5);
-    backdrop-filter        : blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color       : rgba(#000000, 0.75);
+    backdrop-filter        : blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation              : fadeIn 0.3s ease;
     @include fixed(0, 0, 0, 0);
     @include hideScrollbar();
 
@@ -26,16 +27,17 @@
         vertical-align : middle;
         position       : relative;
         display        : inline-block;
-        background-color: $color-white;
-        box-shadow     : 0 25px 80px rgba($color-dark, 0.2);
+        background-color: $color-primarybright;
+        box-shadow     : 0 25px 80px rgba(#000000, 0.6);
         transition     : all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow       : hidden;
-        border         : 1px solid rgba($color-gray, 0.1);
+        border         : 1px solid rgba($color-gray, 0.2);
+        animation      : slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
         header {
             overflow: hidden;
             position: relative;
-            color   : $color-white;
+            color   : $color-dark;
 
             &.default {
                 @include responsive(padding, 28px 32px, 20px 16px);
@@ -44,9 +46,14 @@
 
                 h2 {
                     width         : calc(100% - 40px);
-                    @include responsive(font-size, 32px, 24px);
+                    @include responsive(font-size, 24px, 20px);
                     font-weight   : 700;
                     letter-spacing: -0.01em;
+                    color         : $color-dark;
+                }
+                
+                h3, h4, p, span {
+                    color: rgba($color-dark, 0.9);
                 }
             }
 
@@ -57,7 +64,7 @@
                     width         : 100%;
                     text-align    : left;
                     color         : $color-dark;
-                    @include responsive(font-size, 32px, 24px);
+                    @include responsive(font-size, 22px, 18px);
                     font-weight   : 700;
                     letter-spacing: -0.01em;
                     @include responsive(margin-top, 24px, 14px);
@@ -132,13 +139,14 @@
                 .gallery {
                     @include flex(flex-start, flex-start, row);
                     width: 100%;
+                    transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
 
                     >.emptyImg {
                         width           : 100%;
                         @include responsive(height, 400px, 240px);
                         background-color: $color-lightgray;
-                        color           : $color-white;
+                        color           : $color-gray;
                         @include responsive(font-size, 24px, 18px);
                         @include flex(center, center, column, 10px);
                         @include responsive(gap, 10px, 6px);
@@ -154,6 +162,8 @@
                         @include responsive(min-width, 830px, 100%);
                         @include responsive(height, 400px, 240px);
                         object-fit: contain;
+                        opacity: 1;
+                        transition: opacity 0.3s ease-in-out;
                     }
                 }
             }
@@ -161,8 +171,8 @@
         }
 
         main {
-            @include responsive(font-size, 16px, 14px);
-            @include responsive(line-height, 26px, 22px);
+            @include responsive(font-size, 14px, 13px);
+            @include responsive(line-height, 22px, 20px);
             color: $color-dark;
 
             &.default {
@@ -223,5 +233,25 @@
                 }
             }
         }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }

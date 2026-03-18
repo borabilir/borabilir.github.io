@@ -63,29 +63,30 @@ const RecentProjects: React.FC = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <section id="projects" className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <Animator.h3 type="fadeDrop">
+          <Animator.h3 type="bounceIn" duration={0.3}>
             {t("projects.title").split(" ")[0]}{" "}
             <span>{t("projects.title").split(" ")[1]}</span>
           </Animator.h3>
-          <Animator.h4>{t("projects.description")}</Animator.h4>
-          <Animator.h5>{t("projects.note")}</Animator.h5>
-          <div className={styles.arrows}>
+          <Animator.h4 type="scaleIn" delay={0.05} duration={0.2}>{t("projects.description")}</Animator.h4>
+          <Animator.h5 type="fadeRise" delay={0.1} duration={0.2}>{t("projects.note")}</Animator.h5>
+          <Animator.div type="slideInLeft" delay={0.15} duration={0.25} className={styles.arrows}>
             <span onClick={() => onClickArrow("left")}>
               <ChevronLeftIcon />
             </span>
             <span onClick={() => onClickArrow("right")}>
               <ChevronRightIcon />
             </span>
-          </div>
+          </Animator.div>
         </div>
-        <Animator.div type="fadeDrop" className={styles.projectsContainer}>
+        <div className={styles.projectsContainer}>
           <div ref={ref} className={styles.projects}>
             {Projects.map((x, i) => (
               <Card
                 key={i}
+                index={i}
                 title={x.title}
                 description={x.description}
                 areas={x.areas}
@@ -94,10 +95,10 @@ const RecentProjects: React.FC = () => {
               />
             ))}
           </div>
-        </Animator.div>
+        </div>
         {renderModal()}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,7 +1,7 @@
 const Phone = () => {
     return (
         <div style={{ position: 'relative' }}>
-            <img src="photo.png" alt="" />
+            <img src="photo.jpeg" alt="" />
             {/* <motion.svg
                 style={{
                     width: 280,

@@ -6,7 +6,7 @@ type AnimatorProps = MotionProps & {
   className?: string;
   duration?: number;
   delay?: number;
-  type?: "fadeIn" | "fadeDrop" | "fadeRise";
+  type?: "fadeIn" | "fadeDrop" | "fadeRise" | "scaleIn" | "slideInLeft" | "slideInRight" | "rotateIn" | "bounceIn";
 };
 
 const Animator: React.FC<AnimatorProps & { as?: React.ElementType }> = ({
@@ -14,7 +14,7 @@ const Animator: React.FC<AnimatorProps & { as?: React.ElementType }> = ({
   className,
   as = "div",
   type = "fadeIn",
-  duration = 0.6,
+  duration = 0.3,
   delay,
   ...rest
 }) => {
@@ -30,17 +30,41 @@ const Animator: React.FC<AnimatorProps & { as?: React.ElementType }> = ({
       initial: { opacity: 0, y: 10 },
       whileInView: { opacity: 1, y: 0 },
     },
+    scaleIn: {
+      initial: { opacity: 0, scale: 0.8 },
+      whileInView: { opacity: 1, scale: 1 },
+    },
+    slideInLeft: {
+      initial: { opacity: 0, x: -60 },
+      whileInView: { opacity: 1, x: 0 },
+    },
+    slideInRight: {
+      initial: { opacity: 0, x: 60 },
+      whileInView: { opacity: 1, x: 0 },
+    },
+    rotateIn: {
+      initial: { opacity: 0, scale: 0.5, rotate: -10 },
+      whileInView: { opacity: 1, scale: 1, rotate: 0 },
+    },
+    bounceIn: {
+      initial: { opacity: 0, y: -30, scale: 0.9 },
+      whileInView: { opacity: 1, y: 0, scale: 1 },
+    },
   };
 
   const { initial, whileInView } = animationVariants[type];
+
+  const transitionConfig = type === "bounceIn" 
+    ? { duration, delay, type: "spring", stiffness: 260, damping: 20 }
+    : { duration, delay, ease: "easeOut" };
 
   return (
     <MotionComponent
       className={className}
       initial={initial}
       whileInView={whileInView}
-      viewport={{ once: true }}
-      transition={{ duration, delay }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={transitionConfig}
       {...rest}
     >
       {children}

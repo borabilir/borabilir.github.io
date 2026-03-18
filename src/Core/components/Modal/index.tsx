@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useRef, useState, useEffect } from "react";
 import Portal from "../Portal";
 import styles from "./styles.module.scss";
 import BlurryBackground from "App/components/BlurryBackground";
@@ -35,6 +35,17 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [visible]);
 
   const onClickArrow = (dir: "left" | "right") => {
     if (ref.current == null) return;

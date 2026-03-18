@@ -56,7 +56,7 @@ const Intro: React.FC = () => {
             </Animator>
           </div>
           <Animator delay={1.7} className={styles.right}>
-            <img src="photo.png" alt="" />
+            <img src="photo.jpeg" alt="" />
           </Animator>
         </div>
         <Animator delay={2} className={styles.stats}>

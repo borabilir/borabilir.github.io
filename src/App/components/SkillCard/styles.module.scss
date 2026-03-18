@@ -1,46 +1,87 @@
 .container {
   position: relative;
-  flex    : 1;
-  @include flex(flex-start, flex-start, column, 6px);
+  @include flex(flex-start, flex-start, column, 0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-4px);
+    
+    .skills {
+      border-color: rgba($color-primary, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba($color-primary, 0.2);
+    }
+  }
 
   .title {
-    color         : $color-light;
-    @include responsive(font-size, 26px, 20px);
-    @include responsive(text-align, left, center);
+    color         : $color-dark;
+    @include responsive(font-size, 20px, 18px);
     width         : 100%;
     font-weight   : 700;
-    @include responsive(padding-left, 10px, 0);
+    @include responsive(padding, 0 0 16px 0, 0 0 12px 0);
     position      : relative;
     letter-spacing: -0.01em;
+    display       : flex;
+    align-items   : center;
+    gap           : 8px;
+    
+    &::before {
+      content      : '';
+      width        : 4px;
+      height       : 20px;
+      background   : $gradient-modern;
+      border-radius: 2px;
+    }
   }
 
   .skills {
     position       : relative;
     height         : 100%;
     z-index        : 2;
-    background     : rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background     : rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(20px);
     margin         : 0 auto;
     width          : 100%;
-    border-radius  : 24px;
-    padding        : 20px;
-    @include flex(flex-start, flex-start, column, 20px);
-    @include responsive(gap, 20px, 12px);
-    border         : 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow     : $shadow-soft;
+    border-radius  : 20px;
+    @include responsive(padding, 32px, 28px);
+    @include flex(flex-start, flex-start, column, 28px);
+    @include responsive(gap, 28px, 24px);
+    border         : 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow     : 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition     : all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow       : hidden;
+    min-height     : auto;
+    
+    &::before {
+      content   : '';
+      position  : absolute;
+      top       : 0;
+      left      : 0;
+      right     : 0;
+      height    : 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
 
     .area {
+      width: 100%;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
       >h4 {
-        @include responsive(font-size, 19px, 15px);
+        @include responsive(font-size, 15px, 13px);
         @include responsive(margin-bottom, 12px, 10px);
         font-weight   : 600;
-        color         : $color-white;
-        text-transform: capitalize;
-        letter-spacing: 0.3px;
+        color         : $color-gray;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size     : 12px;
+        opacity       : 0.8;
       }
 
       .tags {
-        @include flex(flex-start, flex-start, row, 4px);
+        @include flex(flex-start, flex-start, row, 8px);
+        @include responsive(gap, 8px, 6px);
         flex-wrap: wrap;
       }
     }

@@ -10,17 +10,17 @@ const Skills: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.container}>
+    <section id="skills" className={styles.container}>
       <div className={styles.content}>
-        <Animator.h1 type="fadeDrop">{t("skills.title")}</Animator.h1>
-        <Animator.h2>{t("skills.description")}</Animator.h2>
+        <Animator.h1 type="bounceIn" duration={0.3}>{t("skills.title")}</Animator.h1>
+        <Animator.h2 type="scaleIn" delay={0.05} duration={0.2}>{t("skills.description")}</Animator.h2>
         <div className={styles.skillCards}>
           {skillAreas.map((area, i) => (
-            <SkillSection key={i} area={area} />
+            <SkillSection key={i} area={area} index={i} />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

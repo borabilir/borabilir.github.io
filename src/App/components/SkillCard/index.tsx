@@ -7,6 +7,7 @@ import Animator from 'Core/components/Animator';
 
 type SkillSectionProps = {
     area: SkillArea;
+    index: number;
 };
 
 const skillCategories: SkillCategory[] = [
@@ -20,7 +21,7 @@ const skillCategories: SkillCategory[] = [
     'default',
 ];
 
-const SkillSection: React.FC<SkillSectionProps> = ({ area }) => {
+const SkillSection: React.FC<SkillSectionProps> = ({ area, index }) => {
     const renderSkillTags = (area: SkillArea, category?: SkillCategory) =>
         Object.values(SkillSet)
             .filter((skill) =>
@@ -28,7 +29,7 @@ const SkillSection: React.FC<SkillSectionProps> = ({ area }) => {
                     ? skill.area === area && skill.category === category
                     : skill.area === area
             )
-            .map((x, i) => <SkillTag key={i} size="sm" skill={x} />);
+            .map((x, i) => <SkillTag key={i} size="sm" skill={x} index={i} />);
 
     const areaTitle: string =
         area === 'frontend'
@@ -37,8 +38,16 @@ const SkillSection: React.FC<SkillSectionProps> = ({ area }) => {
             ? 'Back-end Development'
             : 'Applications & Tools';
 
+    const animationType = index === 0 ? "slideInLeft" : index === 1 ? "scaleIn" : "slideInRight";
+    const baseDelay = 0.1 + (index * 0.04);
+
     return (
-        <Animator.div type="fadeRise" className={styles.container}>
+        <Animator.div 
+            type={animationType} 
+            className={styles.container}
+            duration={0.3}
+            delay={baseDelay}
+        >
             <div className={styles.title}>{areaTitle}</div>
             <div className={styles.skills}>
                 {skillCategories.map((c, i) => {

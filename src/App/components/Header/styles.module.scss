@@ -1,0 +1,105 @@
+@import 'Core/styles/index.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+
+  :global(body.modal-open) & {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  &.scrolled {
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .container {
+    @include content(1200px, 100%);
+    margin: 0 auto;
+    @include responsive(padding, 20px 32px, 16px 20px);
+    @include flex(center, space-between, row);
+  }
+
+  .logo {
+    @include flex(center, center, row);
+    
+    .logoText {
+      @include responsive(font-size, 28px, 24px);
+      font-weight: 800;
+      background: $gradient-modern;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .nav {
+    @include flex(center, center, row, 8px);
+    @include responsive(gap, 8px, 4px);
+    @include responsive(display, flex, none);
+  }
+
+  .navItem {
+    @include responsive(padding, 10px 20px, 8px 16px);
+    @include responsive(font-size, 15px, 13px);
+    font-weight: 500;
+    color: $color-dark;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: 0.3px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: $gradient-modern;
+      transition: width 0.3s ease;
+    }
+    
+    &:hover {
+      color: $color-primary;
+      background: rgba(59, 130, 246, 0.1);
+      
+      &::before {
+        width: 60%;
+      }
+    }
+    
+    &.active {
+      color: $color-primary;
+      background: rgba(59, 130, 246, 0.15);
+      
+      &::before {
+        width: 60%;
+      }
+    }
+    
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+  }
+}

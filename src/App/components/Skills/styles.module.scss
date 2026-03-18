@@ -2,45 +2,52 @@
   width   : 100%;
   position: relative;
   overflow: hidden;
-  @include responsive(padding, 60px 0 80px 0, 40px 0 50px 0);
-  background: $gradient-ocean;
+  @include responsive(padding, 100px 0 120px 0, 80px 0 90px 0);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
 
   .content {
     position: relative;
-    @include content(1000px, 100%);
+    @include content(1200px, 100%);
     @include flex(flex-start, flex-start, column);
-    padding: 0 4px;
+    padding: 0 24px;
     z-index: 1;
 
     >h1 {
-      color         : $color-light;
+      color         : $color-dark;
       width         : 100%;
       text-align    : center;
       margin        : 0 auto;
-      @include responsive(font-size, 42px, 32px);
+      @include responsive(font-size, 36px, 28px);
       font-weight   : 700;
       letter-spacing: -0.02em;
       line-height   : 1.2;
+      background    : $gradient-modern;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color         : transparent;
     }
 
     >h2 {
-      color       : $color-light;
-      margin-top  : 12px;
+      color       : $color-gray;
+      margin-top  : 16px;
       margin-left : auto;
       margin-right: auto;
-      @include responsive(font-size, 18px, 15px);
+      @include responsive(font-size, 16px, 14px);
       font-weight: 400;
       text-align : center;
       opacity    : 0.9;
+      max-width  : 600px;
     }
   }
 
   .skillCards {
-    @include responsive(margin-top, 40px, 20px);
-    @include flex(stretch, center, row, 10px);
-    @include responsive(align-items, stretch, flex-start);
-    @include responsive(gap, 10px, 20px);
-    @include responsive(flex-direction, row, column);
-    @include responsive(flex-wrap, wrap, nowrap);
+    @include responsive(margin-top, 60px, 40px);
+    display: flex;
+    flex-direction: column;
+    @include responsive(gap, 24px, 20px);
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

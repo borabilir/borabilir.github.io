@@ -1,33 +1,55 @@
 .container {
-    background   : $gradient-modern;
-    border-radius: 12px;
+    background   : rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
     overflow     : hidden;
-    color        : $color-light;
-    box-shadow   : $shadow-soft;
-    transition   : all 0.2s ease;
+    color        : $color-dark;
+    border       : 1px solid rgba(255, 255, 255, 0.1);
+    transition   : all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position     : relative;
+    
+    &::before {
+        content   : '';
+        position  : absolute;
+        inset     : 0;
+        background: $gradient-modern;
+        opacity   : 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    &:hover {
+        background  : rgba(255, 255, 255, 0.08);
+        border-color: rgba($color-primary, 0.3);
+        transform   : translateY(-2px);
+        
+        &::before {
+            opacity: 0.15;
+        }
+    }
 
     .tag {
-        font-weight: 600;
+        font-weight: 500;
         @include inlineFlex(center, flex-start, row, 6px);
+        position   : relative;
+        z-index    : 1;
 
         &.md {
-            @include responsive(font-size, 18px, 14px);
-            @include responsive(padding, 10px 16px, 8px 12px);
+            @include responsive(font-size, 14px, 12px);
+            @include responsive(padding, 10px 14px, 8px 12px);
 
             >span {
                 >svg {
-                    @include responsive(font-size, 22px, 16px);
+                    @include responsive(font-size, 18px, 14px);
                 }
             }
         }
 
         &.sm {
-            @include responsive(font-size, 14px, 10px);
-            @include responsive(padding, 8px 12px, 6px 8px);
+            @include responsive(font-size, 13px, 11px);
+            @include responsive(padding, 8px 12px, 6px 10px);
 
             >span {
                 >svg {
-                    @include responsive(font-size, 16px, 12px);
+                    @include responsive(font-size, 14px, 12px);
                 }
             }
         }
@@ -35,6 +57,7 @@
         >span {
             >svg {
                 @include flex(center, center);
+                opacity: 0.9;
             }
         }
     }

@@ -1,18 +1,39 @@
 .container {
-    background: $gradient-modern;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
     color     : $color-light;
     width     : 100%;
-    padding   : 60px 0 45px 0;
+    padding   : 80px 0 60px 0;
     @include responsive(font-size, 14px, 12px);
     text-align: center;
+    position  : relative;
+    overflow  : hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    &::before {
+        content   : '';
+        position  : absolute;
+        top       : 0;
+        left      : 0;
+        right     : 0;
+        bottom    : 0;
+        background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
 
     .content {
         @include content(1000px, 100%);
-        @include flex(center, center, column, 30px);
+        @include flex(center, center, column, 40px);
+        position: relative;
+        z-index : 1;
 
         .buttons {
-            @include flex(flex-start, flex-start, row, 10px);
+            @include flex(center, center, row, 16px);
         }
 
+        >span {
+            font-weight: 400;
+            color      : rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.02em;
+        }
     }
 }

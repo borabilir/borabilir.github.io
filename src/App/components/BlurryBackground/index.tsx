@@ -10,57 +10,49 @@ type BlurryBackgroundProps = {
 const BlurryBackground: React.FC<BlurryBackgroundProps> = ({ align }) => {
     return (
         <div className={cx(styles.container, styles[align])}>
-            <motion.img
-                className={styles.img1}
-                animate={{ x: [0, -50, 0], y: [0, 100, 0], scale: [1, 5, 1] }}
+            <motion.div
+                className={styles.circle1}
+                animate={{ x: [0, -50, 0], y: [0, 100, 0], scale: [1, 1.5, 1] }}
                 transition={{
-                    duration: 5,
+                    duration: 8,
                     repeat: Infinity,
                     ease: 'easeInOut',
                 }}
-                src="c3.png"
-                alt=""
             />
-            <motion.img
-                className={styles.img2}
+            <motion.div
+                className={styles.circle2}
                 animate={{
                     x: [0, 150, 0],
                     y: [0, -100, 0],
-                    scale: [1, 3.5, 1],
+                    scale: [1, 1.3, 1],
                 }}
                 transition={{
-                    duration: 5,
+                    duration: 10,
                     repeat: Infinity,
                     ease: 'easeInOut',
                 }}
-                src="c4.png"
-                alt=""
             />
-            <motion.img
-                className={styles.img3}
-                animate={{ x: [0, 50, 0], y: [0, -150, 0], scale: [1, 3.5, 1] }}
+            <motion.div
+                className={styles.circle3}
+                animate={{ x: [0, 50, 0], y: [0, -150, 0], scale: [1, 1.4, 1] }}
                 transition={{
-                    duration: 2,
+                    duration: 7,
                     repeat: Infinity,
                     ease: 'easeInOut',
                 }}
-                src="c1.png"
-                alt=""
             />
-            <motion.img
-                className={styles.img4}
+            <motion.div
+                className={styles.circle4}
                 animate={{
                     x: [-20, 50, -20],
                     y: [0, -300, 0],
-                    scale: [1, 2.5, 1],
+                    scale: [1, 1.2, 1],
                 }}
                 transition={{
-                    duration: 2,
+                    duration: 9,
                     repeat: Infinity,
                     ease: 'easeInOut',
                 }}
-                src="c2.png"
-                alt=""
             />
         </div>
     );

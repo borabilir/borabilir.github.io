@@ -32,7 +32,7 @@ const LetsTalk: React.FC = () => {
     };
 
     return (
-        <div className={styles.container}>
+        <section id="contact" className={styles.container}>
             <div className={styles.content}>
                 <div>
                     <Animator.h3 type="fadeRise">
@@ -81,7 +81,7 @@ const LetsTalk: React.FC = () => {
                     </form>
                 </Animator.div>
             </div>
-        </div>
+        </section>
     );
 };
 
