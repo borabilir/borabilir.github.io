@@ -6,8 +6,15 @@ import Skills from './components/Skills';
 import RecentProjects from './components/RecentProjects';
 import LetsTalk from './components/LetsTalk';
 import Footer from './components/Footer';
+import LoveQuiz from './pages/LoveQuiz';
 
 const Root: React.FC = () => {
+    const path = window.location.pathname.replace(/\/+$/, '') || '/';
+
+    if (path === '/q7m2x9k4') {
+        return <LoveQuiz />;
+    }
+
     return (
         <div style={{width:"100%", overflow:"hidden"}}>
             <Header />
