@@ -11,7 +11,7 @@ import LoveQuiz from './pages/LoveQuiz';
 const Root: React.FC = () => {
     const path = window.location.pathname.replace(/\/+$/, '') || '/';
 
-    if (path === '/q7m2x9k4') {
+    if (path === '/q7m2x9k4' || path === '/pasaparola') {
         return <LoveQuiz />;
     }
 
