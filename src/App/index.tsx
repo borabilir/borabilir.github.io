@@ -11,12 +11,14 @@ import MarioGame from './pages/Mario';
 
 const Root: React.FC = () => {
     const path = window.location.pathname.replace(/\/+$/, '') || '/';
+    const requestedPage = new URLSearchParams(window.location.search).get('page');
 
     if (path === '/q7m2x9k4' || path === '/pasaparola') {
         return <LoveQuiz />;
     }
 
-    if (path === '/mario') {
+    if (path === '/mario' || requestedPage === 'mario') {
+        if (requestedPage === 'mario') window.history.replaceState(null, '', '/mario');
         return <MarioGame />;
     }
 
