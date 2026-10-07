@@ -7,12 +7,17 @@ import RecentProjects from './components/RecentProjects';
 import LetsTalk from './components/LetsTalk';
 import Footer from './components/Footer';
 import LoveQuiz from './pages/LoveQuiz';
+import MarioGame from './pages/Mario';
 
 const Root: React.FC = () => {
     const path = window.location.pathname.replace(/\/+$/, '') || '/';
 
     if (path === '/q7m2x9k4' || path === '/pasaparola') {
         return <LoveQuiz />;
+    }
+
+    if (path === '/mario') {
+        return <MarioGame />;
     }
 
     return (
