@@ -1,0 +1,115 @@
+.opening { position: absolute; z-index: 6; inset: 0; overflow: hidden; color: #26384a; background: #a8dedf; font-family: 'DM Sans', Arial, sans-serif; }
+.opening button { font-family: inherit; cursor: pointer; }
+.opening button:focus-visible { outline: 3px solid #26384a; outline-offset: 5px; }
+.village { position: absolute; inset: 0; width: 100%; height: 100%; }
+.menu::after { position: absolute; z-index: 0; inset: 0; content: ''; background: linear-gradient(90deg, #fff9e9f5, #fff9e9ce 33%, #fff9e930 59%, transparent 77%); }
+.menuContent { position: absolute; z-index: 1; top: 7%; left: 6%; width: 49%; }
+.kicker { font-size: clamp(8px, .78vw, 12px); font-weight: 900; letter-spacing: .16em; color: #aa4140; }
+.menuContent h1 { margin-top: 14px; font: 400 clamp(42px, 5.6vw, 84px)/.93 'Lilita One', Impact, sans-serif; letter-spacing: -.025em; text-transform: uppercase; }
+.menuContent h1 span { color: #e24d4e; text-shadow: 3px 3px 0 #fff9e9; }
+.menuLead { margin: 18px 0 23px; font-size: clamp(13px, 1.25vw, 19px); line-height: 1.4; font-weight: 700; }
+.menuButtons { display: grid; gap: 10px; width: min(290px, 85%); }
+.menuButtons button, .playButton { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 44px; padding: 0 19px; border: 2px solid #26384a; border-radius: 10px; background: #fff9e9; color: #26384a; box-shadow: 3px 3px 0 #26384a; font-size: 11px; font-weight: 900; letter-spacing: .06em; transition: translate .15s, box-shadow .15s; }
+.menuButtons .playButton, .playButton { min-height: 52px; color: #fff9e9; background: #dd504e; }
+.menuButtons button:hover, .playButton:hover { translate: 2px 2px; box-shadow: 1px 1px 0 #26384a; }
+.menuButtons button span, .playButton span { font-size: 16px; }
+.menuFootnote { margin-top: 24px; font-size: 10px; font-weight: 700; color: #5b6b71; }
+.portrait { display: block; width: 76px; height: 76px; flex: 0 0 auto; object-fit: cover; border: 3px solid #fff9e9; border-radius: 50%; background: #ffe0be; box-shadow: 0 0 0 2px #b94a39, 3px 5px 0 #26384a25; }
+.pinkPortrait { background: #f9cee5; box-shadow: 0 0 0 2px #b83b7c, 3px 5px 0 #26384a25; }
+.menuTeam { position: absolute; z-index: 1; right: 11%; bottom: 10%; display: flex; align-items: center; gap: 23px; }
+.menuTeam > div { display: grid; justify-items: center; gap: 10px; }
+.menuTeam .portrait { width: clamp(64px, 7.5vw, 112px); height: clamp(64px, 7.5vw, 112px); }
+.menuTeam strong { padding: 4px 10px; border: 2px solid #26384a; border-radius: 6px; background: #fff9e9; font-size: 11px; letter-spacing: .08em; box-shadow: 2px 2px 0 #26384a; }
+.menuTeam > span { color: #dd504e; font-size: 27px; text-shadow: 2px 2px 0 #fff9e9; }
+.storyTop { position: absolute; z-index: 2; inset: 18px 22px auto; display: flex; justify-content: space-between; gap: 12px; }
+.storyTop > div { display: flex; gap: 10px; }
+.storyTop button { padding: 9px 12px; border: 2px solid #26384a; border-radius: 8px; background: #fff9e9ed; font-size: 9px; font-weight: 900; }
+.caption { position: absolute; inset: auto 0 0; display: flex; justify-content: space-between; align-items: center; gap: 30px; padding: 23px 4%; border-top: 3px solid #26384a; background: #fff9e9; box-shadow: 0 -8px 35px #26384a15; }
+.caption > div:first-child { max-width: 730px; }
+.caption h2 { margin: 7px 0; font: 400 clamp(23px, 2.6vw, 40px)/1.05 'Lilita One', Impact, sans-serif; }
+.caption > div > p:last-child { font-size: clamp(11px, 1vw, 15px); line-height: 1.5; }
+.storyNavigation { display: flex; flex-direction: column; align-items: flex-end; gap: 17px; flex: 0 0 auto; }
+.progress { display: flex; gap: 6px; }
+.progress i { width: 18px; height: 5px; border-radius: 3px; background: #d5d5c4; }
+.progress .current { width: 32px; background: #dd504e; }
+.speech { position: absolute; top: 24%; left: 42%; width: min(38%, 360px); padding: 14px 18px; border: 2px solid #26384a; border-radius: 17px 17px 17px 0; background: #fff9e9; box-shadow: 4px 4px 0 #26384a25; animation: speechIn .3s ease both; }
+.speech strong { color: #ae4145; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
+.speaker { display: flex; align-items: center; gap: 10px; }
+.speaker .portrait { width: 38px; height: 38px; border-width: 2px; }
+.speaker .portrait + .portrait { margin-left: -17px; }
+.speech p { margin-top: 5px; font-size: clamp(12px, 1.4vw, 20px); line-height: 1.25; font-weight: 700; }
+.controlsBackdrop { position: absolute; z-index: 5; inset: 0; display: grid; place-items: center; padding: 20px; background: #26384a66; backdrop-filter: blur(5px); }
+.controlsCard { width: min(100%, 530px); max-height: 100%; overflow: auto; padding: 30px; border: 3px solid #26384a; border-radius: 18px; background: #fff9e9; box-shadow: 6px 6px 0 #26384a; text-align: center; }
+.controlsCard h2 { margin: 10px 0 22px; font: 400 38px 'Lilita One', Impact, sans-serif; }
+.controlsCard > div { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: left; }
+.controlsCard > div > p { padding: 14px; border: 2px solid #e5ddc9; border-radius: 10px; }
+.controlsCard .portrait { width: 56px; height: 56px; margin-bottom: 12px; }
+.controlsCard strong { display: block; margin-bottom: 9px; color: #dd504e; font-weight: 900; }
+.controlsCard > div > p:last-child strong { color: #c93a81; }
+.controlsCard span { font-size: 12px; line-height: 1.7; }
+.controlTip { margin: 20px 0; font-size: 11px; line-height: 1.6; color: #5b6b71; }
+.clouds { animation: cloudDrift 15s ease-in-out infinite alternate; }
+.catBob { animation: catBreathe 2.4s ease-in-out infinite; transform-origin: 75px 130px; }
+.heroBob { animation: heroIdle 2.1s ease-in-out infinite; }
+.sneaking { animation: sneak 5s ease-in-out forwards; }
+.escaping { animation: escape 5.5s ease-in forwards; }
+.chasing { animation: chase 5.5s .6s ease-in forwards; }
+.chasing .heroBob { animation: heroRun .22s infinite alternate; }
+.escaping .catBob { animation: heroRun .2s infinite alternate; }
+@keyframes cloudDrift { to { translate: 35px 0; } }
+@keyframes catBreathe { 50% { scale: 1 1.025; } }
+@keyframes heroIdle { 50% { translate: 0 -3px; } }
+@keyframes sneak { to { translate: -50px 0; } }
+@keyframes escape { to { translate: 540px -50px; } }
+@keyframes chase { to { translate: 530px -25px; } }
+@keyframes heroRun { to { translate: 0 -8px; rotate: 3deg; } }
+@keyframes speechIn { from { opacity: 0; translate: 0 8px; } }
+@media (max-width: 900px) {
+    .menuContent { top: 8%; left: 5%; }
+    .menuContent h1 { font-size: 54px; }
+    .menuLead { margin: 14px 0; }
+    .menuButtons { gap: 8px; }
+    .menuButtons button { min-height: 36px; font-size: 10px; }
+    .menuButtons .playButton { min-height: 44px; }
+    .menuFootnote { margin-top: 14px; font-size: 9px; max-width: 220px; }
+    .menuTeam { right: 8%; bottom: 8%; gap: 15px; }
+    .caption { padding: 15px 3%; gap: 16px; }
+    .caption h2 { font-size: 25px; }
+    .storyNavigation .playButton { min-height: 42px; padding: 0 12px; font-size: 9px; }
+    .speech { top: 21%; padding: 10px 13px; }
+}
+@media (max-width: 520px) {
+    .menuContent { width: 64%; top: 6%; }
+    .menuContent h1 { font-size: 40px; }
+    .menuLead { font-size: 12px; }
+    .menuFootnote { max-width: 180px; font-size: 8px; }
+    .menuTeam { right: 6%; bottom: 9%; gap: 8px; }
+    .menuTeam .portrait { width: 55px; height: 55px; }
+    .menuTeam > div { gap: 7px; }
+    .menuTeam strong { font-size: 8px; padding: 3px 6px; }
+    .menuTeam > span { font-size: 18px; }
+    .storyTop { inset: 12px 10px auto; gap: 5px; }
+    .storyTop > div { gap: 5px; }
+    .storyTop button { padding: 7px; font-size: 8px; }
+    .speech { top: 20%; left: 27%; width: 60%; }
+    .caption { flex-direction: column; align-items: stretch; gap: 10px; }
+    .caption h2 { font-size: 24px; }
+    .storyNavigation { flex-direction: row; align-items: center; justify-content: space-between; }
+    .controlsCard { padding: 20px; }
+    .controlsCard h2 { font-size: 29px; }
+    .controlsCard > div { gap: 7px; }
+    .controlsCard > div > p { padding: 9px; }
+    .controlsCard span { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .opening *, .opening *::before, .opening *::after { animation: none !important; transition: none !important; }
+    .escaping { translate: 300px 0; }
+    .chasing { translate: 240px 0; }
+}
+.menuCat { position: absolute; z-index: 1; width: 23%; top: 33%; right: 10%; overflow: visible; filter: drop-shadow(5px 10px 0 #26384a18); }
+.paused .village * { animation-play-state: paused; }
+@media (max-width: 520px) {
+    .menuCat { width: 31%; right: 4%; top: 46%; }
+    .story .village { top: 48px; height: calc(100% - 205px); }
+    .story .speech { top: 13%; left: 15%; width: 72%; }
+}

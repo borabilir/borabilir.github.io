@@ -1,9 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
+import { Opening } from './Opening';
+import { drawPlayerSprite, PLAYER_APPEARANCES } from './playerArt';
+import { findPartnerSpawn } from './respawn';
+import { BONUS_SIGNS, clearCoinPositions, EXIT_AREA_SIGNS, MAIN_SIGNS, signBounds, SKY_SIGNS, UNDERGROUND_SIGNS, WATER_SIGNS, WorldSign } from './worldLayout';
+import { canGrabFlag, EXIT_AREA_END, EXIT_AREA_START, EXIT_PIPE, EXIT_SPAWNS, FLAG_HEIGHT, finishStairs, LEVEL_FINISHES } from './levelFinish';
+import { useGameMusic } from './music';
+import { ARENA_START, drawKestilBackground, drawKestilEncounter, drawKestilStory, inKestilLava, KESTIL_BLOCK_ROWS, KESTIL_COINS, KESTIL_PLATFORMS, KESTIL_SIGNS, KESTIL_WIDTH, KestilEncounter, SURPU_MAX_HEALTH, touchesKestilFire } from './kestil';
 
-type Phase = 'intro' | 'playing' | 'won' | 'gameover';
+type Phase = 'menu' | 'story' | 'intro' | 'playing' | 'ending' | 'ended' | 'won' | 'gameover';
 type PlayerId = 'bora' | 'gozde';
 type LevelId = '1-1' | '1-2' | '1-3' | '1-4' | '1-5';
+
+const NEXT_LEVELS: Partial<Record<LevelId, LevelId>> = { '1-1': '1-2', '1-2': '1-3', '1-3': '1-4', '1-4': '1-5' };
 
 type Player = {
     id: PlayerId;
@@ -32,11 +41,11 @@ type Coin = { x: number; y: number; taken: boolean };
 type EnemyKind = 'goomba' | 'turtle' | 'fish';
 type EnemyState = 'walking' | 'shellStill' | 'shellMoving';
 type Enemy = Rect & { kind: EnemyKind; state: EnemyState; vx: number; vy: number; minX: number; maxX: number; alive: boolean; dangerousAt: number; swimPhase: number; baseY: number };
-type WorldBlock = Rect & { kind: 'brick' | 'question'; reward: 'none' | 'coin' | 'growth' | 'upgrade'; used: boolean; destroyed: boolean; bump: number; coinAnimation: number };
+type WorldBlock = Rect & { kind: 'brick' | 'question' | 'step'; reward: 'none' | 'coin' | 'growth' | 'upgrade'; used: boolean; destroyed: boolean; bump: number; coinAnimation: number };
 type PowerUp = Rect & { kind: 'growth' | 'fire'; target: PlayerId; vx: number; vy: number; emerging: number; active: boolean; color: string };
 type Fireball = Rect & { owner: PlayerId; vx: number; vy: number; active: boolean; life: number; color: string };
 type PlayerCounter = Record<PlayerId, number>;
-type GameSnapshot = { coins: PlayerCounter; lives: PlayerCounter; phase: Phase; sound: boolean };
+type GameSnapshot = { coins: PlayerCounter; lives: PlayerCounter; phase: Phase; sound: boolean; bossHealth?: number; storyCaption?: string };
 
 const GAME_WIDTH = 1440;
 const GAME_HEIGHT = 810;
@@ -44,7 +53,7 @@ const MAIN_WORLD_WIDTH = 6650;
 const BONUS_START = 6900;
 const BONUS_END = 8420;
 const UNDERGROUND_WORLD_WIDTH = 7400;
-const SKY_WORLD_WIDTH = 6600;
+const SKY_WORLD_WIDTH = 7200;
 const WATER_WORLD_WIDTH = 7200;
 const WATER_START = 1800;
 const GROUND_Y = 690;
@@ -90,19 +99,19 @@ const blockRows: { x: number; y: number; pattern: string }[] = [
     { x: 360, y: 500, pattern: 'bqbmb' },
     { x: 472, y: 330, pattern: 'q' },
     { x: 1120, y: 485, pattern: 'bbqbb' },
-    { x: 1390, y: 315, pattern: 'bqb' },
+    { x: 1280, y: 315, pattern: 'bqb' },
     { x: 2020, y: 500, pattern: 'bqub' },
-    { x: 2250, y: 320, pattern: 'bbqb' },
+    { x: 2100, y: 330, pattern: 'bbqb' },
     { x: 2680, y: 500, pattern: 'bqb' },
     { x: 3190, y: 490, pattern: 'bbqbb' },
-    { x: 3470, y: 310, pattern: 'bqb' },
+    { x: 3330, y: 320, pattern: 'bqb' },
     { x: 3900, y: 490, pattern: 'bubbb' },
-    { x: 4430, y: 310, pattern: 'bqb' },
+    { x: 4200, y: 392, pattern: 'bqb' },
     { x: 4920, y: 485, pattern: 'bbqbb' },
-    { x: 5430, y: 315, pattern: 'bqb' },
-    { x: 6140, y: 475, pattern: 'bbbqb' },
-    { x: 7310, y: 505, pattern: 'bqbub' },
-    { x: 7590, y: 305, pattern: 'bqbbqb' },
+    { x: 5050, y: 315, pattern: 'bqb' },
+    { x: 5390, y: 480, pattern: 'bbbqb' },
+    { x: 7310, y: 505, pattern: 'bqbubb' },
+    { x: 7350, y: 335, pattern: 'bqbbqb' },
 ];
 
 const undergroundPlatforms: Platform[] = [
@@ -139,18 +148,18 @@ const undergroundEnemyBlueprints: [number, number, number, number, EnemyKind?][]
 
 const undergroundBlockRows: { x: number; y: number; pattern: string }[] = [
     { x: 300, y: 500, pattern: 'bmbqqb' },
-    { x: 650, y: 315, pattern: 'bqb' },
+    { x: 420, y: 330, pattern: 'bqb' },
     { x: 1060, y: 485, pattern: 'bbq' },
     { x: 1420, y: 500, pattern: 'bqbbb' },
     { x: 2030, y: 490, pattern: 'bbubbb' },
-    { x: 2320, y: 305, pattern: 'bqbb' },
+    { x: 2180, y: 320, pattern: 'bqbb' },
     { x: 2740, y: 500, pattern: 'bqbbb' },
-    { x: 3300, y: 315, pattern: 'bbqbb' },
+    { x: 2870, y: 330, pattern: 'bbqbb' },
     { x: 3820, y: 500, pattern: 'bubqb' },
-    { x: 4510, y: 310, pattern: 'bbbq' },
+    { x: 4220, y: 375, pattern: 'bbbq' },
     { x: 4950, y: 500, pattern: 'bqbb' },
-    { x: 5660, y: 480, pattern: 'bbubb' },
-    { x: 6200, y: 315, pattern: 'bqbbqb' },
+    { x: 5660, y: 480, pattern: 'bbubbbb' },
+    { x: 5700, y: 310, pattern: 'bqbbqb' },
     { x: 6610, y: 500, pattern: 'bbqbb' },
 ];
 
@@ -168,7 +177,7 @@ const skyPlatforms: Platform[] = [
     { x: 4690, y: 500, width: 260, height: 370, kind: 'treetop' },
     { x: 5080, y: 385, width: 300, height: 485, kind: 'treetop' },
     { x: 5500, y: 560, width: 420, height: 310, kind: 'treetop' },
-    { x: 6040, y: 650, width: 560, height: 220, kind: 'treetop' },
+    { x: 6040, y: 650, width: 1160, height: 220, kind: 'treetop' },
 ];
 
 const skyCoinPositions = [
@@ -220,6 +229,8 @@ const waterPlatforms: Platform[] = [
     { x: 5350, y: 72, width: 200, height: 315, kind: 'ground' },
     { x: 5790, y: 570, width: 240, height: 150, kind: 'ground' },
     { x: 6260, y: 72, width: 190, height: 250, kind: 'ground' },
+    // Anchor the exit pipe to the cave wall, from the ceiling to the seabed.
+    { x: 7070, y: 72, width: WATER_WORLD_WIDTH - 7070, height: 648, kind: 'ground' },
     { x: 6810, y: 305, width: 260, height: 190, kind: 'sidePipe', travel: 'waterExit' },
 ];
 
@@ -265,15 +276,15 @@ const intersects = (a: Rect, b: Rect) => a.x < b.x + b.width && a.x + a.width > 
 
 const makePlayer = (id: PlayerId, x: number): Player => ({
     id,
-    name: id === 'bora' ? 'Bora' : 'Gözde',
+    name: PLAYER_APPEARANCES[id].name,
     x,
     y: 570,
     vx: 0,
     vy: 0,
     width: 46,
     height: 66,
-    color: id === 'bora' ? '#ef4444' : '#e9448c',
-    accent: id === 'bora' ? '#2558d9' : '#7c3aed',
+    color: PLAYER_APPEARANCES[id].color,
+    accent: PLAYER_APPEARANCES[id].accent,
     direction: 1,
     grounded: false,
     isBig: false,
@@ -294,16 +305,20 @@ const MarioGame: React.FC = () => {
     const [snapshot, setSnapshot] = useState<GameSnapshot>({
         coins: { bora: 0, gozde: 0 },
         lives: { bora: 5, gozde: 5 },
-        phase: 'intro',
+        phase: 'menu',
         sound: true,
     });
     const [runId, setRunId] = useState(0);
     const [selectedLevel, setSelectedLevel] = useState<LevelId>('1-1');
     const [showLevelSelect, setShowLevelSelect] = useState(false);
+    const nextLevel = NEXT_LEVELS[selectedLevel];
     const isUndergroundLevel = selectedLevel === '1-2';
     const isSkyLevel = selectedLevel === '1-3';
     const isWaterLevel = selectedLevel === '1-4';
-    const totalCoins = isUndergroundLevel ? UNDERGROUND_TOTAL_COINS : isSkyLevel ? SKY_TOTAL_COINS : isWaterLevel ? WATER_TOTAL_COINS : TOTAL_COINS;
+    const isKestilLevel = selectedLevel === '1-5';
+    const gameplayPhase = snapshot.phase === 'menu' || snapshot.phase === 'story' ? 'hidden' : snapshot.phase === 'intro' ? 'ready' : 'running';
+    const totalCoins = isKestilLevel ? KESTIL_COINS.length + 2 : isUndergroundLevel ? UNDERGROUND_TOTAL_COINS : isSkyLevel ? SKY_TOTAL_COINS : isWaterLevel ? WATER_TOTAL_COINS : TOTAL_COINS;
+    const music = useGameMusic(snapshot.phase, selectedLevel, snapshot.sound, runId);
 
     const beep = useCallback((frequency: number, duration = 0.08, type: OscillatorType = 'square') => {
         if (!soundRef.current) return;
@@ -328,11 +343,36 @@ const MarioGame: React.FC = () => {
     }, []);
 
     const startGame = useCallback(() => {
+        keysRef.current.clear();
+        touchRef.current.clear();
         beep(440, 0.07);
         window.setTimeout(() => beep(660, 0.1), 70);
         setSnapshot({ coins: { bora: 0, gozde: 0 }, lives: { bora: 5, gozde: 5 }, phase: 'playing', sound: soundRef.current });
         setRunId((value) => value + 1);
     }, [beep]);
+
+    const startNextLevel = () => {
+        if (!nextLevel) return;
+        setSelectedLevel(nextLevel);
+        setShowLevelSelect(false);
+        startGame();
+    };
+
+    const returnToMenu = useCallback(() => {
+        keysRef.current.clear();
+        touchRef.current.clear();
+        setShowLevelSelect(false);
+        setSnapshot(current => ({ ...current, phase: 'menu' }));
+    }, []);
+
+    const startStory = () => {
+        keysRef.current.clear();
+        touchRef.current.clear();
+        setSelectedLevel('1-1');
+        setShowLevelSelect(false);
+        setSnapshot(current => ({ ...current, phase: 'story' }));
+        beep(520, .12, 'triangle');
+    };
 
     const toggleSound = () => {
         soundRef.current = !soundRef.current;
@@ -341,7 +381,6 @@ const MarioGame: React.FC = () => {
     };
 
     const chooseLevel = (level: LevelId) => {
-        if (level === '1-5') return;
         setSelectedLevel(level);
         setSnapshot({ coins: { bora: 0, gozde: 0 }, lives: { bora: 5, gozde: 5 }, phase: 'intro', sound: soundRef.current });
         setRunId((value) => value + 1);
@@ -351,16 +390,22 @@ const MarioGame: React.FC = () => {
 
     useEffect(() => {
         const previousTitle = document.title;
-        document.title = `İki Kişilik Macera ${selectedLevel} • Bora & Gözde`;
+        document.title = `Bokçuk Şurpunun Peşinde • Bora & Gözde • ${selectedLevel}`;
         return () => { document.title = previousTitle; };
     }, [selectedLevel]);
 
     useEffect(() => {
         const down = (event: KeyboardEvent) => {
             const key = event.key.toLowerCase();
+            if (key === 'escape' && snapshot.phase !== 'menu') {
+                returnToMenu();
+                return;
+            }
+            if (!['playing', 'ending', 'ended', 'won', 'gameover'].includes(snapshot.phase)) return;
+            if (event.target instanceof HTMLElement && event.target.closest('button, a, input, textarea, select')) return;
             if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'enter', ' ', 'w', 'a', 's', 'd', 'f'].includes(key)) event.preventDefault();
             keysRef.current.add(key);
-            if (key === 'r' && snapshot.phase !== 'intro') startGame();
+            if (key === 'r' && !event.repeat) startGame();
         };
         const up = (event: KeyboardEvent) => keysRef.current.delete(event.key.toLowerCase());
         const blur = () => keysRef.current.clear();
@@ -372,24 +417,28 @@ const MarioGame: React.FC = () => {
             window.removeEventListener('keyup', up);
             window.removeEventListener('blur', blur);
         };
-    }, [snapshot.phase, startGame]);
+    }, [snapshot.phase, startGame, returnToMenu]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
+        if (gameplayPhase === 'hidden') return;
         const context = canvas.getContext('2d');
         if (!context) return;
 
-        const activePlatforms = (isUndergroundLevel ? undergroundPlatforms : isSkyLevel ? skyPlatforms : isWaterLevel ? waterPlatforms : platforms).map((platform) => ({ ...platform }));
-        const activeCoinPositions = isUndergroundLevel ? undergroundCoinPositions : isSkyLevel ? skyCoinPositions : isWaterLevel ? waterCoinPositions : coinPositions;
-        const activeBlockRows = isUndergroundLevel ? undergroundBlockRows : isSkyLevel ? skyBlockRows : isWaterLevel ? waterBlockRows : blockRows;
-        const activeEnemyBlueprints = isUndergroundLevel ? undergroundEnemyBlueprints : isSkyLevel ? skyEnemyBlueprints : isWaterLevel ? waterEnemyBlueprints : enemyBlueprints;
-        const activeWorldWidth = isUndergroundLevel ? UNDERGROUND_WORLD_WIDTH : isSkyLevel ? SKY_WORLD_WIDTH : isWaterLevel ? WATER_WORLD_WIDTH : MAIN_WORLD_WIDTH;
-        const finishWorldX = isSkyLevel ? 6240 : 6370;
-        const finishBaseY = isSkyLevel ? 650 : GROUND_Y;
+        const activePlatforms: Platform[] = (isKestilLevel ? KESTIL_PLATFORMS : isUndergroundLevel ? undergroundPlatforms : isSkyLevel ? skyPlatforms : isWaterLevel ? waterPlatforms : platforms).map((platform) => ({ ...platform }));
+        if (isUndergroundLevel || isWaterLevel) activePlatforms.push(
+            { x: EXIT_AREA_START, y: GROUND_Y, width: EXIT_AREA_END - EXIT_AREA_START, height: 160, kind: 'ground' },
+            { ...EXIT_PIPE, kind: 'pipe' },
+        );
+        const activeCoinPositions = isKestilLevel ? KESTIL_COINS : isUndergroundLevel ? undergroundCoinPositions : isSkyLevel ? skyCoinPositions : isWaterLevel ? waterCoinPositions : coinPositions;
+        const activeBlockRows = isKestilLevel ? KESTIL_BLOCK_ROWS : isUndergroundLevel ? undergroundBlockRows : isSkyLevel ? skyBlockRows : isWaterLevel ? waterBlockRows : blockRows;
+        const activeEnemyBlueprints = isKestilLevel ? [] : isUndergroundLevel ? undergroundEnemyBlueprints : isSkyLevel ? skyEnemyBlueprints : isWaterLevel ? waterEnemyBlueprints : enemyBlueprints;
+        const activeWorldWidth = isKestilLevel ? KESTIL_WIDTH : isUndergroundLevel ? UNDERGROUND_WORLD_WIDTH : isSkyLevel ? SKY_WORLD_WIDTH : isWaterLevel ? WATER_WORLD_WIDTH : MAIN_WORLD_WIDTH;
+        const finish = LEVEL_FINISHES[selectedLevel] ?? LEVEL_FINISHES['1-1'];
         const players = [makePlayer('bora', 150), makePlayer('gozde', 220)];
         if (isUndergroundLevel) players.forEach((player) => { player.y = 90; });
-        const coins: Coin[] = activeCoinPositions.map(([x, y]) => ({ x, y, taken: false }));
+        const levelSigns = isKestilLevel ? KESTIL_SIGNS : isUndergroundLevel ? [...UNDERGROUND_SIGNS, ...EXIT_AREA_SIGNS] : isSkyLevel ? SKY_SIGNS : isWaterLevel ? [...WATER_SIGNS, ...EXIT_AREA_SIGNS, { x: 8910, y: 585, lines: ['Şurpu Kestıl', 'Oyuncaklar içeride!'] }] : MAIN_SIGNS;
         const blocks = activeBlockRows.reduce<WorldBlock[]>((result, row) => {
             row.pattern.split('').forEach((kind, index) => result.push({
                 x: row.x + index * 56,
@@ -405,6 +454,15 @@ const MarioGame: React.FC = () => {
             }));
             return result;
         }, []);
+        if (!isKestilLevel) blocks.push(...finishStairs(finish).map(block => ({ ...block, kind: 'step' as const, reward: 'none' as const,
+            used: false, destroyed: false, bump: 0, coinAnimation: 0 })));
+        const coins: Coin[] = clearCoinPositions(activeCoinPositions, [
+            ...activePlatforms.map(platform => ({ x: platform.x - 3, y: platform.y - 20,
+                width: platform.width + 6, height: platform.height + 23 })),
+            ...blocks.map(block => ({ x: block.x - 3, y: block.y - 14,
+                width: block.width + 6, height: block.height + 17 })),
+            ...[...levelSigns, ...(!isKestilLevel && !isUndergroundLevel && !isSkyLevel && !isWaterLevel ? BONUS_SIGNS : [])].flatMap(signBounds),
+        ], GAME_HEIGHT);
         const powerUps: PowerUp[] = [];
         const fireballs: Fireball[] = [];
         const enemies: Enemy[] = activeEnemyBlueprints.map(([x, y, minX, maxX, kind = 'goomba'], index) => ({
@@ -428,10 +486,21 @@ const MarioGame: React.FC = () => {
         const playerCoins: PlayerCounter = { bora: 0, gozde: 0 };
         const playerLives: PlayerCounter = { bora: 5, gozde: 5 };
         let lastTime = performance.now();
-        let active = snapshot.phase === 'playing';
+        let active = gameplayPhase === 'running';
         let finishTimer = 0;
         let inBonus = false;
         let inWater = false;
+        let inExitArea = false;
+        const flagCaught: Record<PlayerId, boolean> = { bora: false, gozde: false };
+        let flagDrop = 0;
+        let kestilTime = 0;
+        const encounter = isKestilLevel ? new KestilEncounter() : null;
+        let endingCaption = '';
+        const worldBounds = () => ({
+            minX: encounter?.entered && !encounter.chasing ? ARENA_START : inBonus ? BONUS_START : inExitArea ? EXIT_AREA_START : isWaterLevel && inWater ? WATER_START : 0,
+            maxX: inBonus ? BONUS_END : inExitArea ? EXIT_AREA_END : activeWorldWidth,
+        });
+        const finishAvailable = () => !isKestilLevel && !inBonus && (!(isWaterLevel || isUndergroundLevel) || inExitArea);
         let pipeCooldown = 0;
         let pipeFlash = 0;
         let pipeTransition: {
@@ -458,15 +527,23 @@ const MarioGame: React.FC = () => {
             player.fireCooldown = 0;
             player.swimCooldown = 0;
             player.height = 66;
-            player.x = player.checkpoint;
-            if (isWaterLevel && inWater) {
-                player.y = 360;
+            const swimming = isWaterLevel && inWater;
+            const partner = players.find(other => other.id !== player.id && playerLives[other.id] > 0);
+            const spawn = partner && findPartnerSpawn(player, partner,
+                [...activePlatforms, ...blocks.filter(block => !block.destroyed)],
+                { ...worldBounds(), height: GAME_HEIGHT }, swimming);
+            if (spawn) {
+                player.x = spawn.x;
+                player.y = spawn.y;
+                player.grounded = spawn.grounded;
             } else {
+                player.x = player.checkpoint;
                 const spawnCenter = player.checkpoint + player.width / 2;
                 const spawnPlatform = activePlatforms
-                    .filter((platform) => spawnCenter >= platform.x && spawnCenter <= platform.x + platform.width)
+                    .filter((platform) => platform.y >= player.height && spawnCenter >= platform.x && spawnCenter <= platform.x + platform.width)
                     .sort((a, b) => a.y - b.y)[0];
-                player.y = (spawnPlatform?.y ?? GROUND_Y) - player.height;
+                player.y = swimming ? 360 : (spawnPlatform?.y ?? GROUND_Y) - player.height;
+                player.grounded = !swimming && !!spawnPlatform;
             }
             player.vx = 0;
             player.vy = 0;
@@ -474,7 +551,7 @@ const MarioGame: React.FC = () => {
         };
 
         const hurt = (player: Player, fell = false) => {
-            if (!active) return;
+            if (!active || flagCaught[player.id]) return;
             if (!fell && performance.now() < player.invincibleUntil) return;
             if (!fell && player.hasFire) {
                 player.hasFire = false;
@@ -531,6 +608,13 @@ const MarioGame: React.FC = () => {
         };
 
         const updatePlayer = (player: Player, dt: number) => {
+            if (flagCaught[player.id]) {
+                player.y = Math.min(finish.groundY - player.height, player.y + 240 * dt);
+                player.vx = 0;
+                player.vy = 0;
+                player.grounded = player.y + player.height >= finish.groundY;
+                return;
+            }
             const keys = keysRef.current;
             const touch = touchRef.current;
             const left = player.id === 'bora' ? keys.has('a') || touch.has('bora-left') : keys.has('arrowleft') || touch.has('gozde-left');
@@ -580,8 +664,8 @@ const MarioGame: React.FC = () => {
             if (swimming) player.vy = clamp(player.vy, -520, 250);
             player.x += player.vx * dt;
             player.y += player.vy * dt;
-            const minimumX = inBonus ? BONUS_START : swimming ? WATER_START : 0;
-            const maximumX = (inBonus ? BONUS_END : activeWorldWidth) - player.width;
+            const minimumX = worldBounds().minX;
+            const maximumX = worldBounds().maxX - player.width;
             player.x = clamp(player.x, minimumX, maximumX);
             player.grounded = false;
 
@@ -592,10 +676,10 @@ const MarioGame: React.FC = () => {
                     player.y = platform.y - player.height;
                     player.vy = 0;
                     player.grounded = true;
-                } else if (swimming && wasBelow && player.vy < 0 && intersects(player, platform)) {
+                } else if ((swimming || isKestilLevel) && wasBelow && player.vy < 0 && intersects(player, platform)) {
                     player.y = platform.y + platform.height;
                     player.vy = 0;
-                } else if ((platform.kind === 'pipe' || platform.kind === 'sidePipe' || swimming) && intersects(player, platform)) {
+                } else if ((platform.kind === 'pipe' || platform.kind === 'sidePipe' || swimming || isKestilLevel) && intersects(player, platform)) {
                     if (previousX + player.width <= platform.x + 10) player.x = platform.x - player.width;
                     else if (previousX >= platform.x + platform.width - 10) player.x = platform.x + platform.width;
                     player.vx = 0;
@@ -644,7 +728,14 @@ const MarioGame: React.FC = () => {
                 }
             }
 
-            if (!inBonus && isUndergroundLevel) {
+            if (isKestilLevel) {
+                if (encounter?.entered) player.checkpoint = ARENA_START + 100;
+                else if (player.x > 2780) player.checkpoint = 2850;
+                else if (player.x > 1910) player.checkpoint = 1980;
+                else if (player.x > 1050) player.checkpoint = 1120;
+            } else if (inExitArea) {
+                player.checkpoint = EXIT_SPAWNS[0];
+            } else if (!inBonus && isUndergroundLevel) {
                 if (player.x > 1320) player.checkpoint = 1380;
                 if (player.x > 3730) player.checkpoint = 3790;
                 if (player.x > 6060) player.checkpoint = 6120;
@@ -666,6 +757,21 @@ const MarioGame: React.FC = () => {
 
         const update = (dt: number) => {
             if (!active) return;
+            kestilTime += dt;
+            if (encounter && encounter.endingTime !== null) {
+                encounter.update(dt, players, [], () => {}, () => {}, () => {});
+                if (endingCaption !== encounter.caption) {
+                    endingCaption = encounter.caption;
+                    setSnapshot(current => ({ ...current, storyCaption: endingCaption }));
+                }
+                const target = clamp((players[0].x + players[1].x) / 2 - GAME_WIDTH * .42, worldBounds().minX, activeWorldWidth - GAME_WIDTH);
+                cameraX += (target - cameraX) * Math.min(1, dt * 4.5);
+                if (encounter.finished) {
+                    active = false;
+                    setSnapshot(current => ({ ...current, phase: 'ended' }));
+                }
+                return;
+            }
             pipeCooldown = Math.max(0, pipeCooldown - dt);
             pipeFlash = Math.max(0, pipeFlash - dt);
 
@@ -695,11 +801,25 @@ const MarioGame: React.FC = () => {
 
                 if (transition.elapsed >= 0.78) {
                     if (transition.travel === 'levelExit' || transition.travel === 'waterExit') {
-                        active = false;
-                        playTone(523, 0.12, 'triangle');
-                        window.setTimeout(() => playTone(659, 0.12, 'triangle'), 110);
-                        window.setTimeout(() => playTone(784, 0.24, 'triangle'), 220);
-                        setSnapshot((current) => ({ ...current, phase: 'won' }));
+                        inExitArea = true;
+                        inWater = false;
+                        players.forEach((player, index) => {
+                            player.x = EXIT_SPAWNS[index];
+                            player.y = GROUND_Y - player.height;
+                            player.vx = 0;
+                            player.vy = 0;
+                            player.grounded = true;
+                            player.checkpoint = EXIT_SPAWNS[0];
+                            player.invincibleUntil = performance.now() + 1100;
+                        });
+                        cameraX = EXIT_AREA_START;
+                        enemies.forEach(enemy => { enemy.alive = false; });
+                        powerUps.forEach(powerUp => { powerUp.active = false; });
+                        fireballs.forEach(fireball => { fireball.active = false; });
+                        pipeCooldown = 1;
+                        pipeFlash = 0.55;
+                        playTone(330, 0.1, 'triangle');
+                        window.setTimeout(() => playTone(440, 0.14, 'triangle'), 90);
                     } else if (transition.travel === 'waterIn') {
                         inWater = true;
                         players.forEach((player, index) => {
@@ -737,7 +857,24 @@ const MarioGame: React.FC = () => {
                 return;
             }
 
+            const previousFeet = players.map(player => player.y + player.height);
             players.forEach((player) => updatePlayer(player, dt));
+            if (encounter) {
+                players.forEach(player => {
+                    if (inKestilLava(player)) hurt(player, true);
+                    else if (touchesKestilFire(player, kestilTime)) hurt(player);
+                });
+                if (!active) return;
+                encounter.update(dt, players, previousFeet, hurt, health => {
+                    burst(encounter.boss.x + 68, encounter.boss.y, '#ffe5a1', 18);
+                    playTone(200, .12, 'triangle');
+                    setSnapshot(current => ({ ...current, bossHealth: health }));
+                }, () => {
+                    keysRef.current.clear(); touchRef.current.clear();
+                    endingCaption = encounter.caption;
+                    setSnapshot(current => ({ ...current, phase: 'ending', bossHealth: 0, storyCaption: endingCaption }));
+                });
+            }
 
             if (pipeCooldown <= 0) {
                 const travelPipe = activePlatforms.find((platform) => {
@@ -745,7 +882,7 @@ const MarioGame: React.FC = () => {
                     if (platform.travel === 'waterIn' || platform.travel === 'waterExit') return false;
                     if (platform.travel === 'bonusIn' && inBonus) return false;
                     if (platform.travel === 'bonusOut' && !inBonus) return false;
-                    if (platform.travel === 'levelExit' && (!isUndergroundLevel || inBonus)) return false;
+                    if (platform.travel === 'levelExit' && (!isUndergroundLevel || inBonus || inExitArea)) return false;
                     return players.some((player) => {
                         const standingOnPipe = Math.abs(player.y + player.height - platform.y) < 8
                             && player.x + player.width > platform.x + 8
@@ -771,7 +908,7 @@ const MarioGame: React.FC = () => {
                 }
             }
 
-            if (pipeCooldown <= 0 && isWaterLevel && !pipeTransition) {
+            if (pipeCooldown <= 0 && isWaterLevel && !inExitArea && !pipeTransition) {
                 const sidePipe = activePlatforms.find((platform) => {
                     if (platform.kind !== 'sidePipe') return false;
                     if (platform.travel === 'waterIn' && inWater) return false;
@@ -827,8 +964,8 @@ const MarioGame: React.FC = () => {
                         enemy.vx *= -1;
                     }
                 } else if (enemy.state === 'shellMoving') {
-                    const minimumX = inBonus ? BONUS_START : 0;
-                    const maximumX = (inBonus ? BONUS_END : activeWorldWidth) - enemy.width;
+                    const minimumX = worldBounds().minX;
+                    const maximumX = worldBounds().maxX - enemy.width;
                     if (enemy.x <= minimumX || enemy.x >= maximumX) {
                         enemy.x = clamp(enemy.x, minimumX, maximumX);
                         enemy.vx *= -1;
@@ -984,8 +1121,8 @@ const MarioGame: React.FC = () => {
                     }
                 });
 
-                const minimumX = inBonus ? BONUS_START : 0;
-                const maximumX = (inBonus ? BONUS_END : activeWorldWidth) - powerUp.width;
+                const minimumX = worldBounds().minX;
+                const maximumX = worldBounds().maxX - powerUp.width;
                 if (powerUp.x <= minimumX || powerUp.x >= maximumX) {
                     powerUp.x = clamp(powerUp.x, minimumX, maximumX);
                     powerUp.vx *= -1;
@@ -1050,25 +1187,32 @@ const MarioGame: React.FC = () => {
                     window.setTimeout(() => playTone(120, 0.09, 'square'), 55);
                 });
 
-                if (fireball.life <= 0 || fireball.y > GAME_HEIGHT + 100 || fireball.x < 0 || fireball.x > (inBonus ? BONUS_END : activeWorldWidth)) fireball.active = false;
+                if (fireball.life <= 0 || fireball.y > GAME_HEIGHT + 100 || fireball.x < worldBounds().minX || fireball.x > worldBounds().maxX) fireball.active = false;
             });
 
-            const bothAtFinish = (selectedLevel === '1-1' || selectedLevel === '1-3') && !inBonus
-                && players.every((player) => player.x > finishWorldX - 50);
+            if (finishAvailable()) players.forEach(player => {
+                if (flagCaught[player.id] || !canGrabFlag(player, finish)) return;
+                flagCaught[player.id] = true;
+                player.x = finish.poleX + (player.id === 'bora' ? -player.width - 8 : 14);
+                player.y = clamp(player.y, finish.groundY - FLAG_HEIGHT + 18, finish.groundY - player.height);
+                player.vx = 0;
+                player.vy = 0;
+                burst(finish.poleX, player.y + 20, player.color, 14);
+                playTone(player.id === 'bora' ? 660 : 784, .12, 'triangle');
+            });
+            if (flagCaught.bora || flagCaught.gozde) flagDrop = Math.min(1, flagDrop + dt / 1.2);
+            const bothAtFinish = players.every(player => flagCaught[player.id] && player.grounded) && flagDrop === 1;
             if (bothAtFinish) {
                 finishTimer += dt;
                 if (finishTimer > 0.7) {
                     active = false;
-                    playTone(523, 0.14, 'triangle');
-                    window.setTimeout(() => playTone(659, 0.14, 'triangle'), 140);
-                    window.setTimeout(() => playTone(784, 0.28, 'triangle'), 280);
                     setSnapshot((current) => ({ ...current, phase: 'won' }));
                 }
             } else finishTimer = 0;
 
             const middle = (players[0].x + players[1].x) / 2;
-            const cameraMin = inBonus ? BONUS_START : isWaterLevel && inWater ? WATER_START : 0;
-            const cameraMax = (inBonus ? BONUS_END : activeWorldWidth) - GAME_WIDTH;
+            const cameraMin = worldBounds().minX;
+            const cameraMax = worldBounds().maxX - GAME_WIDTH;
             const target = clamp(middle - GAME_WIDTH * 0.42, cameraMin, cameraMax);
             cameraX += (target - cameraX) * Math.min(1, dt * 4.5);
             particles.forEach((particle) => {
@@ -1115,6 +1259,7 @@ const MarioGame: React.FC = () => {
         };
 
         const drawBackground = () => {
+            if (isKestilLevel) { drawKestilBackground(context, cameraX, kestilTime); return; }
             if (isWaterLevel && inWater) {
                 const ocean = context.createLinearGradient(0, 0, 0, GAME_HEIGHT);
                 ocean.addColorStop(0, '#159bd0');
@@ -1202,7 +1347,7 @@ const MarioGame: React.FC = () => {
                 return;
             }
 
-            if (inBonus || isUndergroundLevel) {
+            if (inBonus || (isUndergroundLevel && !inExitArea)) {
                 const underground = context.createLinearGradient(0, 0, 0, GAME_HEIGHT);
                 underground.addColorStop(0, '#17213d');
                 underground.addColorStop(1, '#29365b');
@@ -1308,7 +1453,17 @@ const MarioGame: React.FC = () => {
                 context.fillStyle = 'rgba(255,255,255,.26)';
                 context.fillRect(x + 18, platform.y + 10, Math.max(25, platform.width - 36), 8);
             } else if (platform.kind === 'ground') {
-                if (isWaterLevel && inWater) {
+                if (isKestilLevel) {
+                    context.save(); context.beginPath(); context.rect(x, platform.y, platform.width, platform.height); context.clip();
+                    context.fillStyle = '#6f6b78'; context.fillRect(x, platform.y, platform.width, platform.height);
+                    context.strokeStyle = '#393641'; context.lineWidth = 3;
+                    for (let py = 0; py < platform.height; py += 28) for (let px = py % 56 ? -28 : 0; px < platform.width; px += 56) {
+                        context.fillStyle = '#c4c0c5'; context.fillRect(x + px + 2, platform.y + py + 2, 52, 24);
+                        context.strokeRect(x + px, platform.y + py, 56, 28);
+                        context.fillStyle = '#eeebe6'; context.fillRect(x + px + 4, platform.y + py + 4, 46, 3);
+                    }
+                    context.restore();
+                } else if (isWaterLevel && inWater) {
                     context.fillStyle = '#284d68';
                     context.fillRect(x, platform.y, platform.width, platform.height);
                     context.fillStyle = '#e7c877';
@@ -1323,7 +1478,7 @@ const MarioGame: React.FC = () => {
                     for (let px = 24; px < platform.width; px += 74) {
                         context.beginPath(); context.arc(x + px, platform.y + 52 + (px % 4) * 13, 7, 0, Math.PI * 2); context.fill();
                     }
-                } else if (inBonus || isUndergroundLevel) {
+                } else if (inBonus || (isUndergroundLevel && !inExitArea)) {
                     context.fillStyle = '#24345f';
                     context.fillRect(x, platform.y, platform.width, platform.height);
                     context.fillStyle = '#6277b2';
@@ -1415,8 +1570,9 @@ const MarioGame: React.FC = () => {
             context.save();
             context.translate(x, y);
             const isQuestion = block.kind === 'question';
-            context.fillStyle = block.used ? '#a89f89' : isQuestion ? '#f6b91c' : isUndergroundLevel ? '#4966a1' : '#c96535';
-            context.strokeStyle = isQuestion ? '#704313' : isUndergroundLevel ? '#22365f' : '#74351f';
+            const undergroundBlock = isUndergroundLevel && !inExitArea;
+            context.fillStyle = block.used ? '#a89f89' : isQuestion ? '#f6b91c' : undergroundBlock ? '#4966a1' : '#c96535';
+            context.strokeStyle = isQuestion ? '#704313' : undergroundBlock ? '#22365f' : '#74351f';
             context.lineWidth = 5;
             roundRect(0, 0, block.width, block.height, 7);
             context.fill();
@@ -1430,12 +1586,12 @@ const MarioGame: React.FC = () => {
                 context.textBaseline = 'middle';
                 context.fillText(block.used ? '·' : '?', block.width / 2, block.height / 2 + 2);
             } else {
-                context.strokeStyle = isUndergroundLevel ? '#2b4375' : '#8f4326';
+                context.strokeStyle = undergroundBlock ? '#2b4375' : '#8f4326';
                 context.lineWidth = 3;
                 context.beginPath(); context.moveTo(0, 27); context.lineTo(56, 27); context.stroke();
                 context.beginPath(); context.moveTo(18, 0); context.lineTo(18, 27); context.moveTo(39, 27); context.lineTo(39, 56); context.stroke();
             }
-            context.fillStyle = isQuestion ? '#704313' : isUndergroundLevel ? '#22365f' : '#74351f';
+            context.fillStyle = isQuestion ? '#704313' : undergroundBlock ? '#22365f' : '#74351f';
             [[7, 7], [49, 7], [7, 49], [49, 49]].forEach(([dotX, dotY]) => {
                 context.beginPath(); context.arc(dotX, dotY, 2.5, 0, Math.PI * 2); context.fill();
             });
@@ -1655,9 +1811,6 @@ const MarioGame: React.FC = () => {
             const swimmingPose = isWaterLevel && inWater && !player.grounded;
             const walking = Math.abs(player.vx) > 30 && player.grounded;
             const bob = swimmingPose ? Math.sin(time * 0.007 + player.x * 0.01) * 4 : walking ? Math.sin(time * 0.018) * 3 : 0;
-            const hatColor = player.hasFire ? '#fff8e7' : player.color;
-            const outfitColor = player.hasFire ? '#fff8e7' : player.accent;
-            const shirtColor = player.hasFire ? player.color : player.color;
 
             if (swimmingPose) {
                 const trailX = x + player.width / 2 - player.direction * 42;
@@ -1685,47 +1838,7 @@ const MarioGame: React.FC = () => {
                 context.translate(-player.width / 2, 0);
             }
 
-            if (swimmingPose) {
-                const stroke = Math.sin(time * 0.014) * 5;
-                context.strokeStyle = '#f4bb8a';
-                context.lineWidth = 8;
-                context.lineCap = 'round';
-                context.beginPath();
-                context.moveTo(10, 39);
-                context.lineTo(5 - stroke * 0.35, 22 - Math.abs(stroke));
-                context.moveTo(38, 39);
-                context.lineTo(44 + stroke * 0.35, 21 - Math.abs(stroke));
-                context.stroke();
-            }
-
-            context.fillStyle = '#f4bb8a';
-            roundRect(9, 11, 29, 28, 10);
-            context.fill();
-            context.fillStyle = hatColor;
-            roundRect(4, 0, 39, 17, 8);
-            context.fill();
-            context.fillRect(4, 10, 45, 8);
-            context.fillStyle = '#24201f';
-            context.fillRect(31, 20, 5, 5);
-            context.fillRect(38, 31, 8, 5);
-
-            context.fillStyle = outfitColor;
-            roundRect(7, 36, 34, 26, 7);
-            context.fill();
-            context.fillStyle = shirtColor;
-            context.fillRect(8, 32, 32, 14);
-            context.fillStyle = player.hasFire ? player.color : '#fff';
-            context.beginPath(); context.arc(13, 47, 4, 0, Math.PI * 2); context.arc(36, 47, 4, 0, Math.PI * 2); context.fill();
-
-            context.fillStyle = '#302722';
-            const leg = swimmingPose ? Math.sin(time * 0.014) * 6 : walking ? Math.sin(time * 0.018) * 5 : 0;
-            roundRect(3, 58 + leg, 19, 8, 4); context.fill();
-            roundRect(26, 58 - leg, 19, 8, 4); context.fill();
-
-            context.fillStyle = player.hasFire ? player.color : '#fff';
-            context.font = '900 12px Arial';
-            context.textAlign = 'center';
-            context.fillText(player.id === 'bora' ? 'B' : 'G', 23, 13);
+            drawPlayerSprite(context, player, time, walking, swimmingPose);
             context.restore();
 
             context.save();
@@ -1764,73 +1877,87 @@ const MarioGame: React.FC = () => {
             context.restore();
         };
 
-        const drawFinish = (time: number, worldX: number, baseY: number) => {
-            const x = worldX - cameraX;
-            context.fillStyle = '#ede8dc';
-            context.fillRect(x + 100, baseY - 235, 210, 235);
-            context.fillStyle = '#d84f4f';
-            for (let i = 0; i < 3; i += 1) {
-                context.beginPath();
-                context.moveTo(x + 92 + i * 85, baseY - 235);
-                context.lineTo(x + 135 + i * 85, baseY - 300);
-                context.lineTo(x + 178 + i * 85, baseY - 235);
-                context.fill();
+        const drawFinish = (time: number) => {
+            const x = finish.poleX - cameraX;
+            const baseY = finish.groundY;
+            if (x < -450 || x > GAME_WIDTH + 100) return;
+            if (finish.castle) {
+                context.fillStyle = '#ede8dc';
+                context.strokeStyle = '#596170';
+                context.lineWidth = 4;
+                context.fillRect(x + 150, baseY - 235, 210, 235);
+                context.strokeRect(x + 150, baseY - 235, 210, 235);
+                context.fillStyle = '#d84f4f';
+                for (let i = 0; i < 3; i += 1) {
+                    context.beginPath();
+                    context.moveTo(x + 142 + i * 85, baseY - 235);
+                    context.lineTo(x + 185 + i * 85, baseY - 300);
+                    context.lineTo(x + 228 + i * 85, baseY - 235);
+                    context.fill(); context.stroke();
+                }
+                context.fillStyle = '#384255';
+                roundRect(x + 226, baseY - 88, 56, 88, 28); context.fill();
+                context.fillRect(x + 172, baseY - 180, 20, 34);
+                context.fillRect(x + 316, baseY - 180, 20, 34);
             }
-            context.fillStyle = '#384255';
-            roundRect(x + 176, baseY - 88, 56, 88, 28); context.fill();
+            context.strokeStyle = '#9e7326';
+            context.lineWidth = 3;
             context.fillStyle = '#f0c64b';
-            context.fillRect(x + 22, baseY - 300, 9, 300);
+            context.fillRect(x, baseY - FLAG_HEIGHT, 9, FLAG_HEIGHT);
+            context.strokeRect(x, baseY - FLAG_HEIGHT, 9, FLAG_HEIGHT);
+            context.beginPath(); context.arc(x + 4.5, baseY - FLAG_HEIGHT, 10, 0, Math.PI * 2); context.fill(); context.stroke();
+            const flagY = baseY - FLAG_HEIGHT + 15 + flagDrop * (FLAG_HEIGHT - 100);
             context.fillStyle = '#ef445f';
             context.beginPath();
-            context.moveTo(x + 31, baseY - 285);
-            context.lineTo(x + 112 + Math.sin(time * 0.004) * 5, baseY - 264);
-            context.lineTo(x + 31, baseY - 235);
+            context.moveTo(x + 9, flagY);
+            context.lineTo(x + 90 + Math.sin(time * 0.004) * 5, flagY + 21);
+            context.lineTo(x + 9, flagY + 50);
             context.closePath();
             context.fill();
             context.fillStyle = '#fff';
             context.font = '900 21px Arial';
-            context.fillText('♥', x + 52, baseY - 255);
+            context.textAlign = 'left';
+            context.fillText('♥', x + 30, flagY + 31);
+            if (flagCaught.bora !== flagCaught.gozde) {
+                context.fillStyle = 'rgba(24,33,55,.9)';
+                roundRect(x - 250, baseY - FLAG_HEIGHT + 65, 280, 40, 12); context.fill();
+                context.fillStyle = '#fff';
+                context.font = '800 16px Arial';
+                context.textAlign = 'center';
+                context.fillText(`${flagCaught.bora ? 'Gözde' : 'Bora'}, sen de bayrağa atla!`, x - 110, baseY - FLAG_HEIGHT + 90);
+            }
         };
 
-        const drawSign = (worldX: number, lines: string[]) => {
-            const x = worldX - cameraX;
+        const drawSign = (sign: WorldSign) => {
+            const x = sign.x - cameraX;
             if (x < -250 || x > GAME_WIDTH + 100) return;
             context.fillStyle = '#77472b';
-            context.fillRect(x + 87, 590, 14, 100);
+            context.fillRect(x + 87, sign.y + 75, 14, GROUND_Y - sign.y - 75);
             context.fillStyle = '#fff5cf';
             context.strokeStyle = '#77472b';
             context.lineWidth = 5;
-            roundRect(x, 515, 190, 86, 10); context.fill(); context.stroke();
+            roundRect(x, sign.y, 190, 86, 10); context.fill(); context.stroke();
             context.fillStyle = '#55311f';
             context.textAlign = 'center';
             context.font = '800 16px Arial';
-            lines.forEach((line, index) => context.fillText(line, x + 95, 547 + index * 22));
+            sign.lines.forEach((line, index) => context.fillText(line, x + 95, sign.y + 32 + index * 22));
         };
 
         const draw = (time: number) => {
             drawBackground();
-            if ((selectedLevel === '1-1' || selectedLevel === '1-3') && !inBonus) drawFinish(time, finishWorldX, finishBaseY);
+            if (finishAvailable()) drawFinish(time);
             activePlatforms.forEach(drawPlatform);
             powerUps.forEach((powerUp) => drawPowerUp(powerUp, time));
             blocks.forEach(drawBlock);
             if (inBonus) {
-                drawSign(7080, ['BONUS ODASI', 'Altınları topla!']);
-            } else if (isUndergroundLevel) {
-                drawSign(70, ['DÜNYA 1-2', 'Yeraltına hoş geldin']);
-                drawSign(6750, ['ÇIKIŞ BORUSU', 'İkiniz de gelin']);
-            } else if (isSkyLevel) {
-                drawSign(70, ['DÜNYA 1-3', 'Tepelerden ilerleyin']);
-            } else if (isWaterLevel) {
-                if (!inWater) drawSign(70, ['DÜNYA 1-4', 'Boruya birlikte girin']);
-            } else {
-                drawSign(80, ['Birlikte ilerle,', 'birlikte kazan!']);
-                drawSign(1850, ['Kontrol noktası', '1 / 3']);
-                drawSign(3850, ['Kontrol noktası', '2 / 3']);
-                drawSign(5680, ['Son düzlük!', 'İkiniz de gelin']);
+                BONUS_SIGNS.forEach(drawSign);
+            } else if (!isWaterLevel || !inWater) {
+                levelSigns.forEach(drawSign);
             }
             coins.forEach((coin) => drawCoin(coin, time));
             enemies.forEach(drawEnemy);
             fireballs.forEach((fireball) => drawFireball(fireball, time));
+            if (encounter) drawKestilEncounter(context, encounter, cameraX, kestilTime);
             if (pipeTransition) {
                 context.save();
                 context.beginPath();
@@ -1843,6 +1970,7 @@ const MarioGame: React.FC = () => {
             }
             players.forEach((player) => drawPlayer(player, time));
             if (pipeTransition) context.restore();
+            if (encounter) drawKestilStory(context, encounter, cameraX, players);
             particles.forEach((particle) => {
                 context.globalAlpha = clamp(particle.life * 2, 0, 1);
                 context.fillStyle = particle.color;
@@ -1874,7 +2002,7 @@ const MarioGame: React.FC = () => {
                 context.fillText('S / ↓  BORUYA GİR', x, usablePipe.y - 31);
             }
 
-            if (isWaterLevel && !inWater && !pipeTransition) {
+            if (isWaterLevel && !inWater && !inExitArea && !pipeTransition) {
                 const pipe = activePlatforms.find((platform) => platform.travel === 'waterIn');
                 if (pipe) {
                     const x = pipe.x - cameraX - 24;
@@ -1904,7 +2032,7 @@ const MarioGame: React.FC = () => {
         return () => {
             if (frameRef.current) cancelAnimationFrame(frameRef.current);
         };
-    }, [runId, snapshot.phase, beep, selectedLevel, isUndergroundLevel, isSkyLevel, isWaterLevel]);
+    }, [runId, gameplayPhase, beep, selectedLevel, isUndergroundLevel, isSkyLevel, isWaterLevel, isKestilLevel]);
 
     const touchStart = (control: string) => (event: React.PointerEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -1917,17 +2045,21 @@ const MarioGame: React.FC = () => {
     };
 
     return (
-        <main className={styles.page}>
+        <main lang="tr" className={`${styles.page} ${snapshot.phase === 'menu' || snapshot.phase === 'story' ? styles.openingPage : ''}`}>
+            <audio ref={music.ref} src={music.source} loop={music.loop} preload="none" hidden />
             <header className={styles.header}>
                 <a className={styles.backLink} href="/" aria-label="Ana sayfaya dön">← <span>borabilir.github.io</span></a>
-                <div className={styles.logo}><span>İKİ KİŞİLİK</span><strong>MACERA {selectedLevel}</strong></div>
+                <div className={styles.logo}><span>İKİ KİŞİLİK</span><strong>Bokçuk Şurpunun Peşinde</strong></div>
+                <div className={styles.headerActions}>
+                {snapshot.phase !== 'menu' && <button className={styles.menuButton} onClick={returnToMenu}>ANA MENÜ</button>}
                 <button className={styles.iconButton} onClick={toggleSound} aria-label={snapshot.sound ? 'Sesi kapat' : 'Sesi aç'}>
                     {snapshot.sound ? '♪' : '×'}
                 </button>
+                </div>
             </header>
 
             <section className={styles.gameFrame}>
-                <div className={styles.hud}>
+                <div className={styles.hud} hidden={snapshot.phase === 'menu' || snapshot.phase === 'story'}>
                     <div className={`${styles.playerHud} ${styles.boraHud}`}>
                         <div className={styles.avatarFrame}><img src="/mario/bora-avatar-v2.png" alt="Bora karikatür avatarı" /></div>
                         <div className={styles.playerDetails}>
@@ -1952,23 +2084,37 @@ const MarioGame: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    {isKestilLevel && <div className={styles.bossHud}>
+                        <strong>ŞURPU <span>{snapshot.bossHealth ?? SURPU_MAX_HEALTH} / {SURPU_MAX_HEALTH}</span></strong>
+                        <div role="progressbar" aria-label="Şurpu’nun canı" aria-valuemin={0} aria-valuemax={SURPU_MAX_HEALTH} aria-valuenow={snapshot.bossHealth ?? SURPU_MAX_HEALTH}>
+                            <i style={{ width: `${((snapshot.bossHealth ?? SURPU_MAX_HEALTH) / SURPU_MAX_HEALTH) * 100}%` }} />
+                        </div>
+                        <small>BAŞINA ZIPLA!</small>
+                    </div>}
                 </div>
 
-                <div className={styles.canvasWrap}>
-                    <canvas ref={canvasRef} width={GAME_WIDTH} height={GAME_HEIGHT} aria-label="Bora ve Gözde için iki kişilik platform oyunu" />
+                <div className={`${styles.canvasWrap} ${isKestilLevel ? styles.kestilCanvas : ''}`}>
+                    <canvas ref={canvasRef} width={GAME_WIDTH} height={GAME_HEIGHT} aria-label="Bora ve Gözde için iki kişilik platform oyunu" hidden={snapshot.phase === 'menu' || snapshot.phase === 'story'} />
+
+                    {(snapshot.phase === 'menu' || snapshot.phase === 'story') && <Opening key={snapshot.phase} mode={snapshot.phase} onStart={startStory} onFinish={startGame} onMenu={returnToMenu} onLevels={() => {
+                        setShowLevelSelect(true);
+                        window.setTimeout(() => document.getElementById('mario-levels')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+                    }} />}
+                    {snapshot.phase === 'ending' && <div className={styles.finaleSpeech} role="status" aria-live="polite">{snapshot.storyCaption}</div>}
 
                     {snapshot.phase === 'intro' && (
                         <div className={styles.overlay}>
                             <div className={styles.introCard}>
                                 <p className={styles.eyebrow}>DÜNYA {selectedLevel} · AYNI KLAVYE</p>
-                                <h1>{isUndergroundLevel ? 'Yeraltına.' : isSkyLevel ? 'Bulutların.' : isWaterLevel ? 'Derinlere.' : 'Yan yana.'}<br /><em>{isUndergroundLevel ? 'Birlikte.' : isSkyLevel ? 'Üzerine.' : isWaterLevel ? 'Birlikte.' : 'Sonuna kadar.'}</em></h1>
-                                <p className={styles.lead}>{isUndergroundLevel ? 'Dar tuğla koridorlarını ve kısa çukurları aşın; çıkış borusuna birlikte ulaşın.' : isSkyLevel ? 'Ayrık ağaç tepeleri arasında dikkatli sıçrayın, altın rotasını takip edin ve kaleye birlikte ulaşın.' : isWaterLevel ? 'Kıyıdaki yatay boruya birlikte girin; mercan geçidini yüzerek aşın ve çıkış borusuna ulaşın.' : <>Paraları toplayın, minik engelleri aşın ve kaleye <strong>birlikte</strong> ulaşın.</>}</p>
+                                <h1>{isKestilLevel ? 'Şurpu' : isUndergroundLevel ? 'Yeraltına.' : isSkyLevel ? 'Bulutların.' : isWaterLevel ? 'Derinlere.' : 'Yan yana.'}<br /><em>{isKestilLevel ? 'Kestıl.' : isUndergroundLevel ? 'Birlikte.' : isSkyLevel ? 'Üzerine.' : isWaterLevel ? 'Birlikte.' : 'Sonuna kadar.'}</em></h1>
+                                <p className={styles.lead}>{isKestilLevel ? 'Lavları, dönen alevleri ve ateş püskürten geçitleri aşın. Şurpu’nun başına zıplayarak canını azaltın; kafesteki SüngerBob ile Patrick’i kurtarın!' : isUndergroundLevel ? 'Yeraltını aşın, çıkış borusundan yüzeye çıkın ve blok merdivenden bayrağa atlayın.' : isSkyLevel ? 'Ağaç tepelerinden ilerleyin; son blok merdivene tırmanıp bayrağa birlikte atlayın.' : isWaterLevel ? 'Mercan geçidini yüzerek aşın. Son borudan karaya çıkın, merdivenden bayrağa atlayıp Şurpu Kestıl’a ulaşın.' : <>Paraları toplayın, engelleri aşın ve blok merdivenden bayrağa <strong>birlikte</strong> atlayın.</>}</p>
                                 <div className={styles.controls}>
                                     <div><i className={styles.redToken}>B</i><p><strong>Bora</strong><span><kbd>A</kbd><kbd>D</kbd> hareket · <kbd>W</kbd> zıpla · <kbd>S</kbd> boru · <kbd>F</kbd> ateş</span></p></div>
                                     <div><i className={styles.pinkToken}>G</i><p><strong>Gözde</strong><span><kbd>←</kbd><kbd>→</kbd> hareket · <kbd>↑</kbd> zıpla · <kbd>↓</kbd> boru · <kbd>Enter</kbd> ateş</span></p></div>
                                 </div>
-                                <button className={styles.primaryButton} onClick={startGame}>MACERAYI BAŞLAT <span>→</span></button>
-                                <small className={styles.tip}>{isUndergroundLevel ? 'İpucu: Bölümün sonundaki oklu boru yeraltı çıkışıdır.' : isSkyLevel ? 'İpucu: Uzun atlayışlarda koşmayı bırakmayın; düşerseniz son ağaç tepesinden dönersiniz.' : isWaterLevel ? 'İpucu: Zıplama tuşu su altında yüzme vuruşu yapar.' : 'İpucu: Büyükken sonraki güç bloklarından ateş çiçeği çıkar.'}</small>
+                                <button className={styles.primaryButton} onClick={startGame}>BÖLÜMÜ BAŞLAT <span>→</span></button>
+                                {selectedLevel === '1-1' && <button className={styles.storyReplay} onClick={startStory}>Hikâyeyi izle ↻</button>}
+                                <small className={styles.tip}>{isKestilLevel ? 'İpucu: Şurpu saldırmadan önce hazırlanır. Arkasını dönüyorsa bok geliyor!' : isUndergroundLevel ? 'İpucu: Çıkış borusu yüzeye götürür; bölüm iki oyuncu da bayrağa atlayınca biter.' : isSkyLevel ? 'İpucu: Son merdivendeki bloklar kırılmaz; ikiniz de bayrağa atlamalısınız.' : isWaterLevel ? 'İpucu: Zıplama tuşuyla yüzün; çıkıştan sonra bayrağa birlikte atlayın.' : 'İpucu: Büyükken sonraki güç bloklarından ateş çiçeği çıkar.'}</small>
                             </div>
                         </div>
                     )}
@@ -1980,7 +2126,10 @@ const MarioGame: React.FC = () => {
                                 <p className={styles.eyebrow}>BÖLÜM TAMAMLANDI</p>
                                 <h2>En güzel takım<br />yine sizsiniz!</h2>
                                 <p>Dünya {selectedLevel} tamamlandı; {snapshot.coins.bora + snapshot.coins.gozde} altın topladınız.</p>
-                                <button className={styles.primaryButton} onClick={startGame}>TEKRAR OYNA <span>↻</span></button>
+                                <div className={styles.resultActions}>
+                                    <button className={`${styles.primaryButton} ${nextLevel ? styles.replayButton : ''}`} onClick={startGame}>TEKRAR OYNA <span>↻</span></button>
+                                    {nextLevel && <button className={styles.primaryButton} onClick={startNextLevel}>SONRAKİ BÖLÜME GEÇ <span>→</span></button>}
+                                </div>
                             </div>
                         </div>
                     )}
@@ -1995,16 +2144,25 @@ const MarioGame: React.FC = () => {
                             </div>
                         </div>
                     )}
+                    {snapshot.phase === 'ended' && <div className={styles.overlay}>
+                        <div className={`${styles.resultCard} ${styles.winCard} ${styles.endCard}`}>
+                            <div className={styles.bigHeart}>♥</div>
+                            <p className={styles.eyebrow}>OYUNCAKLAR EVE DÖNÜYOR</p>
+                            <h2>Şurpu Kestıl<br /><span lang="en">is clear</span></h2><strong className={styles.theEnd}>THE END</strong>
+                            <p>SüngerBob ve Patrick kurtuldu.<br />Şurpu hâlâ peşimizde. AAAAA!</p>
+                            <div className={styles.resultActions}><button className={styles.primaryButton} onClick={startGame}>TEKRAR OYNA <span>↻</span></button><button className={`${styles.primaryButton} ${styles.replayButton}`} onClick={returnToMenu}>ANA MENÜ <span>♥</span></button></div>
+                        </div>
+                    </div>}
                 </div>
             </section>
 
-            <section className={styles.levelBar} aria-label="Bölüm seçimi">
-                <div><small>ŞU ANKİ BÖLÜM</small><strong>DÜNYA {selectedLevel}</strong></div>
+            <section className={styles.levelBar} aria-label="Bölüm seçimi" hidden={snapshot.phase === 'menu' || snapshot.phase === 'story'}>
+                <div><small>ŞU ANKİ BÖLÜM</small><strong>{isKestilLevel ? '1-5 · Şurpu Kestıl' : `DÜNYA ${selectedLevel}`}</strong></div>
                 <button onClick={() => setShowLevelSelect((current) => !current)}>{showLevelSelect ? 'SEÇİMİ KAPAT' : 'BÖLÜM SEÇ'} <span>{showLevelSelect ? '↑' : '↓'}</span></button>
             </section>
 
             {showLevelSelect && (
-                <section className={styles.levelPicker}>
+                <section id="mario-levels" className={styles.levelPicker}>
                     <div className={styles.levelPickerHeading}>
                         <p className={styles.eyebrow}>DÜNYA 1</p>
                         <h2>Bölümünü seç</h2>
@@ -2023,19 +2181,19 @@ const MarioGame: React.FC = () => {
                         <button className={selectedLevel === '1-4' ? styles.activeLevel : ''} onClick={() => chooseLevel('1-4')}>
                             <span className={styles.levelNumber}>1-4</span><strong>Mercan Geçidi</strong><small>Su altı · Oynanabilir</small><i>→</i>
                         </button>
-                        <button className={styles.lockedLevel} disabled>
-                            <span className={styles.levelNumber}>1-5</span><strong>Kale</strong><small>Final · Yakında</small><i>🔒</i>
+                        <button className={selectedLevel === '1-5' ? styles.activeLevel : ''} onClick={() => chooseLevel('1-5')}>
+                            <span className={styles.levelNumber}>1-5</span><strong>Şurpu Kestıl</strong><small>Şurpu’yla kapış · Oyuncakları kurtar</small><i>→</i>
                         </button>
                     </div>
                 </section>
             )}
 
-            <div className={styles.mobileControls} aria-label="Dokunmatik kontroller">
+            <div className={styles.mobileControls} aria-label="Dokunmatik kontroller" hidden={snapshot.phase !== 'playing'}>
                 <div><button onPointerDown={touchStart('bora-left')} onPointerUp={touchEnd('bora-left')} onPointerCancel={touchEnd('bora-left')}>←</button><button onPointerDown={touchStart('bora-right')} onPointerUp={touchEnd('bora-right')} onPointerCancel={touchEnd('bora-right')}>→</button><button className={styles.jump} onPointerDown={touchStart('bora-jump')} onPointerUp={touchEnd('bora-jump')} onPointerCancel={touchEnd('bora-jump')}>↑</button><button onPointerDown={touchStart('bora-down')} onPointerUp={touchEnd('bora-down')} onPointerCancel={touchEnd('bora-down')}>↓</button><button onPointerDown={touchStart('bora-fire')} onPointerUp={touchEnd('bora-fire')} onPointerCancel={touchEnd('bora-fire')}>●</button></div>
                 <div><button onPointerDown={touchStart('gozde-left')} onPointerUp={touchEnd('gozde-left')} onPointerCancel={touchEnd('gozde-left')}>←</button><button onPointerDown={touchStart('gozde-right')} onPointerUp={touchEnd('gozde-right')} onPointerCancel={touchEnd('gozde-right')}>→</button><button className={styles.jump} onPointerDown={touchStart('gozde-jump')} onPointerUp={touchEnd('gozde-jump')} onPointerCancel={touchEnd('gozde-jump')}>↑</button><button onPointerDown={touchStart('gozde-down')} onPointerUp={touchEnd('gozde-down')} onPointerCancel={touchEnd('gozde-down')}>↓</button><button onPointerDown={touchStart('gozde-fire')} onPointerUp={touchEnd('gozde-fire')} onPointerCancel={touchEnd('gozde-fire')}>●</button></div>
             </div>
 
-            <footer className={styles.footer}><span>Bora & Gözde için yapıldı</span><span>Yeniden başlat: <kbd>R</kbd></span></footer>
+            <footer className={styles.footer}><span>Bora, Gözde & Şurpu için yapıldı ♥</span><span>{snapshot.phase === 'menu' || snapshot.phase === 'story' ? 'Oyuncakları eve getirme operasyonu' : <>Yeniden başlat: <kbd>R</kbd> · Menü: <kbd>Esc</kbd></>}</span></footer>
         </main>
     );
 };
