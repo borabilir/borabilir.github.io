@@ -1,0 +1,14 @@
+html.hollowgale-page {
+  background: #07100f;
+  scroll-padding-top: 76px;
+
+  body {
+    background: #07100f;
+    user-select: text;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button { color: inherit; }
+  img { max-width: 100%; }
+  ::selection { color: #07100f; background: #c7a568; }
+}

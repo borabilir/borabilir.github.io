@@ -1,0 +1,4 @@
+Mode: built-in imagegen
+Output: public/hollowgale/wind-leaf.png
+
+Use case: stylized-concept. Asset: ONE small flying burgundy autumn leaf sprite on genuine transparent background for a hand-inked gothic storybook game studio website. A slender, curled, pointed dried red leaf, horizontal sideways silhouette, organic serrated edges, short slender stem on the right. Illustrated thick dark black ink exterior contour, finer hand-drawn internal vein lines, a few warm muted scarlet contour highlights along folds. Deep wine red and maroon fill, visible layered brush strokes but clean readable outline when rendered 35 to 50 pixels wide. Match dark woodland storybook ink illustration, not a plain polygon or flat color blob, not photography or 3D. One isolated leaf only, centered and tightly framed on wide 2:1 transparent canvas. No other leaves, no branch, no background, no text, no shadow outside the leaf.
